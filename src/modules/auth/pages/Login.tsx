@@ -10,7 +10,7 @@ const sxContainer = {
 };
 
 const sxFormContainer = (theme: Theme) => ({
-  width: "400px",
+  width: "450px",
   borderRadius: theme.spacing(2),
   border: `1px solid ${theme.palette.primary.dark}`,
   padding: theme.spacing(5),
