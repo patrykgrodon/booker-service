@@ -1,3 +1,4 @@
+import { useAuth } from "modules/auth/contexts/authContext";
 import { Navigate } from "react-router-dom";
 import { Routes } from "./routePaths";
 
@@ -6,7 +7,8 @@ type Props = {
 };
 
 const RestrictedRoute = ({ children }: Props) => {
-  const isRestricted = Boolean("s");
+  const { user } = useAuth();
+  const isRestricted = Boolean(user);
 
   return !isRestricted ? children : <Navigate replace to={Routes.Base} />;
 };

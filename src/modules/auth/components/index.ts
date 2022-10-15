@@ -1,4 +1,4 @@
-import ForgotPassword from "./ForgotPassword/ForgotPassword";
-import Login from "./Login/Login";
+import ForgotPassword from "../pages/ForgotPassword";
+import Login from "../pages/Login";
 
 export { ForgotPassword, Login };
