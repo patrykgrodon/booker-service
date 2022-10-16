@@ -42,11 +42,12 @@ const LoginForm = () => {
         rowGap: (theme) => theme.spacing(2),
         mt: (theme) => theme.spacing(2),
       }}
-      aria-label="login-form"
+      aria-label="login form"
       id="login-form">
       <TextField
         {...register("email", { validate: checkIfEmpty })}
         label="E-mail"
+        aria-label="email field"
         fullWidth
         error={Boolean(errors.email)}
         helperText={errors.email && errors.email.message}
@@ -54,6 +55,7 @@ const LoginForm = () => {
       <PasswordField
         {...register("password", { validate: checkIfEmpty })}
         label="Hasło"
+        aria-label="password field"
         fullWidth
         error={Boolean(errors.password)}
         helperText={errors.password && errors.password.message}
@@ -64,7 +66,10 @@ const LoginForm = () => {
         </Typography>
       ) : null}
 
-      <RequestButton isLoading={isLoading} type="submit">
+      <RequestButton
+        aria-label="submit form"
+        isLoading={isLoading}
+        type="submit">
         Zaloguj
       </RequestButton>
     </Box>

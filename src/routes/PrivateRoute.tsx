@@ -5,6 +5,7 @@ import { Routes } from "./routePaths";
 
 const PrivateRoute = () => {
   const { user } = useAuth();
+
   const isAuthorised = Boolean(user);
   // const location = useLocation();
 

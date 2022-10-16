@@ -1,5 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { sleep } from "utils/sleep";
+import { deleteSSItem, getSSItem, saveSSItem } from "utils/webStorage";
 import { LoginFormValues } from "../types";
 
 interface User {
@@ -40,7 +41,14 @@ const accountInfo: { [key: string]: User } = {
 };
 
 const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
+  const ssUserInfoName = "user-info";
   const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const loggedUserInfo = getSSItem(ssUserInfoName);
+    if (!loggedUserInfo) return;
+    setUser(loggedUserInfo);
+  }, []);
 
   const login = async (loginFormValues: LoginFormValues) => {
     const { email, password } = loginFormValues;
@@ -50,13 +58,19 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       (account) => account.email === email.toLowerCase()
     );
 
-    if (account?.password === password)
-      return setUser(accountInfo[account.email]);
+    if (account?.password === password) {
+      const accInfo = accountInfo[account.email];
+      saveSSItem(ssUserInfoName, accInfo);
+      return setUser(accInfo);
+    }
 
     throw new Error("wrong user data");
   };
 
-  const logout = () => setUser(null);
+  const logout = () => {
+    deleteSSItem(ssUserInfoName);
+    setUser(null);
+  };
 
   return (
     <AuthContext.Provider value={{ login, user, logout }}>
