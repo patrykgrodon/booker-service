@@ -1,20 +1,8 @@
-import {
-  AppBar,
-  Avatar,
-  IconButton,
-  Toolbar,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import { Menu } from "@mui/icons-material";
-import { avatar } from "assets";
-import { useAuth } from "modules/auth/contexts/authContext";
+import UserAvatar from "./UserAvatar/UserAvatar";
 
 const Header = () => {
-  const { user, logout } = useAuth();
-
-  const userName = user ? `${user.firstName} ${user.lastName}` : "Brak danych";
-
   return (
     <AppBar position="static">
       <Toolbar>
@@ -29,11 +17,7 @@ const Header = () => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Booker service
         </Typography>
-        <Tooltip title="Wyloguj">
-          <IconButton sx={{ p: 0 }} onClick={logout}>
-            <Avatar alt={userName} src={avatar} />
-          </IconButton>
-        </Tooltip>
+        <UserAvatar />
       </Toolbar>
     </AppBar>
   );

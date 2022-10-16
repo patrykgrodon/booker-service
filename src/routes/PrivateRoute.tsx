@@ -1,4 +1,4 @@
-import Layout from "common/components/layout/Layout/Layout";
+import { Layout } from "common/components";
 import { useAuth } from "modules/auth/contexts/authContext";
 import { Navigate, Outlet } from "react-router-dom";
 import { Routes } from "./routePaths";

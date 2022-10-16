@@ -3,9 +3,11 @@ import { sleep } from "utils/sleep";
 import { deleteSSItem, getSSItem, saveSSItem } from "utils/webStorage";
 import { LoginFormValues } from "../types";
 
-interface User {
+type UserType = "customer" | "service-seller";
+export interface User {
   firstName: string;
   lastName: string;
+  userType: UserType;
 }
 interface AuthContextState {
   user: User | null;
@@ -19,7 +21,7 @@ interface AuthContextProviderProps {
   children: React.ReactNode;
 }
 
-const accounts = [
+const users = [
   {
     email: "patryk@gmail.com",
     password: "123",
@@ -34,10 +36,22 @@ const accounts = [
   },
 ];
 
-const accountInfo: { [key: string]: User } = {
-  "patryk@gmail.com": { firstName: "Patryk", lastName: "Grodoń" },
-  "wiktoria@gmail.com": { firstName: "Wiktoria", lastName: "Grodoń" },
-  "william@gmail.com": { firstName: "William", lastName: "Grodoń" },
+const userInfo: { [key: string]: User } = {
+  "patryk@gmail.com": {
+    firstName: "Patryk",
+    lastName: "Grodoń",
+    userType: "service-seller",
+  },
+  "wiktoria@gmail.com": {
+    firstName: "Wiktoria",
+    lastName: "Grodoń",
+    userType: "customer",
+  },
+  "william@gmail.com": {
+    firstName: "William",
+    lastName: "Grodoń",
+    userType: "customer",
+  },
 };
 
 const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
@@ -54,12 +68,12 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const { email, password } = loginFormValues;
 
     await sleep(800);
-    const account = accounts.find(
+    const account = users.find(
       (account) => account.email === email.toLowerCase()
     );
 
     if (account?.password === password) {
-      const accInfo = accountInfo[account.email];
+      const accInfo = userInfo[account.email];
       saveSSItem(ssUserInfoName, accInfo);
       return setUser(accInfo);
     }
