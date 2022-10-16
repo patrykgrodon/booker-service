@@ -1,4 +1,5 @@
 import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { TOOLBAR_HEIGHT } from "common/constants/layout";
 import useSidebar from "common/hooks/useSidebar";
 import { makeSx } from "common/styles/makeSx";
 import Header from "../Header/Header";
@@ -16,7 +17,8 @@ const sxContainer = makeSx(() => ({
 
 const sxMain = makeSx(() => ({
   flexGrow: 1,
-  minHeight: "100vh",
+  minHeight: `calc(100vh - ${TOOLBAR_HEIGHT})`,
+  maxHeight: `calc(100vh - ${TOOLBAR_HEIGHT})`,
   overflow: "auto",
 }));
 

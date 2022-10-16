@@ -11,6 +11,7 @@ import { Suspense } from "react";
 import { Spinner } from "common/components";
 import { Login } from "modules/auth/components";
 import Dashboard from "modules/dashboard/pages/Dashboard";
+import Services from "modules/services/pages/Services";
 
 const Router = () => {
   return (
@@ -27,6 +28,7 @@ const Router = () => {
           />
           <Route path={Routes.Base} element={<PrivateRoute />}>
             <Route path={Routes.Dashboard} element={<Dashboard />} />
+            <Route path={Routes.Services} element={<Services />} />
           </Route>
           <Route path="*" element={<Navigate replace to={Routes.Login} />} />
         </RouterRoutes>

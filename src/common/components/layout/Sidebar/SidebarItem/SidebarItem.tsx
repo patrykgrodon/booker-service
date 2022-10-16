@@ -9,14 +9,13 @@ import { NavLink } from "react-router-dom";
 import { Routes } from "routes";
 import useStyles from "./styles";
 
-interface SidebarItemProps {
+type Props = {
   path: Routes;
   text: string;
   icon: React.ElementType;
   handleHideSidebar: () => void;
   isOpen: boolean;
-  isLinkExternal?: boolean;
-}
+};
 
 const SidebarItem = ({
   path,
@@ -24,8 +23,7 @@ const SidebarItem = ({
   icon: Icon,
   handleHideSidebar,
   isOpen,
-  isLinkExternal = false,
-}: SidebarItemProps) => {
+}: Props) => {
   const classes = useStyles();
 
   const MyNavLink = useMemo(
@@ -34,15 +32,15 @@ const SidebarItem = ({
         <NavLink
           ref={ref}
           to={props.to}
-          {...(isLinkExternal ? { target: "_blank" } : {})}
           onClick={handleHideSidebar}
+          end
           className={({ isActive }) =>
             `${props.className} ${isActive ? props.activeClassName : ""}`
           }>
           {props.children}
         </NavLink>
       )),
-    [handleHideSidebar, isLinkExternal]
+    [handleHideSidebar]
   );
   return (
     <ListItem
