@@ -20,5 +20,12 @@
     "prefix": ["csx"],
     "body": ["const sx${1:name} = makeSx((theme) => ({${2:sx}}))"],
     "description": "Create a Mui sx styles"
+  },
+  "Create Mui Styles": {
+    "prefix": ["createStyles"],
+    "body": [
+      "export const useStyles = makeStyles((theme) => ({${2:styles}}));"
+    ],
+    "description": "Create a Mui styles"
   }
 }

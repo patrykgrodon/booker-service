@@ -1,7 +1,6 @@
+import { useToastStyles } from "common/styles/useToastStyles";
 import { createContext, useContext } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import { css, Theme, useTheme } from "@mui/material/styles";
-import { css as emotionCss } from "@emotion/css";
 import "react-toastify/dist/ReactToastify.css";
 
 type State = {
@@ -17,52 +16,8 @@ type Props = {
   children: React.ReactNode;
 };
 
-// toast.configure({ theme: "colored", className });
-
-const myStyles = {
-  toastContainer: (theme: Theme) => ({
-    fontSize: theme.typography.subtitle2.fontSize,
-    fontFamily: theme.typography.fontFamily,
-    marginTop: theme.spacing(8),
-  }),
-  successToast: (theme: Theme) => ({
-    backgroundColor: `${theme.palette.success.main} !important`,
-  }),
-  errorToast: (theme: Theme) => ({
-    backgroundColor: `${theme.palette.error.main} !important`,
-  }),
-  warningToast: {
-    backgroundColor: `#f3ae4e !important`,
-  },
-  infoToast: (theme: Theme) => ({
-    backgroundColor: `${theme.palette.primary.main} !important`,
-  }),
-};
-
 const ToastProvider = ({ children }: Props) => {
-  const theme = useTheme();
-
-  // first we need to convert to something emotion can understand
-  const toastContainerClass = css(myStyles.toastContainer(theme));
-  const successToastClass = css(myStyles.successToast(theme));
-  const errorToastClass = css(myStyles.errorToast(theme));
-  const warningToastClass = css(myStyles.warningToast);
-  const infoToastClass = css(myStyles.infoToast(theme));
-
-  // now we can pass to emotion
-  const toastContainerClassName = emotionCss(toastContainerClass.styles);
-  const successToastClassClassName = emotionCss(successToastClass.styles);
-  const errorToastClassName = emotionCss(errorToastClass.styles);
-  const warningToastClassName = emotionCss(warningToastClass.styles);
-  const infoToastClassName = emotionCss(infoToastClass.styles);
-
-  const classes = {
-    successToast: successToastClassClassName,
-    errorToast: errorToastClassName,
-    warningToast: warningToastClassName,
-    infoToast: infoToastClassName,
-    toastContainer: toastContainerClassName,
-  };
+  const classes = useToastStyles();
 
   const toastSettings = {
     position: "top-right",

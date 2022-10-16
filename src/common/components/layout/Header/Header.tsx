@@ -1,17 +1,29 @@
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import { Menu } from "@mui/icons-material";
 import UserAvatar from "./UserAvatar/UserAvatar";
+import { TOOLBAR_HEIGHT } from "common/constants/layout";
 
-const Header = () => {
+interface HeaderProps {
+  toggleSidebar: () => void;
+}
+
+const Header = ({ toggleSidebar }: HeaderProps) => {
   return (
-    <AppBar position="static">
-      <Toolbar>
+    <AppBar
+      position="static"
+      sx={{
+        zIndex: 1,
+        backgroundColor: (theme) => theme.palette.primary.dark,
+        height: TOOLBAR_HEIGHT,
+      }}>
+      <Toolbar sx={{ height: "100%" }}>
         <IconButton
+          onClick={toggleSidebar}
           size="large"
           edge="start"
           color="inherit"
           aria-label="menu"
-          sx={{ mr: 2 }}>
+          sx={{ margin: (theme) => theme.spacing(0, 2, 0, -0.6) }}>
           <Menu />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>

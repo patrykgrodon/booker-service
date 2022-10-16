@@ -1,28 +1,44 @@
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
+import useSidebar from "common/hooks/useSidebar";
 import { makeSx } from "common/styles/makeSx";
 import Header from "../Header/Header";
+import Sidebar from "../Sidebar/Sidebar";
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const sxContainer = makeSx(() => ({
   display: "flex",
-  flexDirection: "column",
-  height: "100%",
+  flexWrap: "wrap",
+  height: "100vh",
+  maxHeight: "100vh",
 }));
 
 const sxMain = makeSx(() => ({
-  flex: 1,
+  flexGrow: 1,
+  minHeight: "100vh",
   overflow: "auto",
-  display: "flex",
-  flexDirection: "column",
 }));
 
 const Layout = ({ children }: LayoutProps) => {
+  const theme = useTheme();
+  const isWindowBelowMdSize = useMediaQuery(theme.breakpoints.down("md"));
+  const isWindowBelowSmSize = useMediaQuery(theme.breakpoints.down("sm"));
+  const { isSidebarOpen, toggleSidebar, hideSidebar } =
+    useSidebar(isWindowBelowMdSize);
+
   return (
     <Box sx={sxContainer}>
-      <Header />
-      <Box sx={sxMain}>{children}</Box>
+      <Header toggleSidebar={toggleSidebar} />
+      <Sidebar
+        isOpen={isSidebarOpen}
+        handleHideSidebar={hideSidebar}
+        isWindowBelowMdSize={isWindowBelowMdSize}
+        isWindowBelowSmSize={isWindowBelowSmSize}
+      />
+      <Box component="main" sx={sxMain}>
+        {children}
+      </Box>
     </Box>
   );
 };

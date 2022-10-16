@@ -1,5 +1,6 @@
 import { Box, TextField, Typography } from "@mui/material";
 import { PasswordField, RequestButton } from "common/components";
+import { makeSx } from "common/styles/makeSx";
 import { useAuth } from "modules/auth/contexts/authContext";
 import { LoginFormValues } from "modules/auth/types";
 import { useState } from "react";
@@ -10,6 +11,13 @@ const defaultValues: LoginFormValues = {
   email: "",
   password: "",
 };
+
+const sxForm = makeSx((theme) => ({
+  display: "flex",
+  flexDirection: "column",
+  rowGap: theme.spacing(2),
+  mt: theme.spacing(2),
+}));
 
 const LoginForm = () => {
   const { login } = useAuth();
@@ -36,14 +44,8 @@ const LoginForm = () => {
     <Box
       component="form"
       onSubmit={handleSubmit(handleLogin)}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        rowGap: (theme) => theme.spacing(2),
-        mt: (theme) => theme.spacing(2),
-      }}
-      aria-label="login form"
-      id="login-form">
+      sx={sxForm}
+      aria-label="login form">
       <TextField
         {...register("email", { validate: checkIfEmpty })}
         label="E-mail"
