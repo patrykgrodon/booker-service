@@ -8,6 +8,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
+import { makeSx } from "common/styles/makeSx";
 import { useAuth } from "modules/auth/contexts/authContext";
 import { getUserName, getUserType } from "modules/auth/utils/user";
 
@@ -15,6 +16,20 @@ interface UserMenuProps {
   anchorEl: Element | null;
   handleClose: () => void;
 }
+
+const sxMenu = makeSx((theme) => ({
+  "& .MuiPaper-root": {
+    marginTop: theme.spacing(1),
+  },
+}));
+
+const sxUserInfo = makeSx((theme) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-end",
+  width: "150px",
+  padding: theme.spacing(0, 1.5, 0.5, 1.5),
+}));
 
 const UserMenu = ({ anchorEl, handleClose }: UserMenuProps) => {
   const { logout, user } = useAuth();
@@ -26,15 +41,8 @@ const UserMenu = ({ anchorEl, handleClose }: UserMenuProps) => {
       anchorEl={anchorEl}
       open={Boolean(anchorEl)}
       onClose={handleClose}
-      sx={{ marginTop: (theme) => theme.spacing(0.5) }}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-end",
-          width: "150px",
-          padding: (theme) => theme.spacing(0, 1.5, 0.5, 1.5),
-        }}>
+      sx={sxMenu}>
+      <Box component="header" aria-label="user info" sx={sxUserInfo}>
         <Typography align="right" variant="subtitle1">
           {userName}
         </Typography>
