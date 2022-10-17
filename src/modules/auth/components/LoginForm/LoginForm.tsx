@@ -1,10 +1,12 @@
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, Link, TextField, Typography } from "@mui/material";
 import { PasswordField, RequestButton } from "common/components";
 import { makeSx } from "common/styles/makeSx";
 import { useAuth } from "modules/auth/contexts/authContext";
 import { LoginFormValues } from "modules/auth/types";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Link as RouterLink } from "react-router-dom";
+import { Routes } from "routes";
 import { checkIfEmpty } from "utils/validationPatterns";
 
 const defaultValues: LoginFormValues = {
@@ -74,6 +76,20 @@ const LoginForm = () => {
         type="submit">
         Zaloguj
       </RequestButton>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Link
+          component={RouterLink}
+          to={Routes.CreateAccount}
+          color="primary.dark">
+          Utwórz konto
+        </Link>
+        <Link
+          component={RouterLink}
+          to={Routes.ForgotPassword}
+          color="primary.dark">
+          Przypomnij hasło
+        </Link>
+      </Box>
     </Box>
   );
 };

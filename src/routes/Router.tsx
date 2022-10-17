@@ -12,6 +12,7 @@ import { Spinner } from "common/components";
 import { Login } from "modules/auth/components";
 import Dashboard from "modules/dashboard/pages/Dashboard";
 import Services from "modules/services/pages/Services";
+import CreateAccount from "modules/manager/pages/CreateAccount";
 
 const Router = () => {
   return (
@@ -23,6 +24,14 @@ const Router = () => {
             element={
               <RestrictedRoute>
                 <Login />
+              </RestrictedRoute>
+            }
+          />
+          <Route
+            path={Routes.CreateAccount}
+            element={
+              <RestrictedRoute>
+                <CreateAccount />
               </RestrictedRoute>
             }
           />

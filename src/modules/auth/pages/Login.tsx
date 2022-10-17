@@ -1,20 +1,21 @@
-import { Box, Theme, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { makeSx } from "common/styles/makeSx";
 import LoginForm from "../components/LoginForm/LoginForm";
 
-const sxContainer = {
-  height: "100%",
-  width: "100%",
+const sxContainer = makeSx(() => ({
+  height: "100vh",
+  width: "100vw",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-};
+}));
 
-const sxFormContainer = (theme: Theme) => ({
+const sxFormContainer = makeSx((theme) => ({
   width: "450px",
   borderRadius: theme.spacing(2),
   border: `1px solid ${theme.palette.primary.dark}`,
   padding: theme.spacing(5),
-});
+}));
 
 const Login = () => {
   return (
