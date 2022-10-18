@@ -1,10 +1,14 @@
-import { User } from "../contexts/authContext";
+import { Account } from "common/types";
 
-export const getUserName = (user: User | null) => {
-  return user ? `${user.firstName} ${user.lastName}` : "No data";
+export const getUserName = (account: Account | null) => {
+  if (!account) return "No data";
+  if (account.type === "customer")
+    return `${account.firstName} ${account.lastName}`;
+  return account.companyName;
 };
 
-export const getUserType = (user: User | null) => {
-  if (!user) return "No data";
-  return user.userType === "customer" ? "Customer" : "Service seller";
+export const getUserType = (account: Account | null) => {
+  if (!account) return "No data";
+
+  return account.type === "customer" ? "Customer" : "Service seller";
 };

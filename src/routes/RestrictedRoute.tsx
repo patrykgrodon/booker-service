@@ -7,8 +7,8 @@ type Props = {
 };
 
 const RestrictedRoute = ({ children }: Props) => {
-  const { user } = useAuth();
-  const isRestricted = Boolean(user);
+  const { account } = useAuth();
+  const isRestricted = Boolean(account);
 
   return !isRestricted ? children : <Navigate replace to={Routes.Base} />;
 };

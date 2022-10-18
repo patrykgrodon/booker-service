@@ -1,20 +1,18 @@
-import { Button, Grid, TextField } from "@mui/material";
-import { PasswordField } from "common/components";
+import { Button, Grid, TextField, Typography } from "@mui/material";
+import { PasswordField, RequestButton } from "common/components";
+import { useAccounts } from "common/providers/AccountsProvider";
+import { useToast } from "common/providers/ToastProvider";
+import { SellerFormValues } from "common/types";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { Routes } from "routes";
 import {
   checkIfEmpty,
   checkPasswordMatch,
   passwordPatternValidator,
+  ValidationMessages,
 } from "utils/validationPatterns";
-
-interface SellerFormValues {
-  email: string;
-  companyName: string;
-  phoneNumber: string;
-  address: string;
-  password: string;
-  confirmPassword: string;
-}
 
 const defaultValues: SellerFormValues = {
   email: "",
@@ -32,8 +30,26 @@ const SellerForm = () => {
     watch,
     formState: { errors },
   } = useForm({ defaultValues });
+  const navigate = useNavigate();
+  const { createSellerAcc } = useAccounts();
+  const { setSuccessMessage } = useToast();
 
-  const submitHandler = (formValues: SellerFormValues) => {};
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleBack = () => navigate(Routes.Login);
+  const submitHandler = async (formValues: SellerFormValues) => {
+    setError("");
+    setIsLoading(true);
+    try {
+      await createSellerAcc(formValues);
+      setSuccessMessage("Pomyślnie utworzono konto");
+      handleBack();
+    } catch (err: any) {
+      setError(err);
+    }
+    setIsLoading(false);
+  };
 
   const password = watch("password");
 
@@ -95,6 +111,7 @@ const SellerForm = () => {
           fullWidth
           label="Password"
           {...register("password", {
+            validate: checkIfEmpty,
             pattern: passwordPatternValidator,
           })}
           error={Boolean(errors.password)}
@@ -106,12 +123,20 @@ const SellerForm = () => {
           fullWidth
           label="Confirm password"
           {...register("confirmPassword", {
+            required: ValidationMessages.Required,
             validate: (value) => checkPasswordMatch(value, password),
           })}
           error={Boolean(errors.confirmPassword)}
           helperText={errors.confirmPassword?.message}
         />
       </Grid>
+      {error && (
+        <Grid item xs={12}>
+          <Typography variant="subtitle1" color="error" align="center">
+            {error}
+          </Typography>
+        </Grid>
+      )}
       <Grid
         item
         xs={12}
@@ -120,8 +145,12 @@ const SellerForm = () => {
           justifyContent: "space-between",
           marginTop: (theme) => theme.spacing(3),
         }}>
-        <Button variant="outlined">Powrót</Button>
-        <Button type="submit">Utwórz</Button>
+        <Button variant="outlined" onClick={handleBack}>
+          Powrót
+        </Button>
+        <RequestButton isLoading={isLoading} type="submit">
+          Utwórz
+        </RequestButton>
       </Grid>
     </Grid>
   );

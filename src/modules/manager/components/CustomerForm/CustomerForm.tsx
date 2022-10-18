@@ -1,20 +1,18 @@
-import { Button, Grid, TextField } from "@mui/material";
-import { PasswordField } from "common/components";
+import { Button, Grid, TextField, Typography } from "@mui/material";
+import { PasswordField, RequestButton } from "common/components";
+import { useAccounts } from "common/providers/AccountsProvider";
+import { useToast } from "common/providers/ToastProvider";
+import { CustomerFormValues } from "common/types";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { Routes } from "routes";
 import {
   checkIfEmpty,
   checkPasswordMatch,
   passwordPatternValidator,
+  ValidationMessages,
 } from "utils/validationPatterns";
-
-interface CustomerFormValues {
-  email: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  password: string;
-  confirmPassword: string;
-}
 
 const defaultValues: CustomerFormValues = {
   email: "",
@@ -34,11 +32,28 @@ const CustomerForm = () => {
   } = useForm<CustomerFormValues>({
     defaultValues,
   });
+  const navigate = useNavigate();
+  const { createCustomerAcc } = useAccounts();
+  const { setSuccessMessage } = useToast();
 
-  const submitHandler = (formValues: CustomerFormValues) => {};
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleBack = () => navigate(Routes.Login);
+  const submitHandler = async (formValues: CustomerFormValues) => {
+    setError("");
+    setIsLoading(true);
+    try {
+      await createCustomerAcc(formValues);
+      handleBack();
+      setSuccessMessage("Pomyślnie utworzono konto");
+    } catch (err: any) {
+      setError(err.message);
+    }
+    setIsLoading(false);
+  };
 
   const password = watch("password");
-
   return (
     <Grid
       sx={{ height: "100%" }}
@@ -98,6 +113,7 @@ const CustomerForm = () => {
           fullWidth
           label="Password"
           {...register("password", {
+            validate: checkIfEmpty,
             pattern: passwordPatternValidator,
           })}
           error={Boolean(errors.password)}
@@ -109,12 +125,20 @@ const CustomerForm = () => {
           fullWidth
           label="Confirm password"
           {...register("confirmPassword", {
+            required: ValidationMessages.Required,
             validate: (value) => checkPasswordMatch(value, password),
           })}
           error={Boolean(errors.confirmPassword)}
           helperText={errors.confirmPassword?.message}
         />
       </Grid>
+      {error && (
+        <Grid item xs={12}>
+          <Typography variant="subtitle1" color="error" align="center">
+            {error}
+          </Typography>
+        </Grid>
+      )}
       <Grid
         item
         xs={12}
@@ -123,8 +147,12 @@ const CustomerForm = () => {
           justifyContent: "space-between",
           marginTop: (theme) => theme.spacing(3),
         }}>
-        <Button variant="outlined">Powrót</Button>
-        <Button type="submit">Utwórz</Button>
+        <Button variant="outlined" onClick={handleBack}>
+          Powrót
+        </Button>
+        <RequestButton isLoading={isLoading} type="submit">
+          Utwórz
+        </RequestButton>
       </Grid>
     </Grid>
   );

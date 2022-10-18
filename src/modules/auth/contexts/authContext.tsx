@@ -1,16 +1,12 @@
+import { useAccounts } from "common/providers/AccountsProvider";
+import { Account } from "common/types";
 import { createContext, useContext, useEffect, useState } from "react";
 import { sleep } from "utils/sleep";
 import { deleteSSItem, getSSItem, saveSSItem } from "utils/webStorage";
 import { LoginFormValues } from "../types";
 
-type UserType = "customer" | "service-seller";
-export interface User {
-  firstName: string;
-  lastName: string;
-  userType: UserType;
-}
 interface AuthContextState {
-  user: User | null;
+  account: Account | null;
   login: (loginFormValues: LoginFormValues) => Promise<void>;
   logout: () => void;
 }
@@ -21,73 +17,40 @@ interface AuthContextProviderProps {
   children: React.ReactNode;
 }
 
-const users = [
-  {
-    email: "patryk@gmail.com",
-    password: "123",
-  },
-  {
-    email: "wiktoria@gmail.com",
-    password: "123",
-  },
-  {
-    email: "william@gmail.com",
-    password: "123",
-  },
-];
-
-const userInfo: { [key: string]: User } = {
-  "patryk@gmail.com": {
-    firstName: "Patryk",
-    lastName: "Grodoń",
-    userType: "service-seller",
-  },
-  "wiktoria@gmail.com": {
-    firstName: "Wiktoria",
-    lastName: "Grodoń",
-    userType: "customer",
-  },
-  "william@gmail.com": {
-    firstName: "William",
-    lastName: "Grodoń",
-    userType: "customer",
-  },
-};
-
 const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
-  const ssUserInfoName = "user-info";
-  const [user, setUser] = useState<User | null>(null);
+  const ssAccInfoName = "acc-info";
+  const { accounts } = useAccounts();
+  const [account, setAccount] = useState<Account | null>(null);
 
   useEffect(() => {
-    const loggedUserInfo = getSSItem(ssUserInfoName);
-    if (!loggedUserInfo) return;
-    setUser(loggedUserInfo);
+    const loggedAccInfo = getSSItem(ssAccInfoName);
+    if (!loggedAccInfo) return;
+    setAccount(loggedAccInfo);
   }, []);
 
   const login = async (loginFormValues: LoginFormValues) => {
     const { email, password } = loginFormValues;
 
     await sleep(800);
-    const account = users.find(
+    const account = accounts.find(
       (account) => account.email === email.toLowerCase()
     );
 
     if (account?.password === password) {
-      const accInfo = userInfo[account.email];
-      saveSSItem(ssUserInfoName, accInfo);
-      return setUser(accInfo);
+      saveSSItem(ssAccInfoName, account);
+      return setAccount(account);
     }
 
     throw new Error("wrong user data");
   };
 
   const logout = () => {
-    deleteSSItem(ssUserInfoName);
-    setUser(null);
+    deleteSSItem(ssAccInfoName);
+    setAccount(null);
   };
 
   return (
-    <AuthContext.Provider value={{ login, user, logout }}>
+    <AuthContext.Provider value={{ login, account, logout }}>
       {children}
     </AuthContext.Provider>
   );
