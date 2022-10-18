@@ -23,7 +23,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [account, setAccount] = useState<Account | null>(null);
 
   useEffect(() => {
-    const loggedAccInfo = getSSItem(ssAccInfoName);
+    const loggedAccInfo = getSSItem<Account>(ssAccInfoName);
     if (!loggedAccInfo) return;
     setAccount(loggedAccInfo);
   }, []);

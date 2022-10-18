@@ -4,7 +4,7 @@ export const saveLSItem = (name: string, value: any) => {
   localStorage.setItem(name, JSON.stringify(value));
 };
 
-export const getLSItem = (name: string) => {
+export const getLSItem = <T>(name: string): T | undefined => {
   const value = localStorage.getItem(name);
   return value ? parseJSON(value) : undefined;
 };
@@ -17,7 +17,7 @@ export const saveSSItem = (name: string, value: any) => {
   sessionStorage.setItem(name, JSON.stringify(value));
 };
 
-export const getSSItem = (name: string) => {
+export const getSSItem = <T>(name: string): T | undefined => {
   const value = sessionStorage.getItem(name);
   return value ? parseJSON(value) : undefined;
 };

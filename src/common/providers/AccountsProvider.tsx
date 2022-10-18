@@ -1,6 +1,7 @@
 import { Account, CreateCustomerAcc, CreateSellerAcc } from "common/types";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { sleep } from "utils/sleep";
+import { getLSItem, saveLSItem } from "utils/webStorage";
 
 interface AccountsContextState {
   accounts: Account[];
@@ -48,7 +49,13 @@ const checkIfEmailExist = (accounts: Account[], email: string) => {
 };
 
 const AcountsContextProvider = ({ children }: AccountsContextProviderProps) => {
-  const [accounts, setAccounts] = useState(defaultAccounts);
+  const lsAccountsName = "accounts";
+  const lsAccounts = getLSItem<Account[]>(lsAccountsName);
+  const [accounts, setAccounts] = useState(lsAccounts || defaultAccounts);
+
+  useEffect(() => {
+    saveLSItem(lsAccountsName, accounts);
+  }, [accounts]);
 
   const createCustomerAcc: CreateCustomerAcc = async (values) => {
     await sleep(800);
