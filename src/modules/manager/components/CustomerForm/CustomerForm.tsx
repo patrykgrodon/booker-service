@@ -36,7 +36,12 @@ const CustomerForm = () => {
       alignContent="flex-start"
       onSubmit={handleSubmit(submitHandler)}>
       <Grid item xs={12} md={6}>
-        <TextField fullWidth label="Email" {...register("email")} />
+        <TextField
+          type="email"
+          fullWidth
+          label="Email"
+          {...register("email")}
+        />
       </Grid>
       <Grid item xs={12} md={6}>
         <TextField fullWidth label="First name" {...register("firstName")} />
