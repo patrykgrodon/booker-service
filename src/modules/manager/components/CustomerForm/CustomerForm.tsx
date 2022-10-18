@@ -1,6 +1,11 @@
 import { Button, Grid, TextField } from "@mui/material";
 import { PasswordField } from "common/components";
 import { useForm } from "react-hook-form";
+import {
+  checkIfEmpty,
+  checkPasswordMatch,
+  passwordPatternValidator,
+} from "utils/validationPatterns";
 
 interface CustomerFormValues {
   email: string;
@@ -21,11 +26,18 @@ const defaultValues: CustomerFormValues = {
 };
 
 const CustomerForm = () => {
-  const { register, handleSubmit } = useForm<CustomerFormValues>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<CustomerFormValues>({
     defaultValues,
   });
 
   const submitHandler = (formValues: CustomerFormValues) => {};
+
+  const password = watch("password");
 
   return (
     <Grid
@@ -40,31 +52,67 @@ const CustomerForm = () => {
           type="email"
           fullWidth
           label="Email"
-          {...register("email")}
+          {...register("email", {
+            validate: checkIfEmpty,
+          })}
+          error={Boolean(errors.email)}
+          helperText={errors.email?.message}
         />
       </Grid>
       <Grid item xs={12} md={6}>
-        <TextField fullWidth label="First name" {...register("firstName")} />
+        <TextField
+          fullWidth
+          label="First name"
+          {...register("firstName", {
+            validate: checkIfEmpty,
+          })}
+          error={Boolean(errors.firstName)}
+          helperText={errors.firstName?.message}
+        />
       </Grid>
       <Grid item xs={12} md={6}>
-        <TextField fullWidth label="Last name" {...register("lastName")} />
+        <TextField
+          fullWidth
+          label="Last name"
+          {...register("lastName", {
+            validate: checkIfEmpty,
+          })}
+          error={Boolean(errors.lastName)}
+          helperText={errors.lastName?.message}
+        />
       </Grid>
       <Grid item xs={12} md={6}>
         <TextField
           fullWidth
           label="Phone number"
-          {...register("phoneNumber")}
+          {...register("phoneNumber", {
+            validate: checkIfEmpty,
+          })}
+          error={Boolean(errors.phoneNumber)}
+          helperText={errors.phoneNumber?.message}
         />
       </Grid>
 
       <Grid item xs={12} md={6}>
-        <PasswordField fullWidth label="Password" {...register("password")} />
+        <PasswordField
+          fullWidth
+          label="Password"
+          {...register("password", {
+            pattern: passwordPatternValidator,
+          })}
+          error={Boolean(errors.password)}
+          helperText={errors.password?.message}
+        />
       </Grid>
       <Grid item xs={12} md={6}>
         <PasswordField
           fullWidth
           label="Confirm password"
-          {...register("confirmPassword")}
+          {...register("confirmPassword", {
+            validate: (value) => checkPasswordMatch(value, password),
+          })}
+          error={Boolean(errors.confirmPassword)}
+          helperText={errors.confirmPassword?.message}
         />
       </Grid>
       <Grid
