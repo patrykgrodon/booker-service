@@ -1,0 +1,106 @@
+import { Button, Grid, MenuItem, TextField } from "@mui/material";
+import { ControlSelect, RequestButton } from "common/components";
+import { durationValues } from "modules/services/constants/durationValues";
+import { useForm } from "react-hook-form";
+import { checkIfEmpty } from "utils/validationPatterns";
+
+interface ServiceFormValues {
+  name: string;
+  type: string;
+  duration: string;
+  cost: string;
+}
+
+const defaultValues: ServiceFormValues = {
+  name: "",
+  type: "",
+  duration: "",
+  cost: "",
+};
+
+interface ServiceFormProps {
+  handleClose: () => void;
+}
+
+const ServiceForm = ({ handleClose }: ServiceFormProps) => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({ defaultValues });
+
+  const submitHandler = async (formValues: ServiceFormValues) => {};
+
+  return (
+    <Grid
+      container
+      spacing={2}
+      component="form"
+      onSubmit={handleSubmit(submitHandler)}>
+      <Grid item xs={12} md={6}>
+        <TextField
+          fullWidth
+          label="Name"
+          {...register("name", {
+            validate: checkIfEmpty,
+          })}
+          error={Boolean(errors.name)}
+          helperText={errors.name?.message}
+        />
+      </Grid>
+
+      <Grid item xs={12} md={6}>
+        <ControlSelect
+          id=""
+          label="Duration(hours:minutes)"
+          {...register("duration", {
+            validate: checkIfEmpty,
+          })}
+          error={errors.duration}>
+          {durationValues.map(({ value }) => (
+            <MenuItem key={value} value={value}>
+              {value}
+            </MenuItem>
+          ))}
+        </ControlSelect>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <ControlSelect
+          id=""
+          label="Type"
+          {...register("type", {
+            validate: checkIfEmpty,
+          })}
+          error={errors.type}>
+          <MenuItem value="hairdresser">Hairdresser</MenuItem>
+          <MenuItem value="nailsStylist">Nails stylist</MenuItem>
+        </ControlSelect>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <TextField
+          fullWidth
+          type="number"
+          label="Cost"
+          {...register("cost", { validate: checkIfEmpty })}
+          error={Boolean(errors.cost)}
+          helperText={errors.cost?.message}
+        />
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: (theme) => theme.spacing(2),
+        }}>
+        <Button onClick={handleClose} variant="outlined">
+          Close
+        </Button>
+        <RequestButton type="submit">Add</RequestButton>
+      </Grid>
+    </Grid>
+  );
+};
+
+export default ServiceForm;

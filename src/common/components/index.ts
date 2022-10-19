@@ -5,6 +5,7 @@ import Layout from "./layout/Layout/Layout";
 import UserMenu from "./layout/UserMenu/UserMenu";
 import TabsBar from "./TabsBar/TabsBar";
 import TabsContainer from "./TabsContainer/TabsContainer";
+import ControlSelect from "./ControlSelect/ControlSelect";
 
 export {
   PasswordField,
@@ -14,4 +15,5 @@ export {
   UserMenu,
   TabsBar,
   TabsContainer,
+  ControlSelect,
 };
