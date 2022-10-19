@@ -1,15 +1,11 @@
 import { Button, Grid, MenuItem, TextField } from "@mui/material";
 import { ControlSelect, RequestButton } from "common/components";
 import { durationValues } from "modules/services/constants/durationValues";
+import { useServices } from "modules/services/contexts/servicesContext";
+import { ServiceFormValues } from "modules/services/types";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { checkIfEmpty } from "utils/validationPatterns";
-
-interface ServiceFormValues {
-  name: string;
-  type: string;
-  duration: string;
-  cost: string;
-}
 
 const defaultValues: ServiceFormValues = {
   name: "",
@@ -28,8 +24,18 @@ const ServiceForm = ({ handleClose }: ServiceFormProps) => {
     register,
     formState: { errors },
   } = useForm({ defaultValues });
+  const { addService } = useServices();
 
-  const submitHandler = async (formValues: ServiceFormValues) => {};
+  const [isLoading, setIsLoading] = useState(false);
+
+  const submitHandler = async (formValues: ServiceFormValues) => {
+    setIsLoading(true);
+    try {
+      await addService(formValues);
+      handleClose();
+    } catch (err: any) {}
+    setIsLoading(false);
+  };
 
   return (
     <Grid
@@ -51,7 +57,8 @@ const ServiceForm = ({ handleClose }: ServiceFormProps) => {
 
       <Grid item xs={12} md={6}>
         <ControlSelect
-          id=""
+          defaultValue=""
+          id="duration"
           label="Duration(hours:minutes)"
           {...register("duration", {
             validate: checkIfEmpty,
@@ -66,14 +73,15 @@ const ServiceForm = ({ handleClose }: ServiceFormProps) => {
       </Grid>
       <Grid item xs={12} md={6}>
         <ControlSelect
-          id=""
+          defaultValue=""
+          id="type"
           label="Type"
           {...register("type", {
             validate: checkIfEmpty,
           })}
           error={errors.type}>
-          <MenuItem value="hairdresser">Hairdresser</MenuItem>
-          <MenuItem value="nailsStylist">Nails stylist</MenuItem>
+          <MenuItem value="Hairdresser">Hairdresser</MenuItem>
+          <MenuItem value="Nails stylist">Nails stylist</MenuItem>
         </ControlSelect>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -97,7 +105,9 @@ const ServiceForm = ({ handleClose }: ServiceFormProps) => {
         <Button onClick={handleClose} variant="outlined">
           Close
         </Button>
-        <RequestButton type="submit">Add</RequestButton>
+        <RequestButton isLoading={isLoading} type="submit">
+          Add
+        </RequestButton>
       </Grid>
     </Grid>
   );

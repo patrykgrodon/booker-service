@@ -8,20 +8,13 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { Service } from "modules/services/types";
+import { useServices } from "modules/services/contexts/servicesContext";
 import ServicesTableRow from "./ServicesTableRow/ServicesTableRow";
 
 const headers = ["Name", "Type", "Duration", "Cost", "Actions"];
-const services: Service[] = [
-  {
-    name: "Barber",
-    cost: 30,
-    duration: "1 hour",
-    type: "Hairdresser",
-  },
-];
 
 const ServicesTable = () => {
+  const { myServices } = useServices();
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -35,7 +28,7 @@ const ServicesTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {services.length === 0 ? (
+          {myServices?.length === 0 ? (
             <TableRow>
               <TableCell colSpan={12}>
                 <Typography variant="subtitle1" color="GrayText" align="center">
@@ -44,7 +37,7 @@ const ServicesTable = () => {
               </TableCell>
             </TableRow>
           ) : null}
-          {services.map((service) => (
+          {myServices?.map((service) => (
             <ServicesTableRow key={service.name} service={service} />
           ))}
         </TableBody>

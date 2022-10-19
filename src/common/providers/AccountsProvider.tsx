@@ -1,9 +1,11 @@
+import { defaultAccounts } from "common/constants/defaultAccounts";
 import {
   Account,
   AccountType,
   CreateCustomerAcc,
   CreateSellerAcc,
   CustomerFormValues,
+  EditAccount,
   SellerFormValues,
 } from "common/types";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -15,6 +17,7 @@ interface AccountsContextState {
   accounts: Account[];
   createCustomerAcc: CreateCustomerAcc;
   createSellerAcc: CreateSellerAcc;
+  editAccount: EditAccount;
 }
 
 const AcountsContext = createContext<AccountsContextState | null>(null);
@@ -22,36 +25,6 @@ const AcountsContext = createContext<AccountsContextState | null>(null);
 interface AccountsContextProviderProps {
   children: React.ReactNode;
 }
-
-const defaultAccounts: Account[] = [
-  {
-    uuid: uuid(),
-    type: "seller",
-    email: "patryk@gmail.com",
-    address: "ul. Krótka 21 44-300 Wodzisław Śląski",
-    companyName: "Hairdresser",
-    phoneNumber: "+48 532 123 982",
-    password: "123",
-  },
-  {
-    uuid: uuid(),
-    type: "customer",
-    email: "wiktoria@gmail.com",
-    password: "123",
-    firstName: "Wiktoria",
-    lastName: "Grodoń",
-    phoneNumber: "+48 531 323 382",
-  },
-  {
-    uuid: uuid(),
-    type: "customer",
-    email: "william@gmail.com",
-    password: "123",
-    firstName: "William",
-    lastName: "Grodoń",
-    phoneNumber: "+48 533 223 462",
-  },
-];
 
 const emailExistError = "Account with that email already exists";
 
@@ -94,12 +67,25 @@ const AcountsContextProvider = ({ children }: AccountsContextProviderProps) => {
     await sleep(800);
     if (checkIfEmailExist(accounts, values.email))
       throw new Error(emailExistError);
-    setAccounts((prevState) => [...prevState, createAccObj("seller", values)]);
+    setAccounts((prevState) => [
+      ...prevState,
+      { ...createAccObj("seller", values), services: [] },
+    ]);
   };
 
+  const editAccount: EditAccount = async (uuid, _, values) => {
+    await sleep(800);
+    const accIndex = accounts.findIndex((account) => account.uuid === uuid);
+    if (accIndex === -1) throw new Error("Account not found");
+    setAccounts((prevState) => {
+      let accounts = [...prevState];
+      accounts[accIndex] = { ...accounts[accIndex], ...values };
+      return accounts;
+    });
+  };
   return (
     <AcountsContext.Provider
-      value={{ accounts, createCustomerAcc, createSellerAcc }}>
+      value={{ accounts, createCustomerAcc, createSellerAcc, editAccount }}>
       {children}
     </AcountsContext.Provider>
   );
