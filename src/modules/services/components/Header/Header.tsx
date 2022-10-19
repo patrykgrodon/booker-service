@@ -17,7 +17,7 @@ const Header = ({ activeTab }: HeaderProps) => {
   return (
     <Box sx={sxHeader}>
       <Typography variant="h2" component="h1">
-        {activeTab === 0 ? "Twoje usługi" : "Statistics"}
+        {activeTab === 0 ? "Your services" : "Statistics"}
       </Typography>
       {activeTab === 0 ? <AddServiceBtn /> : null}
     </Box>

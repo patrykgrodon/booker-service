@@ -16,22 +16,32 @@ const defaultValues: ServiceFormValues = {
 
 interface ServiceFormProps {
   handleClose: () => void;
+  defaultService?: ServiceFormValues;
+  uuid?: string;
 }
 
-const ServiceForm = ({ handleClose }: ServiceFormProps) => {
+const ServiceForm = ({
+  handleClose,
+  defaultService,
+  uuid,
+}: ServiceFormProps) => {
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm({ defaultValues });
-  const { addService } = useServices();
+  } = useForm({ defaultValues: defaultService || defaultValues });
+  const { addService, editService } = useServices();
+
+  const isEditMode = !!uuid;
 
   const [isLoading, setIsLoading] = useState(false);
 
   const submitHandler = async (formValues: ServiceFormValues) => {
     setIsLoading(true);
     try {
-      await addService(formValues);
+      isEditMode
+        ? await editService(uuid, formValues)
+        : await addService(formValues);
       handleClose();
     } catch (err: any) {}
     setIsLoading(false);
@@ -57,7 +67,7 @@ const ServiceForm = ({ handleClose }: ServiceFormProps) => {
 
       <Grid item xs={12} md={6}>
         <ControlSelect
-          defaultValue=""
+          defaultValue={defaultService?.duration || ""}
           id="duration"
           label="Duration(hours:minutes)"
           {...register("duration", {
@@ -73,7 +83,7 @@ const ServiceForm = ({ handleClose }: ServiceFormProps) => {
       </Grid>
       <Grid item xs={12} md={6}>
         <ControlSelect
-          defaultValue=""
+          defaultValue={defaultService?.type || ""}
           id="type"
           label="Type"
           {...register("type", {
@@ -88,7 +98,7 @@ const ServiceForm = ({ handleClose }: ServiceFormProps) => {
         <TextField
           fullWidth
           type="number"
-          label="Cost"
+          label="Cost(€)"
           {...register("cost", { validate: checkIfEmpty })}
           error={Boolean(errors.cost)}
           helperText={errors.cost?.message}
@@ -106,7 +116,7 @@ const ServiceForm = ({ handleClose }: ServiceFormProps) => {
           Close
         </Button>
         <RequestButton isLoading={isLoading} type="submit">
-          Add
+          {isEditMode ? "Save" : "Add"}
         </RequestButton>
       </Grid>
     </Grid>

@@ -1,8 +1,11 @@
-import { DeleteForeverOutlined, EditOutlined } from "@mui/icons-material";
+import { DeleteForeverOutlined } from "@mui/icons-material";
 import { TableCell, TableRow } from "@mui/material";
 import { ActionIconButton } from "common/components";
 import { makeSx } from "common/styles/makeSx";
+import { useServices } from "modules/services/contexts/servicesContext";
 import { Service } from "modules/services/types";
+import { useState } from "react";
+import EditServiceBtn from "./EditServiceBtn/EditServiceBtn";
 
 interface ServicesTableRowProps {
   service: Service;
@@ -13,7 +16,18 @@ const sxTableCell = makeSx((theme) => ({
 }));
 
 const ServicesTableRow = ({ service }: ServicesTableRowProps) => {
-  const { cost, duration, name, type } = service;
+  const { deleteService } = useServices();
+  const [isLoading, setIsLoading] = useState(false);
+  const { cost, duration, name, type, uuid } = service;
+
+  const handleDelete = async () => {
+    setIsLoading(true);
+    try {
+      await deleteService(uuid);
+    } catch (err: any) {}
+    setIsLoading(false);
+  };
+
   return (
     <TableRow>
       <TableCell sx={sxTableCell}>{name}</TableCell>
@@ -27,13 +41,10 @@ const ServicesTableRow = ({ service }: ServicesTableRowProps) => {
         {cost} €
       </TableCell>
       <TableCell sx={sxTableCell} align="right">
+        <EditServiceBtn service={service} />
         <ActionIconButton
-          disableTooltipMargin
-          enabled
-          icon={EditOutlined}
-          tooltip="Edit"
-        />
-        <ActionIconButton
+          isLoading={isLoading}
+          onClick={handleDelete}
           disableTooltipMargin
           enabled
           icon={DeleteForeverOutlined}

@@ -2,7 +2,7 @@ import { Badge, IconButton, IconButtonProps, Tooltip } from "@mui/material";
 import Spinner from "../Spinner/Spinner";
 import useStyles from "./styles";
 
-type Props = IconButtonProps & {
+type ActionIconButtonProps = IconButtonProps & {
   icon: React.ElementType;
   tooltip: string;
   isLoading?: boolean;
@@ -19,7 +19,7 @@ const ActionIconButton = ({
   disableTooltipMargin = false,
   withBadge = false,
   ...props
-}: Props) => {
+}: ActionIconButtonProps) => {
   const classes = useStyles();
   if (isLoading) {
     return (
