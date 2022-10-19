@@ -12,7 +12,7 @@ const Dashboard = () => {
         alignItems: "center",
         flex: 1,
       }}>
-      Witaj,{" "}
+      Welcome,{" "}
       {account.type === "customer"
         ? `${account.firstName} ${account.lastName}`
         : account.companyName}

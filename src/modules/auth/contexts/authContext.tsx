@@ -1,6 +1,6 @@
 import { useAccounts } from "common/providers/AccountsProvider";
 import { Account } from "common/types";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { sleep } from "utils/sleep";
 import { deleteSSItem, getSSItem, saveSSItem } from "utils/webStorage";
 import { LoginFormValues } from "../types";
@@ -20,13 +20,8 @@ interface AuthContextProviderProps {
 const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const ssAccInfoName = "acc-info";
   const { accounts } = useAccounts();
-  const [account, setAccount] = useState<Account | null>(null);
-
-  useEffect(() => {
-    const loggedAccInfo = getSSItem<Account>(ssAccInfoName);
-    if (!loggedAccInfo) return;
-    setAccount(loggedAccInfo);
-  }, []);
+  const loggedAccInfo = getSSItem<Account>(ssAccInfoName);
+  const [account, setAccount] = useState<Account | null>(loggedAccInfo || null);
 
   const login = async (loginFormValues: LoginFormValues) => {
     const { email, password } = loginFormValues;

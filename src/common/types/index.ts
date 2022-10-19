@@ -21,7 +21,7 @@ export type AccountType = "customer" | "seller";
 type CustomerAccInfo = Omit<CustomerFormValues, "confirmPassword">;
 type SellerAccInfo = Omit<SellerFormValues, "confirmPassword">;
 
-export type Account = {} & (
+export type Account = { uuid: string } & (
   | ({
       type: "customer";
     } & CustomerAccInfo)

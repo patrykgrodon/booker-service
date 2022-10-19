@@ -6,9 +6,20 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
+import { Service } from "modules/services/types";
+import ServicesTableRow from "./ServicesTableRow/ServicesTableRow";
 
-const headers = ["Name", "Duration", "Cost", "Actions"];
+const headers = ["Name", "Type", "Duration", "Cost", "Actions"];
+const services: Service[] = [
+  {
+    name: "Barber",
+    cost: 30,
+    duration: "1 hour",
+    type: "Hairdresser",
+  },
+];
 
 const ServicesTable = () => {
   return (
@@ -17,17 +28,25 @@ const ServicesTable = () => {
         <TableHead>
           <TableRow>
             {headers.map((header, i) => (
-              <TableCell align={i === 0 ? "left" : "right"}>{header}</TableCell>
+              <TableCell key={header} align={i === 0 ? "left" : "right"}>
+                {header}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            <TableCell>Barber</TableCell>
-            <TableCell align="right">1 hour</TableCell>
-            <TableCell align="right">10 Euro</TableCell>
-            <TableCell align="right">Delete, edit</TableCell>
-          </TableRow>
+          {services.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={12}>
+                <Typography variant="subtitle1" color="GrayText" align="center">
+                  You haven't added any services yet
+                </Typography>
+              </TableCell>
+            </TableRow>
+          ) : null}
+          {services.map((service) => (
+            <ServicesTableRow key={service.name} service={service} />
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

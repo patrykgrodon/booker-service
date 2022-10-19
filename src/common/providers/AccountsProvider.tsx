@@ -1,7 +1,15 @@
-import { Account, CreateCustomerAcc, CreateSellerAcc } from "common/types";
+import {
+  Account,
+  AccountType,
+  CreateCustomerAcc,
+  CreateSellerAcc,
+  CustomerFormValues,
+  SellerFormValues,
+} from "common/types";
 import { createContext, useContext, useEffect, useState } from "react";
 import { sleep } from "utils/sleep";
 import { getLSItem, saveLSItem } from "utils/webStorage";
+import { v4 as uuid } from "uuid";
 
 interface AccountsContextState {
   accounts: Account[];
@@ -17,6 +25,7 @@ interface AccountsContextProviderProps {
 
 const defaultAccounts: Account[] = [
   {
+    uuid: uuid(),
     type: "seller",
     email: "patryk@gmail.com",
     address: "ul. Krótka 21 44-300 Wodzisław Śląski",
@@ -25,6 +34,7 @@ const defaultAccounts: Account[] = [
     password: "123",
   },
   {
+    uuid: uuid(),
     type: "customer",
     email: "wiktoria@gmail.com",
     password: "123",
@@ -33,6 +43,7 @@ const defaultAccounts: Account[] = [
     phoneNumber: "+48 531 323 382",
   },
   {
+    uuid: uuid(),
     type: "customer",
     email: "william@gmail.com",
     password: "123",
@@ -46,6 +57,18 @@ const emailExistError = "Account with that email already exists";
 
 const checkIfEmailExist = (accounts: Account[], email: string) => {
   return accounts.find((account) => account.email === email.toLowerCase());
+};
+
+const createAccObj = <T extends AccountType>(
+  type: T,
+  values: T extends "customer" ? CustomerFormValues : SellerFormValues
+) => {
+  return {
+    type,
+    ...values,
+    email: values.email.toLowerCase(),
+    uuid: uuid(),
+  };
 };
 
 const AcountsContextProvider = ({ children }: AccountsContextProviderProps) => {
@@ -63,7 +86,7 @@ const AcountsContextProvider = ({ children }: AccountsContextProviderProps) => {
       throw new Error(emailExistError);
     setAccounts((prevState) => [
       ...prevState,
-      { type: "customer", ...values, email: values.email.toLowerCase() },
+      createAccObj("customer", values),
     ]);
   };
 
@@ -71,10 +94,7 @@ const AcountsContextProvider = ({ children }: AccountsContextProviderProps) => {
     await sleep(800);
     if (checkIfEmailExist(accounts, values.email))
       throw new Error(emailExistError);
-    setAccounts((prevState) => [
-      ...prevState,
-      { type: "seller", ...values, email: values.email.toLowerCase() },
-    ]);
+    setAccounts((prevState) => [...prevState, createAccObj("seller", values)]);
   };
 
   return (
