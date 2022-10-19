@@ -6,6 +6,7 @@ import UserMenu from "./layout/UserMenu/UserMenu";
 import TabsBar from "./TabsBar/TabsBar";
 import TabsContainer from "./TabsContainer/TabsContainer";
 import ControlSelect from "./ControlSelect/ControlSelect";
+import ActionIconButton from "./ActionIconButton/ActionIconButton";
 
 export {
   PasswordField,
@@ -16,4 +17,5 @@ export {
   TabsBar,
   TabsContainer,
   ControlSelect,
+  ActionIconButton,
 };

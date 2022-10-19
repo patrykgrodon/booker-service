@@ -1,4 +1,6 @@
+import { DeleteForeverOutlined, EditOutlined } from "@mui/icons-material";
 import { TableCell, TableRow } from "@mui/material";
+import { ActionIconButton } from "common/components";
 import { makeSx } from "common/styles/makeSx";
 import { Service } from "modules/services/types";
 
@@ -25,7 +27,18 @@ const ServicesTableRow = ({ service }: ServicesTableRowProps) => {
         {cost} €
       </TableCell>
       <TableCell sx={sxTableCell} align="right">
-        Delete, edit
+        <ActionIconButton
+          disableTooltipMargin
+          enabled
+          icon={EditOutlined}
+          tooltip="Edit"
+        />
+        <ActionIconButton
+          disableTooltipMargin
+          enabled
+          icon={DeleteForeverOutlined}
+          tooltip="Delete"
+        />
       </TableCell>
     </TableRow>
   );
