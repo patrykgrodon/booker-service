@@ -1,4 +1,11 @@
-# Getting Started with Create React App
+
+# Booker Service APP
+This is an application for customers and service providers to book and manage visits.
+
+## DEMO
+https://booker-service.netlify.app/
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
