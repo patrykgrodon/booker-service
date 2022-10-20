@@ -46,7 +46,7 @@ const CustomerForm = () => {
     try {
       await createCustomerAcc(formValues);
       handleBack();
-      setSuccessMessage("Pomyślnie utworzono konto");
+      setSuccessMessage("Account created successfully");
     } catch (err: any) {
       setError(err.message);
     }
@@ -148,10 +148,10 @@ const CustomerForm = () => {
           marginTop: (theme) => theme.spacing(3),
         }}>
         <Button variant="outlined" onClick={handleBack}>
-          Powrót
+          Back
         </Button>
         <RequestButton isLoading={isLoading} type="submit">
-          Utwórz
+          Create
         </RequestButton>
       </Grid>
     </Grid>

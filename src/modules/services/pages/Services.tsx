@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "../components/Header/Header";
 import ServicesTable from "../components/ServicesTable/ServicesTable";
 import Summary from "../components/Summary/Summary";
+import ServicesContextProvider from "../contexts/servicesContext";
 
 const tabs: Tab[] = [{ label: "Services" }, { label: "Summary" }];
 
@@ -18,8 +19,10 @@ const Services = () => {
       ariaLabel="services tabs bar"
       handleChangeTab={changeTab}
       tabs={tabs}>
-      <Header activeTab={activeTab} />
-      {activeTab === 0 ? <ServicesTable /> : null}
+      <ServicesContextProvider>
+        <Header activeTab={activeTab} />
+        {activeTab === 0 ? <ServicesTable /> : null}
+      </ServicesContextProvider>
       {activeTab === 1 ? <Summary /> : null}
     </TabsContainer>
   );

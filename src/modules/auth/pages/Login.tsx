@@ -22,7 +22,7 @@ const Login = () => {
     <Box sx={sxContainer}>
       <Box sx={sxFormContainer}>
         <Typography variant="h3" component="h1">
-          Zaloguj się
+          Log in
         </Typography>
         <LoginForm />
       </Box>

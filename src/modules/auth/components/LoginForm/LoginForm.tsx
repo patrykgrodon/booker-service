@@ -30,15 +30,15 @@ const LoginForm = () => {
   const { errors } = formState;
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [error, setError] = useState("");
 
   const handleLogin = async (values: LoginFormValues) => {
-    setIsError(false);
+    setError("");
     setIsLoading(true);
     try {
       await login(values);
     } catch (err: any) {
-      setIsError(true);
+      setError(err.message);
     }
     setIsLoading(false);
   };
@@ -64,9 +64,9 @@ const LoginForm = () => {
         error={Boolean(errors.password)}
         helperText={errors.password && errors.password.message}
       />
-      {isError ? (
+      {error ? (
         <Typography variant="button" color="error">
-          Wystąpił błąd podczas logowania. Spróbuj ponownie!
+          {error}
         </Typography>
       ) : null}
 
@@ -74,20 +74,20 @@ const LoginForm = () => {
         aria-label="submit form"
         isLoading={isLoading}
         type="submit">
-        Zaloguj
+        Log in
       </RequestButton>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Link
           component={RouterLink}
           to={Routes.CreateAccount}
           color="primary.dark">
-          Utwórz konto
+          Create account
         </Link>
         <Link
           component={RouterLink}
           to={Routes.ForgotPassword}
           color="primary.dark">
-          Przypomnij hasło
+          Remind password
         </Link>
       </Box>
     </Box>

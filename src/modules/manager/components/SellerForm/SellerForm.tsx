@@ -43,7 +43,7 @@ const SellerForm = () => {
     setIsLoading(true);
     try {
       await createSellerAcc(formValues);
-      setSuccessMessage("Pomyślnie utworzono konto");
+      setSuccessMessage("Account created successfully");
       handleBack();
     } catch (err: any) {
       setError(err);
@@ -146,10 +146,10 @@ const SellerForm = () => {
           marginTop: (theme) => theme.spacing(3),
         }}>
         <Button variant="outlined" onClick={handleBack}>
-          Powrót
+          Back
         </Button>
         <RequestButton isLoading={isLoading} type="submit">
-          Utwórz
+          Create
         </RequestButton>
       </Grid>
     </Grid>
