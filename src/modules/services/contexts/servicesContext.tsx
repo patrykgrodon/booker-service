@@ -16,6 +16,7 @@ import { useQuery } from "react-query";
 
 interface ServicesContextState {
   myServices: Service[] | undefined;
+  allServices: Service[] | undefined;
   addService: AddService;
   deleteService: DeleteService;
   editService: EditService;
@@ -46,10 +47,24 @@ const ServicesContextProvider = ({
     return myServices;
   };
 
+  const getAllServices = async () => {
+    const data = await getDocs(servicesCollectionRef);
+    const allServices = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    })) as Service[];
+    return allServices;
+  };
+
   const { data: myServices } = useQuery(
     [`services-${user?.id || ""}`],
-    getMyServices
+    getMyServices,
+    { enabled: user?.type === "seller" }
   );
+
+  const { data: allServices } = useQuery(["services"], getAllServices, {
+    enabled: user?.type === "customer",
+  });
 
   const addService: AddService = async (service) => {
     await addDoc(servicesCollectionRef, { ...service, userId: user?.id || "" });
@@ -67,7 +82,13 @@ const ServicesContextProvider = ({
 
   return (
     <ServicesContext.Provider
-      value={{ myServices, addService, deleteService, editService }}>
+      value={{
+        myServices,
+        addService,
+        deleteService,
+        editService,
+        allServices,
+      }}>
       {children}
     </ServicesContext.Provider>
   );

@@ -7,7 +7,7 @@ import { Service } from "modules/services/types";
 import { useState } from "react";
 import EditServiceBtn from "./EditServiceBtn/EditServiceBtn";
 
-interface ServicesTableRowProps {
+interface MyServicesTableRowProps {
   service: Service;
 }
 
@@ -15,7 +15,7 @@ const sxTableCell = makeSx((theme) => ({
   fontSize: theme.typography.subtitle1.fontSize,
 }));
 
-const ServicesTableRow = ({ service }: ServicesTableRowProps) => {
+const MyServicesTableRow = ({ service }: MyServicesTableRowProps) => {
   const { deleteService } = useServices();
   const [isLoading, setIsLoading] = useState(false);
   const { cost, duration, name, type, id } = service;
@@ -55,4 +55,4 @@ const ServicesTableRow = ({ service }: ServicesTableRowProps) => {
   );
 };
 
-export default ServicesTableRow;
+export default MyServicesTableRow;

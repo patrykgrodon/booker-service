@@ -7,7 +7,8 @@ import {
   createUserWithEmailAndPassword,
 } from "@firebase/auth";
 import { auth, db } from "firebase-config";
-import { getDoc, doc, addDoc, collection } from "@firebase/firestore";
+import { addDoc, collection } from "@firebase/firestore";
+import { getUserData } from "../api";
 
 interface AuthContextState {
   user: User | null;
@@ -24,14 +25,6 @@ interface AuthContextProviderProps {
 
 const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-
-  const getUserData = async (userId: string) => {
-    const userDoc = doc(db, "users", userId);
-    const data = await getDoc(userDoc);
-    const user = data.data() as User;
-    return user;
-  };
-
   const createUser: CreateUser = async (type, formValues) => {
     const { password, ...restValues } = formValues;
     await createUserWithEmailAndPassword(auth, formValues.email, password);

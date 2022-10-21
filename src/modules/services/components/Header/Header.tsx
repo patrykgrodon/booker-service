@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { makeSx } from "common/styles/makeSx";
+import { useAuth } from "modules/auth/contexts/authContext";
 import AddServiceBtn from "../AddServiceBtn/AddServiceBtn";
 
 const sxHeader = makeSx((theme) => ({
@@ -14,12 +15,19 @@ interface HeaderProps {
 }
 
 const Header = ({ activeTab }: HeaderProps) => {
+  const { user } = useAuth();
+  const title =
+    activeTab === 0
+      ? user?.type === "customer"
+        ? "Book service"
+        : "Your services"
+      : "Statistics";
   return (
     <Box sx={sxHeader}>
       <Typography variant="h2" component="h1">
-        {activeTab === 0 ? "Your services" : "Statistics"}
+        {title}
       </Typography>
-      {activeTab === 0 ? <AddServiceBtn /> : null}
+      {activeTab === 0 && user?.type === "seller" ? <AddServiceBtn /> : null}
     </Box>
   );
 };

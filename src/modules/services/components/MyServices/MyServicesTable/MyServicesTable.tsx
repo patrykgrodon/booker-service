@@ -9,11 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useServices } from "modules/services/contexts/servicesContext";
-import ServicesTableRow from "./ServicesTableRow/ServicesTableRow";
+import MyServicesTableRow from "./MyServicesTableRorw/MyServicesTableRow";
 
 const headers = ["Name", "Type", "Duration", "Cost", "Actions"];
 
-const ServicesTable = () => {
+const MyServicesTable = () => {
   const { myServices } = useServices();
   return (
     <TableContainer component={Paper}>
@@ -38,7 +38,7 @@ const ServicesTable = () => {
             </TableRow>
           ) : null}
           {myServices?.map((service) => (
-            <ServicesTableRow key={service.name} service={service} />
+            <MyServicesTableRow key={service.name} service={service} />
           ))}
         </TableBody>
       </Table>
@@ -46,4 +46,4 @@ const ServicesTable = () => {
   );
 };
 
-export default ServicesTable;
+export default MyServicesTable;
