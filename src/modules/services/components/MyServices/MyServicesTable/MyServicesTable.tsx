@@ -10,11 +10,15 @@ import {
 } from "@mui/material";
 import { useServices } from "modules/services/contexts/servicesContext";
 import MyServicesTableRow from "./MyServicesTableRorw/MyServicesTableRow";
+import MyServicesTableSkeleton from "./MyServicesTableSkeleton";
 
 const headers = ["Name", "Type", "Duration", "Cost", "Actions"];
 
 const MyServicesTable = () => {
-  const { myServices } = useServices();
+  const { myServices, isLoading } = useServices();
+
+  if (isLoading) return <MyServicesTableSkeleton />;
+
   return (
     <TableContainer component={Paper}>
       <Table>

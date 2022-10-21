@@ -20,6 +20,8 @@ interface ServicesContextState {
   addService: AddService;
   deleteService: DeleteService;
   editService: EditService;
+  isLoading: boolean;
+  isError: boolean;
 }
 
 const ServicesContext = createContext<ServicesContextState | null>(null);
@@ -56,13 +58,19 @@ const ServicesContextProvider = ({
     return allServices;
   };
 
-  const { data: myServices } = useQuery(
-    [`services-${user?.id || ""}`],
-    getMyServices,
-    { enabled: user?.type === "seller" }
-  );
+  const {
+    data: myServices,
+    isLoading: isMyServicesLoading,
+    isError: isMyServicesError,
+  } = useQuery([`services-${user?.id || ""}`], getMyServices, {
+    enabled: user?.type === "seller",
+  });
 
-  const { data: allServices } = useQuery(["services"], getAllServices, {
+  const {
+    data: allServices,
+    isLoading: isAllServicesLoading,
+    isError: isAllServicesError,
+  } = useQuery(["services"], getAllServices, {
     enabled: user?.type === "customer",
   });
 
@@ -80,6 +88,9 @@ const ServicesContextProvider = ({
     await updateDoc(userDoc, service);
   };
 
+  const isError = isAllServicesError || isMyServicesError;
+  const isLoading = isAllServicesLoading || isMyServicesLoading;
+
   return (
     <ServicesContext.Provider
       value={{
@@ -88,6 +99,8 @@ const ServicesContextProvider = ({
         deleteService,
         editService,
         allServices,
+        isError,
+        isLoading,
       }}>
       {children}
     </ServicesContext.Provider>
