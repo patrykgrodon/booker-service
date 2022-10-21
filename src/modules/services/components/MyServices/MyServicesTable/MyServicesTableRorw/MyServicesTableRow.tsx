@@ -16,7 +16,7 @@ const sxTableCell = makeSx((theme) => ({
 }));
 
 const MyServicesTableRow = ({ service }: MyServicesTableRowProps) => {
-  const { deleteService } = useServices();
+  const { deleteService, refetch } = useServices();
   const [isLoading, setIsLoading] = useState(false);
   const { cost, duration, name, type, id } = service;
 
@@ -24,6 +24,7 @@ const MyServicesTableRow = ({ service }: MyServicesTableRowProps) => {
     setIsLoading(true);
     try {
       await deleteService(id);
+      refetch();
     } catch (err: any) {}
     setIsLoading(false);
   };

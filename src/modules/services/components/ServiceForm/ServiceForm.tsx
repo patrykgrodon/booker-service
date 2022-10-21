@@ -26,7 +26,7 @@ const ServiceForm = ({ handleClose, defaultService, id }: ServiceFormProps) => {
     register,
     formState: { errors },
   } = useForm({ defaultValues: defaultService || defaultValues });
-  const { addService, editService } = useServices();
+  const { addService, editService, refetch } = useServices();
 
   const isEditMode = !!id;
 
@@ -38,6 +38,7 @@ const ServiceForm = ({ handleClose, defaultService, id }: ServiceFormProps) => {
       isEditMode
         ? await editService(id, formValues)
         : await addService(formValues);
+      refetch();
       handleClose();
     } catch (err: any) {}
     setIsLoading(false);

@@ -22,6 +22,7 @@ interface ServicesContextState {
   editService: EditService;
   isLoading: boolean;
   isError: boolean;
+  refetch: () => Promise<void>;
 }
 
 const ServicesContext = createContext<ServicesContextState | null>(null);
@@ -62,6 +63,7 @@ const ServicesContextProvider = ({
     data: myServices,
     isLoading: isMyServicesLoading,
     isError: isMyServicesError,
+    refetch: refetchMyServices,
   } = useQuery([`services-${user?.id || ""}`], getMyServices, {
     enabled: user?.type === "seller",
   });
@@ -70,6 +72,7 @@ const ServicesContextProvider = ({
     data: allServices,
     isLoading: isAllServicesLoading,
     isError: isAllServicesError,
+    refetch: refetchAllServices,
   } = useQuery(["services"], getAllServices, {
     enabled: user?.type === "customer",
   });
@@ -91,6 +94,11 @@ const ServicesContextProvider = ({
   const isError = isAllServicesError || isMyServicesError;
   const isLoading = isAllServicesLoading || isMyServicesLoading;
 
+  const refetch = async () => {
+    user?.type === "seller"
+      ? await refetchMyServices()
+      : await refetchAllServices();
+  };
   return (
     <ServicesContext.Provider
       value={{
@@ -101,6 +109,7 @@ const ServicesContextProvider = ({
         allServices,
         isError,
         isLoading,
+        refetch,
       }}>
       {children}
     </ServicesContext.Provider>

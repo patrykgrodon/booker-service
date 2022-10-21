@@ -27,5 +27,15 @@
       "export const useStyles = makeStyles((theme) => ({${2:styles}}));"
     ],
     "description": "Create a Mui styles"
+  },
+  "Create isLoading state": {
+    "prefix": ["isLoading"],
+    "body": ["const [isLoading, setIsLoading] = useState(false)"],
+    "description": "Create a loading state"
+  },
+  "Create isError state": {
+    "prefix": ["isError"],
+    "body": ["const [isError, setIsError] = useState(false)"],
+    "description": "Create a error state"
   }
 }
