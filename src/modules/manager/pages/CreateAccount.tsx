@@ -1,4 +1,4 @@
-import { Box, Paper, Tab, Tabs } from "@mui/material";
+import { Box, Card, Tab, Tabs } from "@mui/material";
 import TabPanel from "common/components/TabPanel/TabPanel";
 import { makeSx } from "common/styles/makeSx";
 import { useState } from "react";
@@ -13,7 +13,7 @@ const sxContainer = makeSx((theme) => ({
   alignItems: "center",
 }));
 
-const sxPaper = makeSx(() => ({
+const sxCard = makeSx(() => ({
   width: "600px",
   minHeight: "350px",
   display: "flex",
@@ -24,7 +24,7 @@ const CreateAccount = () => {
   const [tab, setTab] = useState(0);
   return (
     <Box sx={sxContainer}>
-      <Paper sx={sxPaper}>
+      <Card sx={sxCard}>
         <Tabs
           sx={{
             borderBottom: (theme) => `1px solid ${theme.palette.grey[300]}`,
@@ -41,7 +41,7 @@ const CreateAccount = () => {
         <TabPanel index={1} value={tab}>
           <SellerForm />
         </TabPanel>
-      </Paper>
+      </Card>
     </Box>
   );
 };
