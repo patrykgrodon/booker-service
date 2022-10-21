@@ -32,9 +32,9 @@ const sxUserInfo = makeSx((theme) => ({
 }));
 
 const UserMenu = ({ anchorEl, handleClose }: UserMenuProps) => {
-  const { logout, account } = useAuth();
-  const userName = getUserName(account);
-  const userType = getUserType(account);
+  const { logout, user } = useAuth();
+  const userName = getUserName(user);
+  const userType = getUserType(user);
   return (
     <Menu
       keepMounted

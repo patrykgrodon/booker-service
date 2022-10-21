@@ -1,8 +1,8 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { PasswordField, RequestButton } from "common/components";
-import { useAccounts } from "common/providers/AccountsProvider";
 import { useToast } from "common/providers/ToastProvider";
 import { SellerFormValues } from "common/types";
+import { useAuth } from "modules/auth/contexts/authContext";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -31,9 +31,8 @@ const SellerForm = () => {
     formState: { errors },
   } = useForm({ defaultValues });
   const navigate = useNavigate();
-  const { createSellerAcc } = useAccounts();
   const { setSuccessMessage } = useToast();
-
+  const { createUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -42,9 +41,10 @@ const SellerForm = () => {
     setError("");
     setIsLoading(true);
     try {
-      await createSellerAcc(formValues);
+      const { confirmPassword, ...restValues } = formValues;
+      await createUser("seller", restValues);
       setSuccessMessage("Account created successfully");
-      handleBack();
+      navigate(Routes.Dashboard);
     } catch (err: any) {
       setError(err);
     }

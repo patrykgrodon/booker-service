@@ -1,11 +1,21 @@
-import { useAccounts } from "common/providers/AccountsProvider";
+import { db } from "firebase-config";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+} from "@firebase/firestore";
 import { useAuth } from "modules/auth/contexts/authContext";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 import { AddService, DeleteService, EditService, Service } from "../types";
-import { v4 as uuid } from "uuid";
+import { useQuery } from "react-query";
 
 interface ServicesContextState {
-  myServices: Service[] | null;
+  myServices: Service[] | undefined;
   addService: AddService;
   deleteService: DeleteService;
   editService: EditService;
@@ -20,46 +30,39 @@ interface ServicesContextProviderProps {
 const ServicesContextProvider = ({
   children,
 }: ServicesContextProviderProps) => {
-  const { account } = useAuth();
-  const { editAccount } = useAccounts();
+  const { user } = useAuth();
+  const servicesCollectionRef = collection(db, "services");
 
-  const [myServices, setMyServices] = useState(
-    account?.type === "seller" ? account.services : null
+  const getMyServices = async () => {
+    const q = query(
+      servicesCollectionRef,
+      where("userId", "==", user?.id || "")
+    );
+    const data = await getDocs(q);
+    const myServices = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    })) as Service[];
+    return myServices;
+  };
+
+  const { data: myServices } = useQuery(
+    [`services-${user?.id || ""}`],
+    getMyServices
   );
 
-  useEffect(() => {
-    setMyServices(account?.type === "seller" ? account.services : null);
-  }, [account]);
-
-  if (account && account.type === "customer") return null;
-
   const addService: AddService = async (service) => {
-    if (!account) return;
+    await addDoc(servicesCollectionRef, { ...service, userId: user?.id || "" });
+  };
 
-    const newService = { ...service, uuid: uuid() };
-    await editAccount(account.uuid, "seller", {
-      services: [...account.services, newService],
-    });
+  const deleteService: DeleteService = async (id) => {
+    const userDoc = doc(db, "services", id);
+    await deleteDoc(userDoc);
   };
-  const deleteService: DeleteService = async (uuid) => {
-    if (!account) return;
-    let services = [...account.services];
-    services = services.filter((service) => service.uuid !== uuid);
-    await editAccount(account.uuid, "seller", { services });
-  };
-  const editService: EditService = async (uuid, service) => {
-    if (!account) return;
-    let services = [...account.services];
-    const serviceToEditIndex = services.findIndex(
-      (service) => service.uuid === uuid
-    );
-    services[serviceToEditIndex] = {
-      ...services[serviceToEditIndex],
-      ...service,
-    };
-    await editAccount(account.uuid, "seller", {
-      services,
-    });
+
+  const editService: EditService = async (id, service) => {
+    const userDoc = doc(db, "services", id);
+    await updateDoc(userDoc, service);
   };
 
   return (

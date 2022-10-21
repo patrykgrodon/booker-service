@@ -1,14 +1,13 @@
-import { Account } from "common/types";
+import { User } from "common/types";
 
-export const getUserName = (account: Account | null) => {
-  if (!account) return "No data";
-  if (account.type === "customer")
-    return `${account.firstName} ${account.lastName}`;
-  return account.companyName;
+export const getUserName = (user: User | null) => {
+  if (!user) return "No data";
+  if (user.type === "customer") return `${user.firstName} ${user.lastName}`;
+  return user.companyName;
 };
 
-export const getUserType = (account: Account | null) => {
-  if (!account) return "No data";
+export const getUserType = (user: User | null) => {
+  if (!user) return "No data";
 
-  return account.type === "customer" ? "Customer" : "Service seller";
+  return user.type === "customer" ? "Customer" : "Service seller";
 };

@@ -17,14 +17,10 @@ const defaultValues: ServiceFormValues = {
 interface ServiceFormProps {
   handleClose: () => void;
   defaultService?: ServiceFormValues;
-  uuid?: string;
+  id?: string;
 }
 
-const ServiceForm = ({
-  handleClose,
-  defaultService,
-  uuid,
-}: ServiceFormProps) => {
+const ServiceForm = ({ handleClose, defaultService, id }: ServiceFormProps) => {
   const {
     handleSubmit,
     register,
@@ -32,7 +28,7 @@ const ServiceForm = ({
   } = useForm({ defaultValues: defaultService || defaultValues });
   const { addService, editService } = useServices();
 
-  const isEditMode = !!uuid;
+  const isEditMode = !!id;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,7 +36,7 @@ const ServiceForm = ({
     setIsLoading(true);
     try {
       isEditMode
-        ? await editService(uuid, formValues)
+        ? await editService(id, formValues)
         : await addService(formValues);
       handleClose();
     } catch (err: any) {}

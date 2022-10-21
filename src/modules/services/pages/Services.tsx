@@ -10,7 +10,6 @@ const tabs: Tab[] = [{ label: "Services" }, { label: "Summary" }];
 
 const Services = () => {
   const [activeTab, setActiveTab] = useState(0);
-
   const changeTab = (newValue: number) => setActiveTab(newValue);
 
   return (

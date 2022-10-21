@@ -1,6 +1,5 @@
 import AuthContextProvider from "modules/auth/contexts/authContext";
 import { QueryClient, QueryClientProvider } from "react-query";
-import AcountsContextProvider from "./AccountsProvider";
 import MuiThemeProviders from "./MuiThemeProviders";
 import ToastProvider from "./ToastProvider";
 
@@ -14,9 +13,7 @@ const AppProviders = ({ children }: AppProvidersProps) => {
     <MuiThemeProviders>
       <QueryClientProvider client={queryClient}>
         <ToastProvider>
-          <AcountsContextProvider>
-            <AuthContextProvider>{children}</AuthContextProvider>
-          </AcountsContextProvider>
+          <AuthContextProvider>{children}</AuthContextProvider>
         </ToastProvider>
       </QueryClientProvider>
     </MuiThemeProviders>

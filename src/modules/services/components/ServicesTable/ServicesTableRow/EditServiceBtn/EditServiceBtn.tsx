@@ -10,7 +10,7 @@ interface EditServiceBtnProps {
 
 const EditServiceBtn = ({ service }: EditServiceBtnProps) => {
   const { isOpen, closeModal, openModal } = useModal();
-  const { uuid, ...defaultService } = service;
+  const { id, ...defaultService } = service;
   return (
     <>
       <ActionIconButton
@@ -24,7 +24,7 @@ const EditServiceBtn = ({ service }: EditServiceBtnProps) => {
         isOpen={isOpen}
         handleClose={closeModal}
         defaultService={defaultService}
-        uuid={uuid}
+        id={id}
       />
     </>
   );

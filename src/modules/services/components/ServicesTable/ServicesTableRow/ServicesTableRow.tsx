@@ -18,12 +18,12 @@ const sxTableCell = makeSx((theme) => ({
 const ServicesTableRow = ({ service }: ServicesTableRowProps) => {
   const { deleteService } = useServices();
   const [isLoading, setIsLoading] = useState(false);
-  const { cost, duration, name, type, uuid } = service;
+  const { cost, duration, name, type, id } = service;
 
   const handleDelete = async () => {
     setIsLoading(true);
     try {
-      await deleteService(uuid);
+      await deleteService(id);
     } catch (err: any) {}
     setIsLoading(false);
   };

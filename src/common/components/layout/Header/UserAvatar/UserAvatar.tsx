@@ -8,8 +8,8 @@ import UserMenu from "../../UserMenu/UserMenu";
 
 const UserAvatar = () => {
   const { menuEl, closeMenu, openMenu } = useMenu();
-  const { account } = useAuth();
-  const userName = getUserName(account);
+  const { user } = useAuth();
+  const userName = getUserName(user);
 
   const handleOpenMenu = (e: any) => openMenu(e.target);
 

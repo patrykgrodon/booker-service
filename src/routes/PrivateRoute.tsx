@@ -4,9 +4,9 @@ import { Navigate, Outlet } from "react-router-dom";
 import { Routes } from "./routePaths";
 
 const PrivateRoute = () => {
-  const { account } = useAuth();
+  const { user } = useAuth();
 
-  const isAuthorised = Boolean(account);
+  const isAuthorised = Boolean(user);
   // const location = useLocation();
 
   return isAuthorised ? (

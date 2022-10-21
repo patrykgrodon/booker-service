@@ -7,14 +7,14 @@ interface ServiceDialogProps {
   isOpen: boolean;
   handleClose: () => void;
   defaultService?: ServiceFormValues;
-  uuid?: string;
+  id?: string;
 }
 
 const ServiceDialog = ({
   handleClose,
   isOpen,
   defaultService,
-  uuid,
+  id,
 }: ServiceDialogProps) => {
   return (
     <Dialog
@@ -29,7 +29,7 @@ const ServiceDialog = ({
         <ServiceForm
           handleClose={handleClose}
           defaultService={defaultService}
-          uuid={uuid}
+          id={id}
         />
       </DialogContent>
     </Dialog>

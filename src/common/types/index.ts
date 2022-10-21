@@ -1,5 +1,3 @@
-import { Service } from "modules/services/types";
-
 export interface CustomerFormValues {
   email: string;
   firstName: string;
@@ -18,27 +16,25 @@ export interface SellerFormValues {
   confirmPassword: string;
 }
 
-export type AccountType = "customer" | "seller";
+export type UserType = "customer" | "seller";
 
-export type CustomerAccInfo = Omit<CustomerFormValues, "confirmPassword">;
-export type SellerAccInfo = Omit<SellerFormValues, "confirmPassword"> & {
-  services: Service[];
-};
+export type CustomerUserInfo = Omit<CustomerFormValues, "confirmPassword">;
+export type SellerUserInfo = Omit<SellerFormValues, "confirmPassword">;
 
-export type Account = { uuid: string } & (
+export type User = { id: string } & (
   | ({
       type: "customer";
-    } & CustomerAccInfo)
+    } & CustomerUserInfo)
   | ({
       type: "seller";
-    } & SellerAccInfo)
+    } & SellerUserInfo)
 );
 
-export type CreateCustomerAcc = (values: CustomerFormValues) => Promise<void>;
-export type CreateSellerAcc = (values: SellerFormValues) => Promise<void>;
+export type CreateCustomerUser = (values: CustomerFormValues) => Promise<void>;
+export type CreateSellerUser = (values: SellerFormValues) => Promise<void>;
 
-export type EditAccount = <T extends AccountType>(
+export type EditUser = <T extends UserType>(
   uuid: string,
   type: T,
-  values: Partial<T extends "customer" ? CustomerAccInfo : SellerAccInfo>
+  values: Partial<T extends "customer" ? CustomerUserInfo : SellerUserInfo>
 ) => Promise<void>;

@@ -4,13 +4,13 @@ export interface Service {
   type: ServiceType;
   duration: string;
   cost: string;
-  uuid: string;
+  id: string;
 }
-export type ServiceFormValues = Omit<Service, "uuid">;
+export type ServiceFormValues = Omit<Service, "id">;
 
 export type AddService = (service: ServiceFormValues) => Promise<void>;
-export type DeleteService = (uuid: string) => Promise<void>;
+export type DeleteService = (id: string) => Promise<void>;
 export type EditService = (
-  uuid: string,
+  id: string,
   service: Partial<ServiceFormValues>
 ) => Promise<void>;

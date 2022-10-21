@@ -2,8 +2,8 @@ import { Box } from "@mui/material";
 import { useAuth } from "modules/auth/contexts/authContext";
 
 const Dashboard = () => {
-  const { account } = useAuth();
-  if (!account) return null;
+  const { user } = useAuth();
+  if (!user) return null;
   return (
     <Box
       sx={{
@@ -13,9 +13,9 @@ const Dashboard = () => {
         flex: 1,
       }}>
       Welcome,{" "}
-      {account.type === "customer"
-        ? `${account.firstName} ${account.lastName}`
-        : account.companyName}
+      {user.type === "customer"
+        ? `${user.firstName} ${user.lastName}`
+        : user.companyName}
     </Box>
   );
 };

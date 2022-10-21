@@ -1,13 +1,18 @@
-import { useAccounts } from "common/providers/AccountsProvider";
-import { Account } from "common/types";
-import { createContext, useContext, useEffect, useState } from "react";
-import { sleep } from "utils/sleep";
-import { deleteSSItem, getSSItem, saveSSItem } from "utils/webStorage";
-import { LoginFormValues } from "../types";
+import { User } from "common/types";
+import { createContext, useContext, useState } from "react";
+import { CreateUser, Login } from "../types";
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  createUserWithEmailAndPassword,
+} from "@firebase/auth";
+import { auth, db } from "firebase-config";
+import { getDoc, doc, addDoc, collection } from "@firebase/firestore";
 
 interface AuthContextState {
-  account: Account | null;
-  login: (loginFormValues: LoginFormValues) => Promise<void>;
+  user: User | null;
+  createUser: CreateUser;
+  login: Login;
   logout: () => void;
 }
 
@@ -18,41 +23,40 @@ interface AuthContextProviderProps {
 }
 
 const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
-  const ssAccInfoName = "acc-info";
-  const { accounts } = useAccounts();
-  const loggedAccInfo = getSSItem<Account>(ssAccInfoName);
-  const [account, setAccount] = useState<Account | null>(loggedAccInfo || null);
+  const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    setAccount((prevState) => {
-      if (prevState === null) return prevState;
-      return accounts.find(({ uuid }) => uuid === prevState.uuid) || null;
-    });
-  }, [accounts]);
-
-  const login = async (loginFormValues: LoginFormValues) => {
-    const { email, password } = loginFormValues;
-
-    await sleep(800);
-    const account = accounts.find(
-      (account) => account.email === email.toLowerCase()
-    );
-
-    if (account?.password === password) {
-      saveSSItem(ssAccInfoName, account);
-      return setAccount(account);
-    }
-
-    throw new Error("wrong user data");
+  const getUserData = async (userId: string) => {
+    const userDoc = doc(db, "users", userId);
+    const data = await getDoc(userDoc);
+    const user = data.data() as User;
+    return user;
   };
 
-  const logout = () => {
-    deleteSSItem(ssAccInfoName);
-    setAccount(null);
+  const createUser: CreateUser = async (type, formValues) => {
+    const { password, ...restValues } = formValues;
+    await createUserWithEmailAndPassword(auth, formValues.email, password);
+    const usersCollectionRef = collection(db, "users");
+    const { id } = await addDoc(usersCollectionRef, { ...restValues, type });
+    const userData = await getUserData(id);
+    setUser(userData);
+  };
+
+  const login: Login = async (loginFormValues) => {
+    const { email, password } = loginFormValues;
+    const {
+      user: { uid },
+    } = await signInWithEmailAndPassword(auth, email, password);
+    const userData = await getUserData(uid);
+    setUser(userData);
+  };
+
+  const logout = async () => {
+    await signOut(auth);
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ login, account, logout }}>
+    <AuthContext.Provider value={{ login, user, logout, createUser }}>
       {children}
     </AuthContext.Provider>
   );
