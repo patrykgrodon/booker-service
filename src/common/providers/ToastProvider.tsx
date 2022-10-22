@@ -3,20 +3,20 @@ import { createContext, useContext } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-type State = {
+interface ToastContextState {
   setErrorMessage: (message: string) => void;
   setSuccessMessage: (message: string) => void;
   setWarningMessage: (message: string) => void;
   setInfoMessage: (message: string) => void;
-};
+}
 
-const ToastContext = createContext<State | undefined>(undefined);
+const ToastContext = createContext<ToastContextState | undefined>(undefined);
 
-type Props = {
+interface ToastProviderProps {
   children: React.ReactNode;
-};
+}
 
-const ToastProvider = ({ children }: Props) => {
+const ToastProvider = ({ children }: ToastProviderProps) => {
   const classes = useToastStyles();
 
   const toastSettings = {

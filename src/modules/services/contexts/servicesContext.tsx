@@ -13,6 +13,7 @@ import { useAuth } from "modules/auth/contexts/authContext";
 import { createContext, useContext } from "react";
 import { AddService, DeleteService, EditService, Service } from "../types";
 import { useQuery } from "react-query";
+import { parseGetDocs } from "utils/parseGetDocs";
 
 interface ServicesContextState {
   myServices: Service[] | undefined;
@@ -43,10 +44,11 @@ const ServicesContextProvider = ({
       where("userId", "==", user?.id || "")
     );
     const data = await getDocs(q);
-    const myServices = data.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    })) as Service[];
+    // const myServices = data.docs.map((doc) => ({
+    //   ...doc.data(),
+    //   id: doc.id,
+    // })) as Service[];
+    const myServices = parseGetDocs<Service[]>(data);
     return myServices;
   };
 

@@ -1,3 +1,5 @@
+import { Timestamp } from "@firebase/firestore";
+
 export const addZeroBelowTen = (value: number) =>
   (value < 10 ? "0" : "") + value;
 
@@ -16,7 +18,7 @@ export const convertSecToHours = (seconds: number) => {
   )}:${addZeroBelowTen(rest)}`;
 };
 
-export const today = () => new Date();
+export const now = () => new Date();
 
 export const getTimezone = () =>
   Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -24,3 +26,8 @@ export const getTimezone = () =>
 export const dashedDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 export const dashedDateFormat = "yyyy-MM-dd";
 export const dashedDateTimeFormatNoSeconds = "yyyy-MM-dd HH:mm";
+
+export const convertToFirebaseTimestamp = (date: Date) => {
+  const t = Timestamp.fromDate(date);
+  return t;
+};

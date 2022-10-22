@@ -1,6 +1,10 @@
-import { Button, TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow } from "@mui/material";
+import { RequestButton } from "common/components";
+import { Visit, useVisits } from "common/providers/VisitsProvider";
 import { makeSx } from "common/styles/makeSx";
+import { useAuth } from "modules/auth/contexts/authContext";
 import { Service } from "modules/services/types";
+import { useState } from "react";
 
 interface AllServicesTableRowProps {
   service: Service;
@@ -12,6 +16,25 @@ const sxTableCell = makeSx((theme) => ({
 
 const AllServicesTableRow = ({ service }: AllServicesTableRowProps) => {
   const { name, type, duration, cost, city, companyName } = service;
+  const { user } = useAuth();
+  const { addVisit } = useVisits();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleBookVisit = async () => {
+    if (!user) return;
+    setIsLoading(true);
+    try {
+      const visit: Visit = {
+        service,
+        date: new Date(),
+        customerId: user.id,
+      };
+      await addVisit(visit);
+    } catch (err: any) {}
+    setIsLoading(false);
+  };
+
   return (
     <TableRow>
       <TableCell sx={sxTableCell}>{name}</TableCell>
@@ -31,7 +54,12 @@ const AllServicesTableRow = ({ service }: AllServicesTableRowProps) => {
         {cost} €
       </TableCell>
       <TableCell sx={sxTableCell} align="right">
-        <Button variant="text">Book</Button>
+        <RequestButton
+          onClick={handleBookVisit}
+          isLoading={isLoading}
+          variant="text">
+          Book
+        </RequestButton>
       </TableCell>
     </TableRow>
   );
