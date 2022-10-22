@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useServices } from "modules/services/contexts/servicesContext";
 import AllServicesTableRow from "./AllServicesTableRow/AllServicesTableRow";
+import AllServicesTableSkeleton from "./AllServicesTableRow/AllServicesTableSkeleton";
 
 const headers = [
   "Service name",
@@ -22,7 +23,9 @@ const headers = [
 ];
 
 const AllServicesTable = () => {
-  const { allServices } = useServices();
+  const { allServices, isLoading } = useServices();
+
+  if (isLoading) return <AllServicesTableSkeleton />;
 
   return (
     <TableContainer component={Paper}>
