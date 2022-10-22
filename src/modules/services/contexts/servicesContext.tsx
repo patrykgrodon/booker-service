@@ -78,7 +78,14 @@ const ServicesContextProvider = ({
   });
 
   const addService: AddService = async (service) => {
-    await addDoc(servicesCollectionRef, { ...service, userId: user?.id || "" });
+    if (!user) return;
+    if (user.type === "customer") return;
+    await addDoc(servicesCollectionRef, {
+      ...service,
+      userId: user.id,
+      companyName: user.companyName,
+      city: user.city,
+    });
   };
 
   const deleteService: DeleteService = async (id) => {

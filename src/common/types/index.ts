@@ -11,7 +11,9 @@ export interface ServiceProviderFormValues {
   email: string;
   companyName: string;
   phoneNumber: string;
-  address: string;
+  city: string;
+  street: string;
+  streetNumber: string;
   password: string;
   confirmPassword: string;
 }

@@ -11,7 +11,15 @@ import {
 import { useServices } from "modules/services/contexts/servicesContext";
 import AllServicesTableRow from "./AllServicesTableRow/AllServicesTableRow";
 
-const headers = ["Name", "Type", "Duration", "Cost", "Actions"];
+const headers = [
+  "Service name",
+  "Company name",
+  "City",
+  "Type",
+  "Duration",
+  "Cost",
+  "Actions",
+];
 
 const AllServicesTable = () => {
   const { allServices } = useServices();
@@ -39,7 +47,7 @@ const AllServicesTable = () => {
             </TableRow>
           ) : null}
           {allServices?.map((service) => (
-            <AllServicesTableRow key={service.name} service={service} />
+            <AllServicesTableRow key={service.id} service={service} />
           ))}
         </TableBody>
       </Table>

@@ -42,7 +42,7 @@ const MyServicesTable = () => {
             </TableRow>
           ) : null}
           {myServices?.map((service) => (
-            <MyServicesTableRow key={service.name} service={service} />
+            <MyServicesTableRow key={service.id} service={service} />
           ))}
         </TableBody>
       </Table>

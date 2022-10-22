@@ -11,10 +11,16 @@ const sxTableCell = makeSx((theme) => ({
 }));
 
 const AllServicesTableRow = ({ service }: AllServicesTableRowProps) => {
-  const { name, type, duration, cost } = service;
+  const { name, type, duration, cost, city, companyName } = service;
   return (
     <TableRow>
       <TableCell sx={sxTableCell}>{name}</TableCell>
+      <TableCell sx={sxTableCell} align="right">
+        {companyName}
+      </TableCell>
+      <TableCell sx={sxTableCell} align="right">
+        {city}
+      </TableCell>
       <TableCell sx={sxTableCell} align="right">
         {type}
       </TableCell>

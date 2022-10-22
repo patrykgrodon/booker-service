@@ -17,7 +17,9 @@ const defaultValues: ServiceProviderFormValues = {
   email: "",
   companyName: "",
   phoneNumber: "",
-  address: "",
+  city: "",
+  street: "",
+  streetNumber: "",
   password: "",
   confirmPassword: "",
 };
@@ -98,12 +100,34 @@ const ServiceProviderForm = () => {
       <Grid item xs={12} md={6}>
         <TextField
           fullWidth
-          label="Address"
-          {...register("address", {
+          label="City"
+          {...register("city", {
             validate: checkIfEmpty,
           })}
-          error={Boolean(errors.address)}
-          helperText={errors.address?.message}
+          error={Boolean(errors.city)}
+          helperText={errors.city?.message}
+        />
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <TextField
+          fullWidth
+          label="Street"
+          {...register("street", {
+            validate: checkIfEmpty,
+          })}
+          error={Boolean(errors.street)}
+          helperText={errors.street?.message}
+        />
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <TextField
+          fullWidth
+          label="Street number"
+          {...register("streetNumber", {
+            validate: checkIfEmpty,
+          })}
+          error={Boolean(errors.streetNumber)}
+          helperText={errors.streetNumber?.message}
         />
       </Grid>
       <Grid item xs={12} md={6}>

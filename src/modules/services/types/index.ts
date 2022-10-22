@@ -5,8 +5,14 @@ export interface Service {
   duration: string;
   cost: string;
   id: string;
+  city: string;
+  companyName: string;
+  userId: string;
 }
-export type ServiceFormValues = Omit<Service, "id">;
+export type ServiceFormValues = Omit<
+  Service,
+  "id" | "city" | "companyName" | "userId"
+>;
 
 export type AddService = (service: ServiceFormValues) => Promise<void>;
 export type DeleteService = (id: string) => Promise<void>;
