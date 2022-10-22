@@ -7,7 +7,7 @@ import {
   createUserWithEmailAndPassword,
 } from "@firebase/auth";
 import { auth, db } from "firebase-config";
-import { addDoc, collection } from "@firebase/firestore";
+import { doc, setDoc } from "@firebase/firestore";
 import { getUserData } from "../api";
 import { Spinner } from "common/components";
 import { deleteLSItem } from "utils/webStorage";
@@ -43,11 +43,11 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const createUser: CreateUser = async (type, formValues) => {
     const { password, ...restValues } = formValues;
-    await createUserWithEmailAndPassword(auth, formValues.email, password);
-    const usersCollectionRef = collection(db, "users");
-    const { id } = await addDoc(usersCollectionRef, { ...restValues, type });
-    const userData = await getUserData(id);
-    setUser(userData);
+    const {
+      user: { uid },
+    } = await createUserWithEmailAndPassword(auth, formValues.email, password);
+    const usersDocRef = doc(db, "users", uid);
+    await setDoc(usersDocRef, { ...restValues, type });
   };
 
   const login: Login = async (loginFormValues) => {

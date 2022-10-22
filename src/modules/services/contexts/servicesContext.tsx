@@ -65,7 +65,7 @@ const ServicesContextProvider = ({
     isError: isMyServicesError,
     refetch: refetchMyServices,
   } = useQuery([`services-${user?.id || ""}`], getMyServices, {
-    enabled: user?.type === "seller",
+    enabled: user?.type === "serviceProvider",
   });
 
   const {
@@ -95,7 +95,7 @@ const ServicesContextProvider = ({
   const isLoading = isAllServicesLoading || isMyServicesLoading;
 
   const refetch = async () => {
-    user?.type === "seller"
+    user?.type === "serviceProvider"
       ? await refetchMyServices()
       : await refetchAllServices();
   };

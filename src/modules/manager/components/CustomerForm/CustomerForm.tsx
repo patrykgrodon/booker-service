@@ -1,6 +1,5 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { PasswordField, RequestButton } from "common/components";
-import { useToast } from "common/providers/ToastProvider";
 import { CustomerFormValues } from "common/types";
 import { useAuth } from "modules/auth/contexts/authContext";
 import { useState } from "react";
@@ -33,7 +32,6 @@ const CustomerForm = () => {
     defaultValues,
   });
   const navigate = useNavigate();
-  const { setSuccessMessage } = useToast();
   const { createUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -46,9 +44,11 @@ const CustomerForm = () => {
       const { confirmPassword, ...restValues } = formValues;
       await createUser("customer", restValues);
       navigate(Routes.Dashboard);
-      setSuccessMessage("Account created successfully");
     } catch (err: any) {
-      setError(err.message);
+      const errMsg = err.message.includes("email-already-in-use")
+        ? "Email already in use"
+        : err.message;
+      setError(errMsg);
     }
     setIsLoading(false);
   };

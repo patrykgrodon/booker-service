@@ -3,9 +3,9 @@ import TabPanel from "common/components/TabPanel/TabPanel";
 import { makeSx } from "common/styles/makeSx";
 import { useState } from "react";
 import CustomerForm from "../components/CustomerForm/CustomerForm";
-import SellerForm from "../components/SellerForm/SellerForm";
+import ServiceProviderForm from "../components/ServiceProviderForm/ServiceProviderForm";
 
-const sxContainer = makeSx((theme) => ({
+const sxContainer = makeSx(() => ({
   height: "100vh",
   width: "100vw",
   display: "flex",
@@ -33,13 +33,13 @@ const CreateAccount = () => {
           onChange={(_, newValue) => setTab(newValue)}
           aria-label="account type tabs">
           <Tab label="Customer" sx={{ flexBasis: "50%" }} />
-          <Tab label="Seller" sx={{ flexBasis: "50%" }} />
+          <Tab label="Service provider" sx={{ flexBasis: "50%" }} />
         </Tabs>
         <TabPanel index={0} value={tab}>
           <CustomerForm />
         </TabPanel>
         <TabPanel index={1} value={tab}>
-          <SellerForm />
+          <ServiceProviderForm />
         </TabPanel>
       </Card>
     </Box>

@@ -27,7 +27,9 @@ const Header = ({ activeTab }: HeaderProps) => {
       <Typography variant="h2" component="h1">
         {title}
       </Typography>
-      {activeTab === 0 && user?.type === "seller" ? <AddServiceBtn /> : null}
+      {activeTab === 0 && user?.type === "serviceProvider" ? (
+        <AddServiceBtn />
+      ) : null}
     </Box>
   );
 };

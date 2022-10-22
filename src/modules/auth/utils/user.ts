@@ -9,5 +9,5 @@ export const getUserName = (user: User | null) => {
 export const getUserType = (user: User | null) => {
   if (!user) return "No data";
 
-  return user.type === "customer" ? "Customer" : "Service seller";
+  return user.type === "customer" ? "Customer" : "Service provider";
 };

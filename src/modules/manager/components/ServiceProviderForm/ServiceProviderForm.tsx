@@ -1,7 +1,6 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { PasswordField, RequestButton } from "common/components";
-import { useToast } from "common/providers/ToastProvider";
-import { SellerFormValues } from "common/types";
+import { ServiceProviderFormValues } from "common/types";
 import { useAuth } from "modules/auth/contexts/authContext";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -14,7 +13,7 @@ import {
   ValidationMessages,
 } from "utils/validationPatterns";
 
-const defaultValues: SellerFormValues = {
+const defaultValues: ServiceProviderFormValues = {
   email: "",
   companyName: "",
   phoneNumber: "",
@@ -23,7 +22,7 @@ const defaultValues: SellerFormValues = {
   confirmPassword: "",
 };
 
-const SellerForm = () => {
+const ServiceProviderForm = () => {
   const {
     handleSubmit,
     register,
@@ -31,22 +30,23 @@ const SellerForm = () => {
     formState: { errors },
   } = useForm({ defaultValues });
   const navigate = useNavigate();
-  const { setSuccessMessage } = useToast();
   const { createUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleBack = () => navigate(Routes.Login);
-  const submitHandler = async (formValues: SellerFormValues) => {
+  const submitHandler = async (formValues: ServiceProviderFormValues) => {
     setError("");
     setIsLoading(true);
     try {
       const { confirmPassword, ...restValues } = formValues;
-      await createUser("seller", restValues);
-      setSuccessMessage("Account created successfully");
+      await createUser("serviceProvider", restValues);
       navigate(Routes.Dashboard);
     } catch (err: any) {
-      setError(err);
+      const errMsg = err.message.includes("email-already-in-use")
+        ? "Email already in use"
+        : err.message;
+      setError(errMsg);
     }
     setIsLoading(false);
   };
@@ -156,4 +156,4 @@ const SellerForm = () => {
   );
 };
 
-export default SellerForm;
+export default ServiceProviderForm;

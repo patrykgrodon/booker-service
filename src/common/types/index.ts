@@ -7,7 +7,7 @@ export interface CustomerFormValues {
   confirmPassword: string;
 }
 
-export interface SellerFormValues {
+export interface ServiceProviderFormValues {
   email: string;
   companyName: string;
   phoneNumber: string;
@@ -16,25 +16,19 @@ export interface SellerFormValues {
   confirmPassword: string;
 }
 
-export type UserType = "customer" | "seller";
+export type UserType = "customer" | "serviceProvider";
 
 export type CustomerUserInfo = Omit<CustomerFormValues, "confirmPassword">;
-export type SellerUserInfo = Omit<SellerFormValues, "confirmPassword">;
+export type ServiceProviderUserInfo = Omit<
+  ServiceProviderFormValues,
+  "confirmPassword"
+>;
 
 export type User = { id: string } & (
   | ({
       type: "customer";
     } & CustomerUserInfo)
   | ({
-      type: "seller";
-    } & SellerUserInfo)
+      type: "serviceProvider";
+    } & ServiceProviderUserInfo)
 );
-
-export type CreateCustomerUser = (values: CustomerFormValues) => Promise<void>;
-export type CreateSellerUser = (values: SellerFormValues) => Promise<void>;
-
-export type EditUser = <T extends UserType>(
-  uuid: string,
-  type: T,
-  values: Partial<T extends "customer" ? CustomerUserInfo : SellerUserInfo>
-) => Promise<void>;

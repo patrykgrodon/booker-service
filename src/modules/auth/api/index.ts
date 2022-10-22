@@ -5,6 +5,6 @@ import { db } from "firebase-config";
 export const getUserData = async (userId: string) => {
   const userDoc = doc(db, "users", userId);
   const data = await getDoc(userDoc);
-  const user = data.data() as User;
-  return user;
+  const userData = { ...data.data(), id: data.id } as User;
+  return userData;
 };
