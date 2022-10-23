@@ -12,6 +12,7 @@ import { getUserData } from "../api";
 import { Spinner } from "common/components";
 import { deleteLSItem } from "utils/webStorage";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { createUserSettings } from "common/api";
 
 interface AuthContextState {
   user: User | null;
@@ -46,8 +47,9 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const {
       user: { uid },
     } = await createUserWithEmailAndPassword(auth, formValues.email, password);
-    const usersDocRef = doc(db, "users", uid);
-    await setDoc(usersDocRef, { ...restValues, type });
+    const userDocRef = doc(db, "users", uid);
+    await setDoc(userDocRef, { ...restValues, type });
+    await createUserSettings(uid, {});
   };
 
   const login: Login = async (loginFormValues) => {

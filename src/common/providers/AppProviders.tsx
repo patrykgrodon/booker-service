@@ -1,11 +1,11 @@
-import { LocalizationProvider } from "@mui/lab";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import AuthContextProvider from "modules/auth/contexts/authContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 import MuiThemeProviders from "./MuiThemeProviders";
 import ToastProvider from "./ToastProvider";
 import UserSettingsContextProvider from "./UserSettingsProvider";
 import VisitsContextProvider from "./VisitsProvider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import plLocale from "date-fns/locale/pl";
 
 interface AppProvidersProps {
@@ -30,7 +30,7 @@ const AppProviders = ({ children }: AppProvidersProps) => {
               <VisitsContextProvider>
                 <LocalizationProvider
                   dateAdapter={AdapterDateFns}
-                  locale={plLocale}>
+                  adapterLocale={plLocale}>
                   {children}
                 </LocalizationProvider>
               </VisitsContextProvider>

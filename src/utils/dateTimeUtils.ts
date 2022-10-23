@@ -31,3 +31,9 @@ export const convertToFirebaseTimestamp = (date: Date) => {
   const t = Timestamp.fromDate(date);
   return t;
 };
+
+export const getTodayMidnight = () => {
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  return now;
+};

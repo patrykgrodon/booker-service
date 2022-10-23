@@ -37,7 +37,7 @@ const ServiceDialog = ({
             id={id}
           />
         ) : (
-          <OpeningHoursForm />
+          <OpeningHoursForm handleClose={handleClose} />
         )}
       </DialogContent>
     </Dialog>
