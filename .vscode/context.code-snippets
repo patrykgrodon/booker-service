@@ -1,0 +1,40 @@
+{
+  "Create ReactContext": {
+    "prefix": ["context"],
+    "body": [
+      "interface ${1:contextName}State {}",
+      "",
+      "const ${1:contextName} = createContext<${1:contextName}State | null>(null);",
+      "",
+      "interface ${1:contextName}ProviderProps {",
+      "  children: React.ReactNode;",
+      "}",
+      "",
+      "const ${1:contextName}Provider = ({",
+      "  children,",
+      "}: ${1:contextName}ProviderProps) => {",
+      "",
+      "  return (",
+      "    <${1:contextName}.Provider",
+      "      value={{",
+      "",
+      "     }}>",
+      "     {children}",
+      "   </${1:contextName}.Provider>",
+      "  );",
+      "};",
+      "",
+      "const use${2:hookName} = () => {",
+      "  const context = useContext(${1:contextName});",
+      "  if (!context) {",
+      "    throw new Error('${1:contextName} must be used within provider');",
+      "  }",
+      "  return context;",
+      "};",
+      "",
+      "export { use${2:hookName} };",
+      "export default ${1:contextName}Provider;"
+    ],
+    "description": "Create ReactContext template"
+  }
+}

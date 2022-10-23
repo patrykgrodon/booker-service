@@ -1,6 +1,8 @@
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import CloseButton from "common/components/CloseButton/CloseButton";
+import { useUserSettings } from "common/providers/UserSettingsProvider";
 import { ServiceFormValues } from "modules/services/types";
+import OpeningHoursForm from "../OpeningHoursForm/OpeningHoursForm";
 import ServiceForm from "../ServiceForm/ServiceForm";
 
 interface ServiceDialogProps {
@@ -16,6 +18,8 @@ const ServiceDialog = ({
   defaultService,
   id,
 }: ServiceDialogProps) => {
+  const { userSettings } = useUserSettings();
+
   return (
     <Dialog
       open={isOpen}
@@ -26,11 +30,15 @@ const ServiceDialog = ({
       </DialogTitle>
       <CloseButton onClick={handleClose} />
       <DialogContent sx={{ minWidth: "500px", maxWidth: "500px" }}>
-        <ServiceForm
-          handleClose={handleClose}
-          defaultService={defaultService}
-          id={id}
-        />
+        {userSettings?.openingHours ? (
+          <ServiceForm
+            handleClose={handleClose}
+            defaultService={defaultService}
+            id={id}
+          />
+        ) : (
+          <OpeningHoursForm />
+        )}
       </DialogContent>
     </Dialog>
   );

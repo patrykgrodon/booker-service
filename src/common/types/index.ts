@@ -34,3 +34,11 @@ export type User = { id: string } & (
       type: "serviceProvider";
     } & ServiceProviderUserInfo)
 );
+
+export interface UserSettings {
+  id: string;
+  openingHours: {
+    from: string;
+    to: string;
+  };
+}

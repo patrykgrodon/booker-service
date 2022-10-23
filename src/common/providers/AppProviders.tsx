@@ -1,8 +1,12 @@
+import { LocalizationProvider } from "@mui/lab";
 import AuthContextProvider from "modules/auth/contexts/authContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 import MuiThemeProviders from "./MuiThemeProviders";
 import ToastProvider from "./ToastProvider";
+import UserSettingsContextProvider from "./UserSettingsProvider";
 import VisitsContextProvider from "./VisitsProvider";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import plLocale from "date-fns/locale/pl";
 
 interface AppProvidersProps {
   children: React.ReactNode;
@@ -22,7 +26,15 @@ const AppProviders = ({ children }: AppProvidersProps) => {
       <QueryClientProvider client={queryClient}>
         <ToastProvider>
           <AuthContextProvider>
-            <VisitsContextProvider>{children}</VisitsContextProvider>
+            <UserSettingsContextProvider>
+              <VisitsContextProvider>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  locale={plLocale}>
+                  {children}
+                </LocalizationProvider>
+              </VisitsContextProvider>
+            </UserSettingsContextProvider>
           </AuthContextProvider>
         </ToastProvider>
       </QueryClientProvider>
