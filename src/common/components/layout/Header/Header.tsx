@@ -10,7 +10,7 @@ interface HeaderProps {
 const Header = ({ toggleSidebar }: HeaderProps) => {
   return (
     <AppBar
-      position="static"
+      position="fixed"
       sx={{
         zIndex: 1,
         backgroundColor: (theme) => theme.palette.primary.dark,

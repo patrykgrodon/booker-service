@@ -10,13 +10,13 @@ interface LayoutProps {
 
 const sxContainer = makeSx(() => ({
   display: "flex",
-  flexWrap: "wrap",
   height: "100vh",
   maxHeight: "100vh",
 }));
 
 const sxMain = makeSx(() => ({
   flexGrow: 1,
+  marginTop: TOOLBAR_HEIGHT,
   minHeight: `calc(100vh - ${TOOLBAR_HEIGHT})`,
   maxHeight: `calc(100vh - ${TOOLBAR_HEIGHT})`,
   overflow: "auto",

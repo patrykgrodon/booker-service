@@ -1,21 +1,26 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import useTabsContainerStyles from "common/components/TabsContainer/styles";
 import { useAuth } from "modules/auth/contexts/authContext";
+import CustomerVisits from "../components/CustomerVisits/CustomerVisits";
+import ServiceProviderVisits from "../components/ServiceProviderVisits/ServiceProviderVisits";
 
 const Dashboard = () => {
+  const classes = useTabsContainerStyles();
   const { user } = useAuth();
   if (!user) return null;
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flex: 1,
-      }}>
-      Welcome,{" "}
-      {user.type === "customer"
-        ? `${user.firstName} ${user.lastName}`
-        : user.companyName}
+    <Box className={classes.mainContainer}>
+      <Box className={classes.contentContainer}>
+        <Typography variant="h2" component="h1">
+          Upcoming visits
+        </Typography>
+        {user.type === "customer" ? (
+          <CustomerVisits />
+        ) : (
+          <ServiceProviderVisits />
+        )}
+      </Box>
     </Box>
   );
 };

@@ -45,7 +45,7 @@ const BookServiceDialog = ({
     if (!user) return;
     setIsLoading(true);
     try {
-      const visit: Visit = {
+      const visit: Omit<Visit, "id"> = {
         service,
         date: visitDate,
         customerId: user.id,

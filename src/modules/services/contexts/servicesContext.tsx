@@ -84,6 +84,7 @@ const ServicesContextProvider = ({
     if (user.type === "customer") return;
     await addDoc(servicesCollectionRef, {
       ...service,
+      cost: +service.cost,
       userId: user.id,
       companyName: user.companyName,
       city: user.city,

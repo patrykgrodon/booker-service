@@ -19,7 +19,7 @@ interface VisitsContextState {
   isLoading: boolean;
   isFetching: boolean;
   isError: boolean;
-  addVisit: (visit: Visit) => Promise<void>;
+  addVisit: (visit: Omit<Visit, "id">) => Promise<void>;
   refetchVisits: () => Promise<void>;
 }
 
@@ -33,9 +33,10 @@ export interface Visit {
   customerId: string;
   date: Date;
   service: Service;
+  id: string;
 }
 
-type VisitWithTimeStamp = Omit<Visit, "date"> & {
+export type VisitWithTimeStamp = Omit<Visit, "date"> & {
   date: Timestamp;
 };
 
@@ -71,8 +72,8 @@ const VisitsContextProvider = ({ children }: Props) => {
     return getVisits(user.id);
   });
 
-  const addVisit = async (visit: Visit) => {
-    const visitWithT: VisitWithTimeStamp = {
+  const addVisit = async (visit: Omit<Visit, "id">) => {
+    const visitWithT: Omit<VisitWithTimeStamp, "id"> = {
       ...visit,
       date: convertToFirebaseTimestamp(visit.date),
     };
