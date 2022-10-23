@@ -1,40 +1,47 @@
-import { Grid, Card, Typography } from "@mui/material";
+import { Card, Grid, Typography } from "@mui/material";
 import { RequestButton } from "common/components";
 import { Visit } from "common/providers/VisitsProvider";
 import { format } from "date-fns";
 import { useState } from "react";
 import { dashedDateTimeFormatNoSeconds } from "utils/dateTimeUtils";
-import { getDoc, doc } from "@firebase/firestore";
+import { getVisitDurationText } from "utils/getVisitDurationText";
+import { doc, getDoc } from "@firebase/firestore";
 import { db } from "firebase-config";
 import { parseGetDoc } from "utils/parseGetDocs";
 import { User } from "common/types";
-import { getVisitDurationText } from "utils/getVisitDurationText";
 
-interface CustomerVisitProps {
+interface ServiceProviderVisitProps {
   visit: Visit;
 }
 
-const CustomerVisit = ({ visit }: CustomerVisitProps) => {
-  const { date, service } = visit;
+const ServiceProviderVisit = ({ visit }: ServiceProviderVisitProps) => {
+  const { service, date, customerId } = visit;
   const [isLoading, setIsLoading] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState<null | string>(null);
+  const [customerInfo, setCustomerInfo] = useState<
+    { label: string; value: string }[] | null
+  >(null);
 
   const fields = [
     { label: "Service name", value: service.name },
-    { label: "Provider", value: service.companyName },
     { label: "Date", value: format(date, dashedDateTimeFormatNoSeconds) },
-    { label: "City", value: service.city },
     { label: "Cost", value: `${service.cost} euro` },
     { label: "Duration", value: getVisitDurationText(service.duration) },
   ];
 
-  const fetchPhoneNumber = async () => {
+  const fetchCustomerInfo = async () => {
     setIsLoading(true);
     try {
-      const docRef = doc(db, "users", service.userId);
+      const docRef = doc(db, "users", customerId);
       const data = await getDoc(docRef);
-      const serviceProvider = parseGetDoc<User>(data);
-      setPhoneNumber(serviceProvider.phoneNumber);
+      const customer = parseGetDoc<User>(data);
+      if (customer.type === "customer") {
+        const customerInfo = [
+          { label: "First name", value: customer.firstName },
+          { label: "Last name", value: customer.lastName },
+          { label: "Phone number", value: customer.phoneNumber },
+        ];
+        setCustomerInfo(customerInfo);
+      }
     } catch (err: any) {}
     setIsLoading(false);
   };
@@ -54,30 +61,32 @@ const CustomerVisit = ({ visit }: CustomerVisitProps) => {
               <Typography variant="subtitle1">{value}</Typography>
             </Grid>
           ))}
-          <Grid item xs={12} md={6}>
-            {phoneNumber ? (
-              <>
+          {customerInfo ? (
+            customerInfo.map(({ label, value }) => (
+              <Grid key={label} item xs={12} md={6}>
                 <Typography
                   variant="caption"
                   color="textSecondary"
                   sx={{ fontWeight: 500 }}>
-                  Phone number
+                  {label}
                 </Typography>
-                <Typography variant="subtitle1">{phoneNumber}</Typography>
-              </>
-            ) : (
+                <Typography variant="subtitle1">{value}</Typography>
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12} md={6}>
               <RequestButton
                 isLoading={isLoading}
-                onClick={fetchPhoneNumber}
+                onClick={fetchCustomerInfo}
                 variant="text">
-                Show number
+                Show customer info
               </RequestButton>
-            )}
-          </Grid>
+            </Grid>
+          )}
         </Grid>
       </Card>
     </Grid>
   );
 };
 
-export default CustomerVisit;
+export default ServiceProviderVisit;

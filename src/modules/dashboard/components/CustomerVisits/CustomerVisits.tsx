@@ -6,9 +6,12 @@ import { collection, getDocs, query, where } from "@firebase/firestore";
 import { parseGetDocs } from "utils/parseGetDocs";
 import { Visit, VisitWithTimeStamp } from "common/providers/VisitsProvider";
 import CustomerVisit from "./CustomerVisit/CustomerVisit";
-import { Spinner } from "common/components";
 
-const CustomerVisits = () => {
+interface CustomerVisitsProps {
+  LoadingSpinner: JSX.Element;
+}
+
+const CustomerVisits = ({ LoadingSpinner }: CustomerVisitsProps) => {
   const { user } = useAuth();
 
   const getCustomerVisits = async (userId: string) => {
@@ -34,7 +37,7 @@ const CustomerVisits = () => {
     }
   );
 
-  if (isLoading) return <Spinner size="medium" />;
+  if (isLoading) return LoadingSpinner;
 
   return (
     <Grid
@@ -46,7 +49,9 @@ const CustomerVisits = () => {
       }}>
       <Grid item xs={12}>
         <Typography variant="h3">
-          You have {customerVisits?.length || ""} upcoming visits.
+          {customerVisits
+            ? `You have ${customerVisits.length} upcoming visits.`
+            : "You don't have upcoming visits."}
         </Typography>
       </Grid>
 
