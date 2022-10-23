@@ -1,9 +1,14 @@
 import { Grid, Card, Typography } from "@mui/material";
+import { RequestButton } from "common/components";
 import { Visit } from "common/providers/VisitsProvider";
 import { makeSx } from "common/styles/makeSx";
-
 import { format } from "date-fns";
+import { useState } from "react";
 import { dashedDateTimeFormatNoSeconds } from "utils/dateTimeUtils";
+import { getDoc, doc } from "@firebase/firestore";
+import { db } from "firebase-config";
+import { parseGetDoc } from "utils/parseGetDocs";
+import { User } from "common/types";
 
 interface CustomerVisitProps {
   visit: Visit;
@@ -15,6 +20,8 @@ const sxCard = makeSx((theme) => ({
 
 const CustomerVisit = ({ visit }: CustomerVisitProps) => {
   const { id, date, service } = visit;
+  const [isLoading, setIsLoading] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState<null | string>(null);
 
   const getDuration = () => {
     const [h, m] = service.duration.split(":");
@@ -36,8 +43,20 @@ const CustomerVisit = ({ visit }: CustomerVisitProps) => {
     { label: "Cost", value: `${service.cost} euro` },
     { label: "Duration", value: getDuration() },
   ];
+
+  const getPhoneNumber = async () => {
+    setIsLoading(true);
+    try {
+      const docRef = doc(db, "users", service.userId);
+      const data = await getDoc(docRef);
+      const serviceProvider = parseGetDoc<User>(data);
+      setPhoneNumber(serviceProvider.phoneNumber);
+    } catch (err: any) {}
+    setIsLoading(false);
+  };
+
   return (
-    <Grid key={id} item xs={12} md={6}>
+    <Grid key={id} item xs={12} md={6} lg={4}>
       <Card sx={sxCard}>
         <Grid container spacing={1}>
           {fields.map(({ label, value }) => (
@@ -51,6 +70,26 @@ const CustomerVisit = ({ visit }: CustomerVisitProps) => {
               <Typography variant="subtitle1">{value}</Typography>
             </Grid>
           ))}
+          <Grid item xs={12} md={6}>
+            {phoneNumber ? (
+              <>
+                <Typography
+                  variant="caption"
+                  color="textSecondary"
+                  sx={{ fontWeight: 500 }}>
+                  Phone number
+                </Typography>
+                <Typography variant="subtitle1">{phoneNumber}</Typography>
+              </>
+            ) : (
+              <RequestButton
+                isLoading={isLoading}
+                onClick={getPhoneNumber}
+                variant="text">
+                Show number
+              </RequestButton>
+            )}
+          </Grid>
         </Grid>
       </Card>
     </Grid>
