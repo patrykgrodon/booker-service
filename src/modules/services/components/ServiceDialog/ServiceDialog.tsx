@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
-import CloseButton from "common/components/CloseButton/CloseButton";
+import { CloseButton } from "common/components";
 import { useUserSettings } from "common/providers/UserSettingsProvider";
 import { ServiceFormValues } from "modules/services/types";
 import OpeningHoursForm from "../OpeningHoursForm/OpeningHoursForm";
