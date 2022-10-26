@@ -1,5 +1,5 @@
 const Summary = () => {
-  return <div>Summary</div>;
+  return <div>In progress...</div>;
 };
 
 export default Summary;
