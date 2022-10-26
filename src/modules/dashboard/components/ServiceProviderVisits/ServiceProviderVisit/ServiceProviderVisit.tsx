@@ -47,10 +47,21 @@ const ServiceProviderVisit = ({ visit }: ServiceProviderVisitProps) => {
   };
 
   return (
-    <Grid item xs={12} md={6} lg={4}>
-      <Card sx={{ padding: (theme) => theme.spacing(2) }}>
-        <Grid container spacing={1}>
-          {fields.map(({ label, value }) => (
+    <Card sx={{ padding: (theme) => theme.spacing(2) }}>
+      <Grid container spacing={1}>
+        {fields.map(({ label, value }) => (
+          <Grid key={label} item xs={12} md={6}>
+            <Typography
+              variant="caption"
+              color="textSecondary"
+              sx={{ fontWeight: 500 }}>
+              {label}
+            </Typography>
+            <Typography variant="subtitle1">{value}</Typography>
+          </Grid>
+        ))}
+        {customerInfo ? (
+          customerInfo.map(({ label, value }) => (
             <Grid key={label} item xs={12} md={6}>
               <Typography
                 variant="caption"
@@ -60,32 +71,19 @@ const ServiceProviderVisit = ({ visit }: ServiceProviderVisitProps) => {
               </Typography>
               <Typography variant="subtitle1">{value}</Typography>
             </Grid>
-          ))}
-          {customerInfo ? (
-            customerInfo.map(({ label, value }) => (
-              <Grid key={label} item xs={12} md={6}>
-                <Typography
-                  variant="caption"
-                  color="textSecondary"
-                  sx={{ fontWeight: 500 }}>
-                  {label}
-                </Typography>
-                <Typography variant="subtitle1">{value}</Typography>
-              </Grid>
-            ))
-          ) : (
-            <Grid item xs={12} md={6}>
-              <RequestButton
-                isLoading={isLoading}
-                onClick={fetchCustomerInfo}
-                variant="text">
-                Show customer info
-              </RequestButton>
-            </Grid>
-          )}
-        </Grid>
-      </Card>
-    </Grid>
+          ))
+        ) : (
+          <Grid item xs={12} md={6}>
+            <RequestButton
+              isLoading={isLoading}
+              onClick={fetchCustomerInfo}
+              variant="text">
+              Show customer info
+            </RequestButton>
+          </Grid>
+        )}
+      </Grid>
+    </Card>
   );
 };
 
