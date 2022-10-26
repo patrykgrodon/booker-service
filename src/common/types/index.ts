@@ -20,10 +20,13 @@ export interface ServiceProviderFormValues {
 
 export type UserType = "customer" | "serviceProvider";
 
-export type CustomerUserInfo = Omit<CustomerFormValues, "confirmPassword">;
+export type CustomerUserInfo = Omit<
+  CustomerFormValues,
+  "password" | "confirmPassword"
+>;
 export type ServiceProviderUserInfo = Omit<
   ServiceProviderFormValues,
-  "confirmPassword"
+  "password" | "confirmPassword"
 >;
 
 export type User = { id: string } & (

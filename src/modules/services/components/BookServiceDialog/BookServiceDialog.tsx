@@ -42,13 +42,14 @@ const BookServiceDialog = ({
   );
 
   const handleBookVisit = async () => {
-    if (!user) return;
+    if (!user || user.type === "serviceProvider") return;
     setIsLoading(true);
     try {
+      const { type, ...restUserInfo } = user;
       const visit: Omit<Visit, "id"> = {
         service,
         date: visitDate,
-        customerId: user.id,
+        customer: restUserInfo,
       };
       await addVisit(visit);
       handleClose();

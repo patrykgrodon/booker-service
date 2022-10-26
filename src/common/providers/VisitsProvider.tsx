@@ -13,6 +13,7 @@ import { Service } from "modules/services/types";
 import { useQuery } from "react-query";
 import { convertToFirebaseTimestamp } from "utils/dateTimeUtils";
 import { parseGetDocs } from "utils/parseGetDocs";
+import { CustomerUserInfo } from "common/types";
 
 interface VisitsContextState {
   visits: Visit[] | undefined;
@@ -30,7 +31,7 @@ type Props = {
 };
 
 export interface Visit {
-  customerId: string;
+  customer: CustomerUserInfo & { id: string };
   date: Date;
   service: Service;
   id: string;

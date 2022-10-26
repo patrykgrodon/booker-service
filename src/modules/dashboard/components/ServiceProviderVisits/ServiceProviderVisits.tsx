@@ -38,9 +38,9 @@ const ServiceProviderVisits = ({
         }}>
         <Grid item xs={12}>
           <Typography variant="h3">
-            {serviceProviderVisits
-              ? `You have ${serviceProviderVisits.length} visits.`
-              : "You don't have visits."}
+            {serviceProviderVisits && serviceProviderVisits.length > 0
+              ? `${serviceProviderVisits.length} visits`
+              : "No visits."}
           </Typography>
         </Grid>
 

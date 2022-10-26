@@ -45,7 +45,7 @@ const ServiceCalendarContextProvider = ({
 
   useEffect(() => {
     const events =
-      serviceProviderVisits?.map(({ date, service, id }) => {
+      serviceProviderVisits?.map(({ date, service, id, customer }) => {
         const { duration, name } = service;
         const [h, m] = duration.split(":");
         const hours = +h;
@@ -57,10 +57,7 @@ const ServiceCalendarContextProvider = ({
           title: name,
           start: date.toISOString(),
           end: endDate,
-          extendedProps: {
-            firstName: "Wiktoria",
-            lastName: "Grodoń",
-          },
+          extendedProps: customer,
         };
       }) || [];
 
