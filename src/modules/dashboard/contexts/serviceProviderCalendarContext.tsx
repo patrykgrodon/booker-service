@@ -1,10 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { addHours, addMinutes } from "date-fns";
 import { DatesSetArg } from "@fullcalendar/react";
 import { Visit } from "common/providers/VisitsProvider";
 import { useAuth } from "modules/auth/contexts/authContext";
 import { useQuery } from "react-query";
 import { getServiceProviderVisits } from "../api";
+import { createStartEndVisitDates } from "modules/services/utils";
 
 interface ServiceCalendarContextState {
   events: any[];
@@ -47,16 +47,13 @@ const ServiceCalendarContextProvider = ({
     const events =
       serviceProviderVisits?.map(({ date, service, id, customer }) => {
         const { duration, name } = service;
-        const [h, m] = duration.split(":");
-        const hours = +h;
-        const minutes = +m;
 
-        const endDate = addHours(addMinutes(date, minutes), hours);
+        const { start, end } = createStartEndVisitDates(date, duration);
         return {
           id,
           title: name,
-          start: date.toISOString(),
-          end: endDate,
+          start,
+          end,
           extendedProps: customer,
         };
       }) || [];

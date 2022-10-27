@@ -39,7 +39,7 @@ const BookServiceDialog = ({
     <Dialog open={isOpen} onClose={handleClose}>
       <DialogTitle>Book service</DialogTitle>
       <CloseButton onClick={handleClose} />
-      <DialogContent sx={{ minWidth: "400px" }}>
+      <DialogContent sx={{ minWidth: "500px", maxWidth: "500px" }}>
         {isFetching ? (
           <Spinner size="medium" />
         ) : (

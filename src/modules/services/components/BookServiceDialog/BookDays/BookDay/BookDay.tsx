@@ -36,13 +36,13 @@ const BookDay = ({ day, changeCurrentDay, currentDay }: BookDayProps) => {
           top: "-20%",
           transform: "translate(-50%, -50%)",
         }}>
-        {format(day, "eeee").slice(0, 3)}
+        {format(day, "MMM").slice(0, 3)}
       </Typography>
       <Typography variant="subtitle1" align="center" sx={{ fontSize: 20 }}>
         {format(day, "dd")}
       </Typography>
-      <Typography variant="subtitle2">
-        {format(day, "MMM").slice(0, 3)}
+      <Typography variant="subtitle2" align="center">
+        {format(day, "eeee").slice(0, 3)}
       </Typography>
     </Box>
   );

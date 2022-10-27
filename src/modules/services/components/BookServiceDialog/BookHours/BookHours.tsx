@@ -22,10 +22,14 @@ const BookHours = ({
         minHeight: "250px",
         mt: 4,
         justifyContent: "center",
+        width: "100%",
       }}>
       <Typography variant="subtitle1" sx={{ width: "100%" }}>
         Available hours
       </Typography>
+      {availableHours.length === 0 ? (
+        <Typography variant="caption">No available hours this day</Typography>
+      ) : null}
       {availableHours.map(({ asDate, asString }) => (
         <Box
           key={asString}

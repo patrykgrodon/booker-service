@@ -4,7 +4,10 @@ import { useVisits, Visit } from "common/providers/VisitsProvider";
 import { addDays, startOfDay } from "date-fns";
 import { useAuth } from "modules/auth/contexts/authContext";
 import { getServiceProviderVisits } from "modules/dashboard/api";
-import { createAvailableHours } from "modules/services/utils";
+import {
+  createAvailableHours,
+  filterAvailableHours,
+} from "modules/services/utils";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { Service } from "../types";
@@ -45,7 +48,11 @@ const useBookService = (service: Service, handleClose: () => void) => {
         service.duration,
         currentDay
       );
-      setAvailableHours(availableHours);
+      const filteredAvailableHours = filterAvailableHours(
+        availableHours,
+        visits
+      );
+      setAvailableHours(filteredAvailableHours);
 
       return visits;
     },
