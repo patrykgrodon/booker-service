@@ -1,5 +1,5 @@
 import { DeleteForeverOutlined } from "@mui/icons-material";
-import { TableCell, TableRow } from "@mui/material";
+import { Box, TableCell, TableRow } from "@mui/material";
 import { ActionIconButton } from "common/components";
 import { makeSx } from "common/styles/makeSx";
 import { useServices } from "modules/services/contexts/servicesContext";
@@ -39,18 +39,29 @@ const MyServicesTableRow = ({ service }: MyServicesTableRowProps) => {
         {duration}
       </TableCell>
       <TableCell sx={sxTableCell} align="right">
-        {cost} €
+        <Box
+          sx={{
+            minWidth: "max-content",
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}>
+          {cost} €
+        </Box>
       </TableCell>
       <TableCell sx={sxTableCell} align="right">
-        <EditServiceBtn service={service} />
-        <ActionIconButton
-          isLoading={isLoading}
-          onClick={handleDelete}
-          disableTooltipMargin
-          enabled
-          icon={DeleteForeverOutlined}
-          tooltip="Delete"
-        />
+        <Box
+          sx={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
+          <EditServiceBtn service={service} />
+          <ActionIconButton
+            isLoading={isLoading}
+            onClick={handleDelete}
+            disableTooltipMargin
+            enabled
+            icon={DeleteForeverOutlined}
+            tooltip="Delete"
+          />
+        </Box>
       </TableCell>
     </TableRow>
   );
