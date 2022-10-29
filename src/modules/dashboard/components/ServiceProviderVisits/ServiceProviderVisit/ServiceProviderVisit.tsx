@@ -22,21 +22,26 @@ const ServiceProviderVisit = ({ visit }: ServiceProviderVisitProps) => {
   ];
 
   return (
-    <Card sx={{ padding: (theme) => theme.spacing(2) }}>
-      <Grid container spacing={1}>
-        {fields.map(({ label, value }) => (
-          <Grid key={label} item xs={12} md={6}>
-            <Typography
-              variant="caption"
-              color="textSecondary"
-              sx={{ fontWeight: 500 }}>
-              {label}
-            </Typography>
-            <Typography variant="subtitle1">{value}</Typography>
-          </Grid>
-        ))}
-      </Grid>
-    </Card>
+    <Grid item xs={12} sm={6} lg={12}>
+      <Card
+        sx={{
+          padding: (theme) => theme.spacing(2),
+        }}>
+        <Grid container spacing={1}>
+          {fields.map(({ label, value }) => (
+            <Grid key={label} item xs={12} sm={6}>
+              <Typography
+                variant="caption"
+                color="textSecondary"
+                sx={{ fontWeight: 500 }}>
+                {label}
+              </Typography>
+              <Typography variant="subtitle1">{value}</Typography>
+            </Grid>
+          ))}
+        </Grid>
+      </Card>
+    </Grid>
   );
 };
 

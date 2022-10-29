@@ -1,16 +1,9 @@
-import { Box, Paper } from "@mui/material";
-import { Spinner } from "common/components";
+import { Box } from "@mui/material";
 import useTabsContainerStyles from "common/components/TabsContainer/styles";
 import { useAuth } from "modules/auth/contexts/authContext";
-import ServiceProviderCalendar from "../components/ServiceProviderCalendar/ServiceProviderCalendar";
-import ServiceProviderVisits from "../components/ServiceProviderVisits/ServiceProviderVisits";
+import CustomerVisits from "../components/CustomerVisits/CustomerVisits";
+import ServiceProviderDashboard from "../components/ServiceProviderDashboard/ServiceProviderDashboard";
 import ServiceCalendarContextProvider from "../contexts/serviceProviderCalendarContext";
-
-const LoadingSpinner = (
-  <Box sx={{ flex: 1 }}>
-    <Spinner size="medium" />
-  </Box>
-);
 
 const Dashboard = () => {
   const classes = useTabsContainerStyles();
@@ -25,23 +18,12 @@ const Dashboard = () => {
           sx={{
             height: "100% !important",
             maxHeight: "100% !important",
-            display: "flex",
-            columnGap: 2,
           }}>
-          <Paper
-            sx={{
-              maxWidth: "300px",
-              padding: (theme) => theme.spacing(2),
-              overflow: "auto",
-            }}>
-            <ServiceProviderVisits LoadingSpinner={LoadingSpinner} />
-          </Paper>
-          <ServiceProviderCalendar />
-          {/* {user.type === "customer" ? (
-          <CustomerVisits LoadingSpinner={LoadingSpinner} />
+          {user.type === "customer" ? (
+            <CustomerVisits />
           ) : (
-            <ServiceProviderVisits LoadingSpinner={LoadingSpinner} />
-          )} */}
+            <ServiceProviderDashboard />
+          )}
         </Box>
       </Box>
     </ServiceCalendarContextProvider>

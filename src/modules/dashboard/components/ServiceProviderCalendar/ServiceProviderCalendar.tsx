@@ -9,7 +9,6 @@ import { useServiceCalendar } from "modules/dashboard/contexts/serviceProviderCa
 import { renderEventContent } from "modules/dashboard/utils/renderEventContent";
 
 const ServiceProviderCalendar = () => {
-  // const [currentEvents, setCurrentEvents] = useState<EventApi[]>([]);
   const { events, handleDatesSet, isLoading } = useServiceCalendar();
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {
@@ -44,12 +43,17 @@ const ServiceProviderCalendar = () => {
     <Box
       sx={{
         flex: 1,
+        overflow: "auto",
       }}>
       <Paper
         sx={{
           padding: (theme) => theme.spacing(2),
           maxHeight: "100%",
           overflow: "auto",
+          "& .fc-media-screen": {
+            minWidth: { xs: "1000px", md: 0 },
+            overflow: "auto",
+          },
         }}>
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

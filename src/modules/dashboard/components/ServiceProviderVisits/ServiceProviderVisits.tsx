@@ -3,14 +3,15 @@ import ServiceProviderVisit from "./ServiceProviderVisit/ServiceProviderVisit";
 import { useServiceCalendar } from "modules/dashboard/contexts/serviceProviderCalendarContext";
 import { format } from "date-fns";
 import { dashedDateFormat } from "utils/dateTimeUtils";
+import { Spinner } from "common/components";
 
-interface ServiceProviderVisitsProps {
-  LoadingSpinner: JSX.Element;
-}
+const LoadingSpinner = (
+  <Box sx={{ flex: 1 }}>
+    <Spinner size="medium" />
+  </Box>
+);
 
-const ServiceProviderVisits = ({
-  LoadingSpinner,
-}: ServiceProviderVisitsProps) => {
+const ServiceProviderVisits = () => {
   const { isLoading, serviceProviderVisits, dateRange } = useServiceCalendar();
   if (isLoading) return LoadingSpinner;
 
@@ -28,13 +29,12 @@ const ServiceProviderVisits = ({
         Visits
       </Typography>
       <Typography>{getDateText()}</Typography>
-      <Box
+      <Grid
+        container
+        spacing={2}
         sx={{
           marginTop: (theme) => theme.spacing(3),
           maxWidth: "100%",
-          display: "flex",
-          flexDirection: "column",
-          rowGap: 2,
         }}>
         <Grid item xs={12}>
           <Typography variant="h3">
@@ -49,7 +49,7 @@ const ServiceProviderVisits = ({
           .map((visit) => (
             <ServiceProviderVisit key={visit.id} visit={visit} />
           ))}
-      </Box>
+      </Grid>
     </>
   );
 };

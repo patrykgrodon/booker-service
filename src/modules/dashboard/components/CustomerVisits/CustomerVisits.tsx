@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { db } from "firebase-config";
 import { useAuth } from "modules/auth/contexts/authContext";
 import { useQuery } from "react-query";
@@ -6,12 +6,15 @@ import { collection, getDocs, query, where } from "@firebase/firestore";
 import { parseGetDocs } from "utils/parseGetDocs";
 import { Visit, VisitWithTimeStamp } from "common/providers/VisitsProvider";
 import CustomerVisit from "./CustomerVisit/CustomerVisit";
+import { Spinner } from "common/components";
 
-interface CustomerVisitsProps {
-  LoadingSpinner: JSX.Element;
-}
+const LoadingSpinner = (
+  <Box sx={{ flex: 1 }}>
+    <Spinner size="medium" />
+  </Box>
+);
 
-const CustomerVisits = ({ LoadingSpinner }: CustomerVisitsProps) => {
+const CustomerVisits = () => {
   const { user } = useAuth();
 
   const getCustomerVisits = async (userId: string) => {

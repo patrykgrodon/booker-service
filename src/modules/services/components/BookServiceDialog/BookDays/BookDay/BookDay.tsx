@@ -8,7 +8,6 @@ interface BookDayProps {
 }
 
 const BookDay = ({ day, changeCurrentDay, currentDay }: BookDayProps) => {
-  //   console.log(day, currentDay);
   return (
     <Box
       onClick={changeCurrentDay}
