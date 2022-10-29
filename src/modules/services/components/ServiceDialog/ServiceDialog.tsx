@@ -29,7 +29,11 @@ const ServiceDialog = ({
         {!!defaultService ? "Edit" : "Add"} service
       </DialogTitle>
       <CloseButton onClick={handleClose} />
-      <DialogContent sx={{ minWidth: "500px", maxWidth: "500px" }}>
+      <DialogContent
+        sx={{
+          minWidth: { xs: "90vw", sm: "500px" },
+          maxWidth: { xs: "90vw", sm: "500px" },
+        }}>
         {userSettings?.openingHours ? (
           <ServiceForm
             handleClose={handleClose}
