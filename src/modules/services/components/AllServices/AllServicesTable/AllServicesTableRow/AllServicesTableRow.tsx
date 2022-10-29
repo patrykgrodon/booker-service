@@ -1,4 +1,4 @@
-import { TableCell, TableRow } from "@mui/material";
+import { Box, TableCell, TableRow } from "@mui/material";
 
 import { makeSx } from "common/styles/makeSx";
 
@@ -32,7 +32,15 @@ const AllServicesTableRow = ({ service }: AllServicesTableRowProps) => {
         {duration}
       </TableCell>
       <TableCell sx={sxTableCell} align="right">
-        {cost} €
+        <Box
+          sx={{
+            minWidth: "max-content",
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}>
+          {cost} €
+        </Box>
       </TableCell>
       <TableCell sx={sxTableCell} align="right">
         <BookServiceBtn service={service} />
