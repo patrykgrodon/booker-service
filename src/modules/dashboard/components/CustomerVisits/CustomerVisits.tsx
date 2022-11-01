@@ -21,7 +21,7 @@ const CustomerVisits = () => {
     const visitsCollectionRef = collection(db, "visits");
     const q = query(
       visitsCollectionRef,
-      where("customerId", "==", userId),
+      where("customer.id", "==", userId),
       where("date", ">", new Date())
     );
     const data = await getDocs(q);
@@ -40,7 +40,17 @@ const CustomerVisits = () => {
     }
   );
 
-  if (isLoading) return LoadingSpinner;
+  if (isLoading)
+    return (
+      <Box
+        sx={{
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+        }}>
+        {LoadingSpinner}
+      </Box>
+    );
 
   return (
     <Grid
