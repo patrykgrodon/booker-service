@@ -1,4 +1,4 @@
-export type ServiceType = string;
+export type ServiceType = "Hairdresser" | "Nails" | string;
 export interface Service {
   name: string;
   type: ServiceType;

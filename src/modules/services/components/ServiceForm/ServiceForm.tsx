@@ -88,7 +88,7 @@ const ServiceForm = ({ handleClose, defaultService, id }: ServiceFormProps) => {
           })}
           error={errors.type}>
           <MenuItem value="Hairdresser">Hairdresser</MenuItem>
-          <MenuItem value="Nails stylist">Nails stylist</MenuItem>
+          <MenuItem value="Nails">Nails</MenuItem>
         </ControlSelect>
       </Grid>
       <Grid item xs={12} md={6}>
