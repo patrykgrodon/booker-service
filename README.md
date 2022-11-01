@@ -1,8 +1,9 @@
-
 # Booker Service APP
+
 This is an application for customers and service providers to book and manage visits.
 
 ## DEMO
+
 https://booker-service.netlify.app/
 
 ## Getting Started with Create React App

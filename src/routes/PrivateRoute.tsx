@@ -1,16 +1,22 @@
+import { Layout } from "common/components";
+import { useAuth } from "modules/auth/contexts/authContext";
 import { Navigate, Outlet } from "react-router-dom";
 import { Routes } from "./routePaths";
 
 const PrivateRoute = () => {
-  const isAuthorised = Boolean("s");
+  const { user } = useAuth();
+
+  const isAuthorised = Boolean(user);
   // const location = useLocation();
 
   return isAuthorised ? (
-    <Outlet />
+    <Layout>
+      <Outlet />
+    </Layout>
   ) : (
     <Navigate
       replace
-      to={Routes.Base}
+      to={Routes.Login}
       // state={!prevLoginInfo ? { from: location } : undefined}
     />
   );

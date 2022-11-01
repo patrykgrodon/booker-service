@@ -1,7 +1,7 @@
 export enum ValidationMessages {
   Required = "To pole jest wymagane!",
   PasswordMatch = "Hasła muszą być takie same!",
-  PasswordPattern = "Hasło powinno zawierać min. 8 znaków, małą i dużą literę, cyfrę oraz znak specjalny (!@*$&)",
+  PasswordPattern = "Hasło powinno zawierać min. 8 znaków, małą i dużą literę, cyfrę oraz znak specjalny (@$!%*?&)",
   NameTaken = "Podana nazwa jest już zajęta",
   NumbersOnly = "To pole może zawierać jedynie cyfry!",
   OnlyAlphanumeric = "To pole nie może zawierać znaków specjalnych!",
@@ -82,13 +82,3 @@ export const checkIfEmergency = (value: string) => {
 
 export const checkPasswordMatch = (value: string, passwordToMatch: string) =>
   value === passwordToMatch ? undefined : ValidationMessages.PasswordMatch;
-
-const workNumberValidate = (v: string) => {
-  if (v.length > 3 && v.length < 9)
-    return "To pole musi zawierać min. 9 znaków!";
-  if (v.length > 15) return "To pole musi zawierać max. 15 znaków!";
-  return undefined;
-};
-export const workNumberRules = {
-  validate: workNumberValidate,
-};

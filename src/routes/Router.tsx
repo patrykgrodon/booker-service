@@ -10,6 +10,9 @@ import { Routes } from "./routePaths";
 import { Suspense } from "react";
 import { Spinner } from "common/components";
 import { Login } from "modules/auth/components";
+import Dashboard from "modules/dashboard/pages/Dashboard";
+import Services from "modules/services/pages/Services";
+import CreateAccount from "modules/manager/pages/CreateAccount";
 
 const Router = () => {
   return (
@@ -20,14 +23,23 @@ const Router = () => {
             path={Routes.Login}
             element={
               <RestrictedRoute>
-                <div>login</div>
+                <Login />
+              </RestrictedRoute>
+            }
+          />
+          <Route
+            path={Routes.CreateAccount}
+            element={
+              <RestrictedRoute>
+                <CreateAccount />
               </RestrictedRoute>
             }
           />
           <Route path={Routes.Base} element={<PrivateRoute />}>
-            <Route path={Routes.Base} element={<Login />} />
-            <Route path="*" element={<Navigate replace to={Routes.Login} />} />
+            <Route path={Routes.Dashboard} element={<Dashboard />} />
+            <Route path={Routes.Services} element={<Services />} />
           </Route>
+          <Route path="*" element={<Navigate replace to={Routes.Login} />} />
         </RouterRoutes>
       </Suspense>
     </BrowserRouter>
