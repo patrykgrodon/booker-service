@@ -14,6 +14,16 @@ interface CustomerVisitProps {
   visit: Visit;
 }
 
+const fieldGridProps = {
+  item: true,
+  xs: 12,
+  sx: {
+    "@media screen and (min-width: 400px)": {
+      flexBasis: "50%",
+    },
+  },
+} as const;
+
 const CustomerVisit = ({ visit }: CustomerVisitProps) => {
   const { date, service } = visit;
   const [isLoading, setIsLoading] = useState(false);
@@ -40,11 +50,11 @@ const CustomerVisit = ({ visit }: CustomerVisitProps) => {
   };
 
   return (
-    <Grid item xs={12} md={6} lg={4}>
+    <Grid item xs={12} sm={6} md={12} xl={6}>
       <Card sx={{ padding: (theme) => theme.spacing(2) }}>
         <Grid container spacing={1}>
           {fields.map(({ label, value }) => (
-            <Grid key={label} item xs={12} md={6}>
+            <Grid key={label} {...fieldGridProps}>
               <Typography
                 variant="caption"
                 color="textSecondary"
@@ -54,7 +64,7 @@ const CustomerVisit = ({ visit }: CustomerVisitProps) => {
               <Typography variant="subtitle1">{value}</Typography>
             </Grid>
           ))}
-          <Grid item xs={12} md={6}>
+          <Grid {...fieldGridProps}>
             {phoneNumber ? (
               <>
                 <Typography
