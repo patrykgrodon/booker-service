@@ -38,7 +38,13 @@ const LoginForm = () => {
     try {
       await login(values);
     } catch (err: any) {
-      setError(err.message);
+      if (err.message.includes("user-not-found")) {
+        setError("User not found");
+      } else if (err.message.includes("wrong-password")) {
+        setError("Wrong password");
+      } else {
+        setError(err.message);
+      }
     }
     setIsLoading(false);
   };

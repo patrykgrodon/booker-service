@@ -1,11 +1,8 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { PasswordField, RequestButton } from "common/components";
 import { ServiceProviderFormValues } from "common/types";
-import { useAuth } from "modules/auth/contexts/authContext";
-import { useState } from "react";
+import useCreateUser from "modules/manager/hooks/useCreateUser";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { Routes } from "routes";
 import {
   checkIfEmpty,
   checkPasswordMatch,
@@ -31,27 +28,8 @@ const ServiceProviderForm = () => {
     watch,
     formState: { errors },
   } = useForm({ defaultValues });
-  const navigate = useNavigate();
-  const { createUser } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const handleBack = () => navigate(Routes.Login);
-  const submitHandler = async (formValues: ServiceProviderFormValues) => {
-    setError("");
-    setIsLoading(true);
-    try {
-      const { confirmPassword, ...restValues } = formValues;
-      await createUser("serviceProvider", restValues);
-      navigate(Routes.Dashboard);
-    } catch (err: any) {
-      const errMsg = err.message.includes("email-already-in-use")
-        ? "Email already in use"
-        : err.message;
-      setError(errMsg);
-    }
-    setIsLoading(false);
-  };
+  const { error, handleBack, isLoading, submitHandler } =
+    useCreateUser("serviceProvider");
 
   const password = watch("password");
 
