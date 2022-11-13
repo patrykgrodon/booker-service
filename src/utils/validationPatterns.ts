@@ -1,20 +1,15 @@
 export enum ValidationMessages {
-  Required = "To pole jest wymagane!",
-  PasswordMatch = "Hasła muszą być takie same!",
-  PasswordPattern = "Hasło powinno zawierać min. 8 znaków, małą i dużą literę, cyfrę oraz znak specjalny (@$!%*?&)",
-  NameTaken = "Podana nazwa jest już zajęta",
-  NumbersOnly = "To pole może zawierać jedynie cyfry!",
-  OnlyAlphanumeric = "To pole nie może zawierać znaków specjalnych!",
-  Emergency = "Numer wewnętrzny nie może zaczynać się od 99, 98 lub 112.",
-  WrongEmail = "Błędny adres email",
+  Required = "This field is required!",
+  PasswordMatch = "Passwords must be same!",
+  PasswordPattern = "The password should contain min. 8 characters, lowercase and uppercase letter, number and special character (@$!%*?&)",
+  NumbersOnly = "This field can contain only numbers!",
+  WrongEmail = "Wrong email!",
 }
 
 export const validationPatterns = {
   password:
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
   onlyNumbers: /^\d+$/,
-  onlyAlphanumeric: /^[a-z0-9]+$/i,
-  onlyAlphanumericWithSpace: /^[a-z0-9 ]+$/i,
   email: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
 };
 
@@ -28,14 +23,6 @@ export const onlyNumbersValidator = {
   message: ValidationMessages.NumbersOnly,
 };
 
-export const alphanumericValidator = {
-  value: validationPatterns.onlyAlphanumeric,
-  message: ValidationMessages.OnlyAlphanumeric,
-};
-export const sipAccNameValidator = {
-  value: validationPatterns.onlyAlphanumericWithSpace,
-  message: ValidationMessages.OnlyAlphanumeric,
-};
 export const emailValidator = {
   value: validationPatterns.email,
   message: ValidationMessages.WrongEmail,
@@ -43,25 +30,25 @@ export const emailValidator = {
 
 export const minLengthValidator = (minLength: number) => ({
   value: minLength,
-  message: `To pole musi zawierać min. ${minLength} znaków!`,
+  message: `This password should contain min. ${minLength} characters!`,
 });
 
 export const maxLengthValidator = (maxLength: number) => ({
   value: maxLength,
-  message: `To pole może zawierać max. ${maxLength} znaków!`,
+  message: `This field should contain max. ${maxLength} characters!`,
 });
 
 export const minValueValidator = (value: string, minValue: number) => {
   if (value === "") return undefined;
   return minValue > +value
-    ? `Minimalna wartość dla tego pola to ${minValue}!`
+    ? `Minimum value for this field is ${minValue}!`
     : undefined;
 };
 
 export const maxValueValidator = (value: string, maxValue: number) => {
   if (value === "") return undefined;
   return maxValue < +value
-    ? `Maksymalna wartość dla tego pola to ${maxValue}!`
+    ? `Maximum value for this field is ${maxValue}!`
     : undefined;
 };
 
@@ -70,15 +57,6 @@ export const checkIfEmpty = (value: string) =>
 
 export const checkIfMultiselectEmpty = (value: any[]) =>
   value.length > 0 || ValidationMessages.Required;
-
-export const checkIfEmergency = (value: string) => {
-  return (
-    (!value.startsWith("99") &&
-      !value.startsWith("98") &&
-      !value.startsWith("112")) ||
-    ValidationMessages.Emergency
-  );
-};
 
 export const checkPasswordMatch = (value: string, passwordToMatch: string) =>
   value === passwordToMatch ? undefined : ValidationMessages.PasswordMatch;
