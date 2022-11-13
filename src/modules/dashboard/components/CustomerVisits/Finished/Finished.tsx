@@ -8,7 +8,14 @@ interface FinishedProps {
 
 const Finished = ({ visits }: FinishedProps) => {
   return (
-    <Grid container item xs={12} md={6} spacing={2} alignSelf="flex-start">
+    <Grid
+      container
+      item
+      xs={12}
+      md={6}
+      spacing={2}
+      alignSelf="flex-start"
+      sx={{ mt: { xs: 2, md: -2 } }}>
       <Grid item xs={12}>
         <Typography variant="h2">Finished</Typography>
       </Grid>

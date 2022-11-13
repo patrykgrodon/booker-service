@@ -27,7 +27,7 @@ const UserSettingsContextProvider = ({
     data: userSettings,
     refetch,
     isLoading,
-  } = useQuery([`user-settings-${user?.id || ""}`], async () => {
+  } = useQuery([`user-settings`, user?.id], async () => {
     if (!user) return undefined;
     return getUserSettings(user.id);
   });
