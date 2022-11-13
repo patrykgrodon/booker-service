@@ -82,18 +82,12 @@ const LoginForm = () => {
         type="submit">
         Log in
       </RequestButton>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <Link
           component={RouterLink}
           to={Routes.CreateAccount}
           color="primary.dark">
           Create account
-        </Link>
-        <Link
-          component={RouterLink}
-          to={Routes.ForgotPassword}
-          color="primary.dark">
-          Remind password
         </Link>
       </Box>
     </Box>
