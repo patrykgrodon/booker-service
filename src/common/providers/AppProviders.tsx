@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import MuiThemeProviders from "./MuiThemeProviders";
+import { MuiThemeProviders, ToastProvider } from ".";
 
 type AppProvidersProps = {
   children: React.ReactNode;
@@ -18,7 +18,7 @@ const AppProviders = ({ children }: AppProvidersProps) => {
   return (
     <MuiThemeProviders>
       <QueryClientProvider client={queryClient}>
-        {children};
+        <ToastProvider>{children}</ToastProvider>
       </QueryClientProvider>
     </MuiThemeProviders>
   );
