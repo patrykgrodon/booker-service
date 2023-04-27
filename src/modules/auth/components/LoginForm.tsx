@@ -2,7 +2,6 @@ import { Box, Link as MuiLink, TextField } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { routes } from "routes";
 import {
@@ -10,14 +9,13 @@ import {
   RequestButton,
   SubmitErrorMessage,
 } from "common/components";
-import { Login, LoginFormValues } from "modules/auth/types";
+import { LoginFormValues } from "modules/auth/types";
 import {
   emailValidator,
-  passwordValidator,
   validationMessages,
 } from "common/utils/validationPatterns";
 import FormContainer from "./FormContainer";
-import { auth } from "firebase-config";
+import { useAuth } from "../contexts/authContext";
 
 const defaultValues: LoginFormValues = {
   email: "",
@@ -33,14 +31,10 @@ const LoginForm = () => {
     defaultValues,
   });
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const login: Login = async (formValues) => {
-    const { email, password } = formValues;
-    await signInWithEmailAndPassword(auth, email, password);
-  };
 
   const submitLogin = async (formValues: LoginFormValues) => {
     setError("");
@@ -70,7 +64,6 @@ const LoginForm = () => {
       <PasswordField
         {...register("password", {
           required: validationMessages.required,
-          pattern: passwordValidator,
         })}
         size="small"
         label="Password"
@@ -79,7 +72,7 @@ const LoginForm = () => {
       />
       {error ? <SubmitErrorMessage error={error} /> : null}
       <RequestButton type="submit" isLoading={isLoading}>
-        Log in
+        Sign in
       </RequestButton>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <MuiLink component={Link} to={routes.register}>
