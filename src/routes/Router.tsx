@@ -1,7 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { routes } from "./routes";
-import { AuthLayout, LoginForm } from "modules/auth/components";
+import {
+  AuthLayout,
+  LoginForm,
+  ForgotPasswordForm,
+} from "modules/auth/components";
 
 const Router = () => {
   return (
@@ -12,6 +16,14 @@ const Router = () => {
           element={
             <AuthLayout>
               <LoginForm />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path={routes.forgotPassword}
+          element={
+            <AuthLayout>
+              <ForgotPasswordForm />
             </AuthLayout>
           }
         />

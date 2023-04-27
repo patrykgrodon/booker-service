@@ -3,4 +3,8 @@ export type LoginFormValues = {
   password: string;
 };
 
+export type ForgotPasswordFormValues = {
+  email: string;
+};
+
 export type Login = (formValues: LoginFormValues) => Promise<void>;
