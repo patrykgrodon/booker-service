@@ -17,9 +17,10 @@ const FormContainer = ({ children, title, onSubmit }: FormContainerProps) => {
         display: "flex",
         flexDirection: "column",
         rowGap: 3,
-        width: "430px",
+        minWidth: { xs: "100%", sm: "430px" },
         maxWidth: "95%",
-      }}>
+      }}
+    >
       <Typography variant="h3" component="h1">
         {title}
       </Typography>

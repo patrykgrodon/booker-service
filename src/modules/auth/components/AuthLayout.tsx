@@ -13,36 +13,53 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
       sx={{
         display: "flex",
         height: "100%",
+        overflow: "auto",
         flexDirection: "column",
-        mx: { xs: 2, md: 6, lg: 15 },
+        px: { xs: 2, md: 6, lg: 15 },
       }}
     >
-      <Box sx={{ height: "64px", display: "flex", alignItems: "center" }}>
+      <Box
+        sx={{
+          height: "64px",
+          flexShrink: 0,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <Logo />
       </Box>
       <Box
         sx={{
+          flex: 1,
           display: "flex",
           flexDirection: { xs: "column", lg: "row" },
-          flex: 1,
           justifyContent: { xs: "center", lg: "space-evenly" },
           alignItems: "center",
           columnGap: 12,
+          rowGap: 6,
+          py: 2,
         }}
       >
         <Box
-          component="img"
-          src={barberIllustration}
-          alt="Barber Illustration"
           sx={{
-            display: { xs: "none", sm: "block" },
-            opacity: 0.7,
-            width: { xs: 300, lg: 600 },
-            height: { xs: 300, lg: 600 },
-            aspectRatio: "138/100",
-            flexShrink: 1,
+            flex: { xs: 0, lg: 1 },
+            flexShrink: { xs: 1, sm: 0 },
+            display: { xs: "none", sm: "flex" },
+            justifyContent: "center",
+            height: { xs: "max-content" },
           }}
-        />
+        >
+          <Box
+            component="img"
+            src={barberIllustration}
+            alt="Barber Illustration"
+            sx={{
+              opacity: 0.7,
+              width: { xs: "50%", lg: "100%" },
+              height: "max-content",
+            }}
+          />
+        </Box>
         {children}
       </Box>
     </Box>

@@ -1,7 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { routes } from "./routes";
-import { LoginForm, ForgotPasswordForm } from "modules/auth/components";
+import {
+  LoginForm,
+  ForgotPasswordForm,
+  RegisterForm,
+} from "modules/auth/components";
 import RestrictedRoute from "./RestrictedRoute";
 import PrivateRoute from "./PrivateRoute";
 
@@ -11,6 +15,7 @@ const Router = () => {
       <Routes>
         <Route element={<RestrictedRoute />}>
           <Route path={routes.login} element={<LoginForm />} />
+          <Route path={routes.register} element={<RegisterForm />} />
           <Route
             path={routes.forgotPassword}
             element={<ForgotPasswordForm />}

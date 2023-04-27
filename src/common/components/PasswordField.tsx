@@ -19,9 +19,9 @@ const PasswordField = forwardRef(({ ...props }: TextFieldProps, ref: any) => {
             onClick={togglePasswordVisible}
           >
             {isPasswordVisible ? (
-              <VisibilityOffOutlined />
+              <VisibilityOffOutlined fontSize="small" />
             ) : (
-              <VisibilityOutlined />
+              <VisibilityOutlined fontSize="small" />
             )}
           </IconButton>
         ),

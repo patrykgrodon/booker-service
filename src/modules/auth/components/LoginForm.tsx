@@ -49,7 +49,7 @@ const LoginForm = () => {
   };
 
   return (
-    <FormContainer onSubmit={handleSubmit(submitLogin)} title="">
+    <FormContainer onSubmit={handleSubmit(submitLogin)} title="Start work">
       <TextField
         {...register("email", {
           required: validationMessages.required,

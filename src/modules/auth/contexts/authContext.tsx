@@ -1,15 +1,22 @@
 import { createContext, useContext } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth } from "firebase-config";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import { doc, setDoc } from "@firebase/firestore";
+
+import { auth, db } from "firebase-config";
 import { Spinner } from "common/components";
-import { Login } from "../types";
+import { Login, Register } from "../types";
 import { User } from "common/types";
 import useFirebaseAuthState from "modules/hooks/useFirebaseAuthState";
 import { getUserData } from "../api";
 
 type AuthContextState = {
   login: Login;
+  register: Register;
   logout: () => Promise<void>;
   user: User | undefined;
 };
@@ -44,11 +51,31 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     setUserData(undefined);
   };
 
+  const register: Register = async (formValues) => {
+    const {
+      user: { uid },
+    } = await createUserWithEmailAndPassword(
+      auth,
+      formValues.email,
+      formValues.password
+    );
+    const userDocRef = doc(db, "users", uid);
+    const userInfo: User = {
+      city: formValues.city,
+      companyName: formValues.companyName,
+      email: formValues.email,
+      phoneNumber: formValues.phoneNumber,
+      street: formValues.phoneNumber,
+      streetNumber: formValues.streetNumber,
+    };
+    await setDoc(userDocRef, userInfo);
+  };
+
   if (isCheckingAuth || isLoadingUserData)
     return <Spinner fullPage size="large" />;
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
