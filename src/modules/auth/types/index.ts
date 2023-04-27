@@ -9,7 +9,7 @@ export type ForgotPasswordFormValues = {
   email: string;
 };
 
-export type RegisterFormValues = User & {
+export type RegisterFormValues = Omit<User, "id"> & {
   password: string;
   confirmPassword: string;
 };

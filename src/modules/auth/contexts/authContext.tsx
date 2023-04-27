@@ -60,7 +60,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       formValues.password
     );
     const userDocRef = doc(db, "users", uid);
-    const userInfo: User = {
+    const userInfo: Omit<User, "id"> = {
       city: formValues.city,
       companyName: formValues.companyName,
       email: formValues.email,
