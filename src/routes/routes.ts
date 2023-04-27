@@ -1,5 +1,6 @@
 export const routes = {
+  base: "/",
   login: "/login",
 } as const;
 
-export type Routes = keyof typeof routes;
+export type Route = keyof typeof routes;
