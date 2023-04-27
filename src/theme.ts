@@ -1,7 +1,5 @@
 import { createTheme, responsiveFontSizes } from "@mui/material";
 
-export const GLOBAL_FONTSIZE = 14;
-
 let theme = createTheme({
   components: {
     MuiModal: {
@@ -44,7 +42,6 @@ let theme = createTheme({
       },
     },
   },
-  spacing: GLOBAL_FONTSIZE / 2,
   typography: {
     fontFamily: `"Lato", "Segoe UI", "sans-serif"`,
     fontWeightLight: 400,

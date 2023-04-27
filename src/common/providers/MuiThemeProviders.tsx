@@ -1,5 +1,5 @@
 import { CssBaseline, GlobalStyles, ThemeProvider } from "@mui/material";
-import theme, { GLOBAL_FONTSIZE } from "theme";
+import theme from "theme";
 
 type MuiThemeProvidersProps = {
   children: React.ReactNode;
@@ -11,7 +11,6 @@ const MuiThemeProviders = ({ children }: MuiThemeProvidersProps) => {
       <CssBaseline />
       <GlobalStyles
         styles={{
-          html: { fontSize: GLOBAL_FONTSIZE },
           body: { height: "100vh", "& #root": { height: "100%" } },
         }}
       />
