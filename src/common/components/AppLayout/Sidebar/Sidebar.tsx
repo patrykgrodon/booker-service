@@ -1,10 +1,10 @@
-import { CottageOutlined } from "@mui/icons-material";
+import { CottageOutlined, DesignServicesOutlined } from "@mui/icons-material";
 import { List, useMediaQuery } from "@mui/material";
 
 import { routes } from "routes";
+import theme from "theme";
 import SidebarItem, { SidebarItem as SidebarItemType } from "./SidebarItem";
 import { Drawer } from "./styledDrawer";
-import theme from "theme";
 
 type SidebarProps = {
   isOpen: boolean;
@@ -12,6 +12,7 @@ type SidebarProps = {
 
 const sidebarItems: SidebarItemType[] = [
   { label: "Dashboard", icon: CottageOutlined, path: routes.base },
+  { label: "Services", icon: DesignServicesOutlined, path: routes.services },
 ];
 
 const Sidebar = ({ isOpen }: SidebarProps) => {

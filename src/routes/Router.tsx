@@ -8,6 +8,7 @@ import {
 } from "modules/auth/components";
 import RestrictedRoute from "./RestrictedRoute";
 import PrivateRoute from "./PrivateRoute";
+import Services from "modules/services/pages/Services";
 
 const Router = () => {
   return (
@@ -23,6 +24,7 @@ const Router = () => {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path={routes.base} element={<>base</>} />
+          <Route path={routes.services} element={<Services />} />
         </Route>
         <Route path="*" element={<Navigate replace to={routes.login} />} />
       </Routes>
