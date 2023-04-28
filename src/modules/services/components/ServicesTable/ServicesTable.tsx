@@ -30,21 +30,28 @@ const ServicesTable = () => {
     );
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            {headers.map((header) => (
-              <TableCell key={header}>{header}</TableCell>
+    <TableContainer
+      sx={{
+        flex: 1,
+        overflow: "auto",
+      }}
+    >
+      <Paper>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {headers.map((header) => (
+                <TableCell key={header}>{header}</TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {services?.map((service) => (
+              <ServicesTableRow key={service.name} service={service} />
             ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {services?.map((service) => (
-            <ServicesTableRow key={service.name} service={service} />
-          ))}
-        </TableBody>
-      </Table>
+          </TableBody>
+        </Table>
+      </Paper>
     </TableContainer>
   );
 };

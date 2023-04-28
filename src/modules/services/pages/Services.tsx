@@ -3,7 +3,13 @@ import { ServicesTable, AddServiceBtn } from "../components";
 
 const Services = () => {
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+      }}
+    >
       <Box
         sx={{
           display: "flex",

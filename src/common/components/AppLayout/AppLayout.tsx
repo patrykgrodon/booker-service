@@ -18,6 +18,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           display: "flex",
           flex: 1,
           position: "relative",
+          overflow: "hidden",
         }}
       >
         <Sidebar isOpen={isOpen} />
@@ -26,7 +27,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           sx={{
             flex: 1,
             height: "100%",
-            maxHeight: "100%",
             overflow: "auto",
             p: { xs: 1, sm: 2, md: 4, lg: 5 },
           }}
