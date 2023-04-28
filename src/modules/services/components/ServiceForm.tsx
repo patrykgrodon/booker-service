@@ -17,7 +17,7 @@ import useServices from "../hooks/useServices";
 const defaultValues: ServiceFormValues = {
   name: "",
   duration: durationValues[0].value,
-  cost: 1,
+  cost: 10,
 };
 
 type ServiceFormProps = {
@@ -117,7 +117,7 @@ const ServiceForm = ({ formValues, id, onSuccess }: ServiceFormProps) => {
           marginTop: (theme) => theme.spacing(2),
         }}
       >
-        <RequestButton isLoading={isLoading} type="submit">
+        <RequestButton fullWidth isLoading={isLoading} type="submit">
           {isEditMode ? "Save" : "Add"}
         </RequestButton>
       </Grid>
