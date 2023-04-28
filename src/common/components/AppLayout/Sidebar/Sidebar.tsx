@@ -3,7 +3,7 @@ import { List, useMediaQuery } from "@mui/material";
 
 import { routes } from "routes";
 import SidebarItem, { SidebarItem as SidebarItemType } from "./SidebarItem";
-import { Drawer } from "./StyledDrawer";
+import { Drawer } from "./styledDrawer";
 import theme from "theme";
 
 type SidebarProps = {
