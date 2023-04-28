@@ -11,7 +11,7 @@ import { auth, db } from "firebase-config";
 import { Spinner } from "common/components";
 import { Login, Register } from "../types";
 import { User } from "common/types";
-import useFirebaseAuthState from "modules/hooks/useFirebaseAuthState";
+import useFirebaseAuthState from "modules/auth/hooks/useFirebaseAuthState";
 import { getUserData } from "../api";
 
 type AuthContextState = {
