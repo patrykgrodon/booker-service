@@ -12,6 +12,7 @@ export const validationPatterns = {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
   onlyNumbers: /^\d+$/,
   email: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+  onlyNumbersAndFloat: /^[+-]?\d+(\.\d+)?$/,
 };
 
 export const passwordValidator = {
