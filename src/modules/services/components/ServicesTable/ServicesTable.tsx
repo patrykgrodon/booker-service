@@ -6,21 +6,29 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
+
 import ServicesTableRow from "./ServicesTableRow";
+import { useAuth } from "modules/auth/contexts";
+
+import { Spinner } from "common/components";
+import useCompanyServices from "modules/services/hooks/useCompanyServices";
 
 const headers = ["Name", "Duration", "Cost", "Actions"];
 
-const services = [
-  {
-    id: "1",
-    name: "Infill nails (1 colour)",
-    duration: "01:00",
-    cost: 30,
-  },
-];
-
 const ServicesTable = () => {
+  const { user } = useAuth();
+  const { services, isLoading, isError } = useCompanyServices(user?.id || "");
+
+  if (isLoading) return <Spinner size="medium" />;
+  if (isError)
+    return (
+      <Typography variant="subtitle1" color="error" align="center">
+        Something went wrong... <br /> Refresh page or contact with support
+      </Typography>
+    );
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -32,7 +40,7 @@ const ServicesTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {services.map((service) => (
+          {services?.map((service) => (
             <ServicesTableRow key={service.name} service={service} />
           ))}
         </TableBody>
