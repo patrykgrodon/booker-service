@@ -1,16 +1,16 @@
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "modules/auth/contexts";
 import { routes } from "./routes";
+import { AppLayout } from "common/components";
 
 const PrivateRoute = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
   const isAuthorised = !!user;
   return isAuthorised ? (
-    <>
-      <button onClick={logout}>logout</button>
+    <AppLayout>
       <Outlet />
-    </>
+    </AppLayout>
   ) : (
     <Navigate to={routes.login} replace state={{ from: location }} />
   );
