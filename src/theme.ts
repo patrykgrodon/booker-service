@@ -41,6 +41,15 @@ let theme = createTheme({
         disableInteractive: true,
       },
     },
+    MuiTableRow: {
+      defaultProps: {
+        sx: {
+          "&:last-child td": {
+            border: "none",
+          },
+        },
+      },
+    },
   },
   typography: {
     fontFamily: `"Lato", "Segoe UI", "sans-serif"`,
