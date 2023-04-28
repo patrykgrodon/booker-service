@@ -9,8 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 
-import ServicesTableRow from "./ServicesTableRow";
 import { useAuth } from "modules/auth/contexts";
+import ServicesTableRow from "./ServicesTableRow";
 
 import { Spinner } from "common/components";
 import useCompanyServices from "modules/services/hooks/useCompanyServices";

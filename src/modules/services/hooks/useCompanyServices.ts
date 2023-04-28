@@ -4,7 +4,7 @@ import { db } from "firebase-config";
 import { parseGetDocs } from "common/utils/firebaseHelpers";
 import { Service } from "modules/services/types";
 
-const useCompanyServices = (companyId: string) => {
+const useCompanyServices = (companyId: string, initFetch = true) => {
   const servicesCollectionRef = collection(db, "services");
 
   const { data, ...queryResult } = useQuery(
@@ -17,7 +17,8 @@ const useCompanyServices = (companyId: string) => {
       const data = await getDocs(q);
 
       return parseGetDocs<Service[]>(data);
-    }
+    },
+    { enabled: initFetch }
   );
   return { ...queryResult, services: data };
 };
