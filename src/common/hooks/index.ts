@@ -1,3 +1,5 @@
+import useMenu from "./useMenu";
+import useModal from "./useModal";
 import useSidebar from "./useSidebar";
 
-export { useSidebar };
+export { useMenu, useModal, useSidebar };

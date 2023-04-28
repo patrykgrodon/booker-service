@@ -7,7 +7,7 @@ import {
   Menu,
   Typography,
 } from "@mui/material";
-import useMenu from "common/hooks/useMenu";
+import { useMenu } from "common/hooks";
 import { useAuth } from "modules/auth/contexts/authContext";
 import UserAvatar from "./UserAvatar";
 
