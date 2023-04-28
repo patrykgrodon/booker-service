@@ -17,6 +17,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         sx={{
           display: "flex",
           flex: 1,
+          position: "relative",
         }}
       >
         <Sidebar isOpen={isOpen} />

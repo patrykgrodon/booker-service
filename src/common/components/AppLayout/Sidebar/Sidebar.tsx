@@ -1,8 +1,10 @@
 import { CottageOutlined } from "@mui/icons-material";
-import { List } from "@mui/material";
+import { List, useMediaQuery } from "@mui/material";
+
 import { routes } from "routes";
 import SidebarItem, { SidebarItem as SidebarItemType } from "./SidebarItem";
 import { Drawer } from "./StyledDrawer";
+import theme from "theme";
 
 type SidebarProps = {
   isOpen: boolean;
@@ -13,11 +15,22 @@ const sidebarItems: SidebarItemType[] = [
 ];
 
 const Sidebar = ({ isOpen }: SidebarProps) => {
+  const isWindowBelowSmSize = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <Drawer
-      PaperProps={{ sx: { position: "static" } }}
       variant="permanent"
       open={isOpen}
+      sx={{
+        position: isWindowBelowSmSize ? "absolute" : "static",
+        display: !isOpen && isWindowBelowSmSize ? "none" : "block",
+        ...(isWindowBelowSmSize ? { width: "100vw !important" } : {}),
+      }}
+      PaperProps={{
+        sx: {
+          position: "static",
+          ...(isWindowBelowSmSize ? { width: "100vw !important" } : {}),
+        },
+      }}
     >
       <List>
         {sidebarItems.map(({ label, icon, path }) => (
