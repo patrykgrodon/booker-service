@@ -1,29 +1,11 @@
-import { Box, Typography } from "@mui/material";
 import { ServicesTable, AddServiceBtn } from "../components";
+import { PageContainer } from "common/components";
 
 const Services = () => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="h3" component="h1" sx={{ lineHeight: 1, mb: 4 }}>
-          My services
-        </Typography>
-        <AddServiceBtn />
-      </Box>
+    <PageContainer title="My services" button={<AddServiceBtn />}>
       <ServicesTable />
-    </Box>
+    </PageContainer>
   );
 };
 
