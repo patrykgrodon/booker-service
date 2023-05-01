@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 
 import { CloseButton } from "common/components";
 import { CustomerFormValues } from "modules/customers/types";
-import CustomerForm from "./CustomerForm";
+import { CustomerForm } from ".";
 
 type CustomerFormDialogProps = {
   isOpen: boolean;

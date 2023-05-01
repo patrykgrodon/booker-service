@@ -1,9 +1,9 @@
 import { PageContainer } from "common/components";
-import { CustomersTable } from "../components";
+import { AddCustomerBtn, CustomersTable } from "../components";
 
 const Customers = () => {
   return (
-    <PageContainer title="My customers">
+    <PageContainer title="My customers" button={<AddCustomerBtn />}>
       <CustomersTable />
     </PageContainer>
   );
