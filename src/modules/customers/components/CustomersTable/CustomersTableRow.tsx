@@ -14,7 +14,7 @@ const CustomersTableRow = ({ customer }: CustomersTableRowProps) => {
       </TableCell>
       <TableCell>{customer.phoneNumber}</TableCell>
       <TableCell>{customer.email || "---"}</TableCell>
-      <ActionsCell />
+      <ActionsCell customer={customer} />
     </TableRow>
   );
 };
