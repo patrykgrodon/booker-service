@@ -4,6 +4,7 @@ export const routes = {
   register: "/register",
   forgotPassword: "/forgot-password",
   customers: "/customers",
+  employees: "/employees",
   services: "/services",
 } as const;
 
