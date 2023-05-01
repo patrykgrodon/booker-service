@@ -1,4 +1,8 @@
-import { CottageOutlined, DesignServicesOutlined } from "@mui/icons-material";
+import {
+  CottageOutlined,
+  DesignServicesOutlined,
+  PeopleAltOutlined,
+} from "@mui/icons-material";
 import { List, useMediaQuery } from "@mui/material";
 
 import { routes } from "routes";
@@ -12,6 +16,7 @@ type SidebarProps = {
 
 const sidebarItems: SidebarItemType[] = [
   { label: "Dashboard", icon: CottageOutlined, path: routes.base },
+  { label: "Customers", icon: PeopleAltOutlined, path: routes.customers },
   { label: "Services", icon: DesignServicesOutlined, path: routes.services },
 ];
 
