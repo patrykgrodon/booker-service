@@ -1,10 +1,10 @@
 import { PageContainer } from "common/components";
-import { AddEmployeeBtn } from "../components";
+import { AddEmployeeBtn, EmployeesTable } from "../components";
 
 const Employees = () => {
   return (
     <PageContainer title="My employees" button={<AddEmployeeBtn />}>
-      Employees
+      <EmployeesTable />
     </PageContainer>
   );
 };
