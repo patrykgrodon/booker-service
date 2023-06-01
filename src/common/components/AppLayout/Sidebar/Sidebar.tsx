@@ -3,6 +3,7 @@ import {
   DesignServicesOutlined,
   GroupsOutlined,
   PeopleAltOutlined,
+  SettingsOutlined,
 } from "@mui/icons-material";
 import { List, useMediaQuery } from "@mui/material";
 
@@ -20,6 +21,7 @@ const sidebarItems: SidebarItemType[] = [
   { label: "Customers", icon: PeopleAltOutlined, path: routes.customers },
   { label: "Employees", icon: GroupsOutlined, path: routes.employees },
   { label: "Services", icon: DesignServicesOutlined, path: routes.services },
+  { label: "Settings", icon: SettingsOutlined, path: routes.settings },
 ];
 
 const Sidebar = ({ isOpen }: SidebarProps) => {
