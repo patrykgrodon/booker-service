@@ -3,7 +3,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MuiThemeProviders, ToastProvider } from ".";
 import { AuthContextProvider } from "modules/auth/contexts";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import enUS from "date-fns/locale/en-US";
+import enGB from "date-fns/locale/en-GB";
 
 type AppProvidersProps = {
   children: React.ReactNode;
@@ -21,7 +21,7 @@ const queryClient = new QueryClient({
 const AppProviders = ({ children }: AppProvidersProps) => {
   return (
     <MuiThemeProviders>
-      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enUS}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
         <QueryClientProvider client={queryClient}>
           <ToastProvider>
             <AuthContextProvider>{children}</AuthContextProvider>
