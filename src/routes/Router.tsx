@@ -12,6 +12,7 @@ import Services from "modules/services/pages/Services";
 import Customers from "modules/customers/pages/Customers";
 import Employees from "modules/employees/pages/Employees";
 import Settings from "modules/settings/pages/Settings";
+import Visits from "modules/visits/pages/Visits";
 
 const Router = () => {
   return (
@@ -27,6 +28,7 @@ const Router = () => {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path={routes.base} element={<>base</>} />
+          <Route path={routes.visits} element={<Visits />} />
           <Route path={routes.customers} element={<Customers />} />
           <Route path={routes.employees} element={<Employees />} />
           <Route path={routes.services} element={<Services />} />
