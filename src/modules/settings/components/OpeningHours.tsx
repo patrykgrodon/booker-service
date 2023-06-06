@@ -1,31 +1,29 @@
 import { Box, Typography, IconButton } from "@mui/material";
 
-import { SettingsCard } from "../components";
+import { OpeningHoursDialog, SettingsCard } from "../components";
 import { EditOutlined } from "@mui/icons-material";
-
-const defaultOpeningHours = {
-  monday: { start: "08:00", end: "16:00", open: false },
-  tuesday: { start: "08:00", end: "16:00", open: false },
-  wednesday: { start: "08:00", end: "16:00", open: false },
-  thursday: { start: "08:00", end: "16:00", open: false },
-  friday: { start: "08:00", end: "16:00", open: false },
-  saturday: { start: "08:00", end: "16:00", open: false },
-  sunday: { start: "08:00", end: "16:00", open: false },
-};
-
-const days = [
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-  "sunday",
-] as (keyof typeof defaultOpeningHours)[];
+import days from "../constants/days";
+import { useModal } from "common/hooks";
+import useSettings from "../hooks/useSettings";
+import { Spinner } from "common/components";
 
 const OpeningHours = () => {
+  const { closeModal, isOpen, openModal } = useModal();
+
+  const { settings, isLoading, isError, refetch } = useSettings();
+
+  if (isLoading) return <Spinner size="medium" />;
+  if (isError || !settings)
+    return (
+      <Typography variant="subtitle1" color="error" align="center">
+        Something went wrong... <br /> Refresh page or contact with support
+      </Typography>
+    );
+
+  const { openingHours } = settings;
+
   const openingHoursWithDay = days.map((day) => ({
-    ...defaultOpeningHours[day],
+    ...openingHours[day],
     day,
   }));
 
@@ -33,20 +31,33 @@ const OpeningHours = () => {
     <SettingsCard
       title="Opening hours"
       button={
-        <IconButton size="small" color="primary">
+        <IconButton size="small" color="primary" onClick={openModal}>
           <EditOutlined fontSize="small" />
         </IconButton>
       }
     >
-      {openingHoursWithDay.map(({ day, end, open, start }) => (
+      {openingHoursWithDay.map(({ day, to, open, from }) => (
         <Box
           key={day}
           sx={{ display: "flex", justifyContent: "space-between" }}
         >
           <Typography sx={{ textTransform: "capitalize" }}>{day}</Typography>
-          <Typography>{open ? `${start} - ${end}` : "Closed"}</Typography>
+          <Typography>
+            {open
+              ? `${from.hour}:${from.minute} - ${to.hour}:${to.minute}`
+              : "Closed"}
+          </Typography>
         </Box>
       ))}
+
+      {isOpen ? (
+        <OpeningHoursDialog
+          handleClose={closeModal}
+          isOpen={isOpen}
+          openingHours={openingHours}
+          refetch={refetch}
+        />
+      ) : null}
     </SettingsCard>
   );
 };
