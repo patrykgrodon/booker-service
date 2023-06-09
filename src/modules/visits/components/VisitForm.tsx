@@ -1,19 +1,19 @@
-import { Controller, useForm } from "react-hook-form";
 import { Grid } from "@mui/material";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
-import { VisitFormValues } from "../types";
-import { addVisit, editVisit } from "../api";
+import { DateTimePicker } from "@mui/x-date-pickers";
 import { ControlSelect, RequestButton } from "common/components";
 import { useToast } from "common/providers/ToastProvider";
 import { checkIfEmpty } from "common/utils/validationPatterns";
-import useCompanyServices from "modules/services/hooks/useCompanyServices";
+import { format, getMinutes } from "date-fns";
 import { useAuth } from "modules/auth/contexts";
 import useCompanyCustomers from "modules/customers/hooks/useCompanyCustomers";
 import useCompanyEmployees from "modules/employees/hooks/useCompanyEmployees";
-import { DateTimePicker } from "@mui/x-date-pickers";
-import { format, getMinutes } from "date-fns";
+import useCompanyServices from "modules/services/hooks/useCompanyServices";
 import useSettings from "modules/settings/hooks/useSettings";
+import { addVisit, editVisit } from "../api";
+import { VisitFormValues } from "../types";
 
 const getDefaultDateTimeFrom = (minutesStep = 15) => {
   const now = new Date();
@@ -45,7 +45,6 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
 
   const {
     control,
-    register,
     formState: { errors },
     handleSubmit,
     watch,
@@ -149,21 +148,25 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
       onSubmit={handleSubmit(submitHandler)}
     >
       <Grid item xs={12} md={6}>
-        <ControlSelect
-          id="employee"
-          label="Employee"
-          defaultValue=""
-          {...register("employee", {
-            validate: checkIfEmpty,
-          })}
-          fullWidth
-          error={errors.employee}
-          options={
-            employees?.map(({ firstName, lastName, id }) => ({
-              label: `${firstName} ${lastName}`,
-              value: id,
-            })) || []
-          }
+        <Controller
+          control={control}
+          name="employee"
+          rules={{ validate: checkIfEmpty }}
+          render={({ field }) => (
+            <ControlSelect
+              {...field}
+              id="employee"
+              label="Employee"
+              fullWidth
+              error={errors.employee}
+              options={
+                employees?.map(({ firstName, lastName, id }) => ({
+                  label: `${firstName} ${lastName}`,
+                  value: id,
+                })) || []
+              }
+            />
+          )}
         />
       </Grid>
       <Grid item xs={12} md={6}>
@@ -193,39 +196,51 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
         />
       </Grid>
       <Grid item xs={12} md={6}>
-        <ControlSelect
-          id="service"
-          label="Service"
-          defaultValue=""
-          {...register("service", {
+        <Controller
+          control={control}
+          name="service"
+          rules={{
             validate: checkIfEmpty,
-          })}
-          fullWidth
-          error={errors.service}
-          options={
-            services?.map(({ id, name }) => ({
-              label: name,
-              value: id,
-            })) || []
-          }
+          }}
+          render={({ field }) => (
+            <ControlSelect
+              {...field}
+              id="service"
+              label="Service"
+              fullWidth
+              error={errors.service}
+              options={
+                services?.map(({ id, name }) => ({
+                  label: name,
+                  value: id,
+                })) || []
+              }
+            />
+          )}
         />
       </Grid>
       <Grid item xs={12} md={6}>
-        <ControlSelect
-          id="customer"
-          label="Customer"
-          defaultValue=""
-          {...register("customer", {
+        <Controller
+          control={control}
+          name="customer"
+          rules={{
             validate: checkIfEmpty,
-          })}
-          fullWidth
-          error={errors.customer}
-          options={
-            customers?.map(({ id, firstName, lastName }) => ({
-              label: `${firstName} ${lastName}`,
-              value: id,
-            })) || []
-          }
+          }}
+          render={({ field }) => (
+            <ControlSelect
+              {...field}
+              id="customer"
+              label="Customer"
+              fullWidth
+              error={errors.customer}
+              options={
+                customers?.map(({ id, firstName, lastName }) => ({
+                  label: `${firstName} ${lastName}`,
+                  value: id,
+                })) || []
+              }
+            />
+          )}
         />
       </Grid>
 

@@ -1,6 +1,6 @@
 import { Grid, TextField } from "@mui/material";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import {
   checkIfEmpty,
@@ -31,6 +31,7 @@ const ServiceForm = ({ formValues, id, onSuccess }: ServiceFormProps) => {
     handleSubmit,
     register,
     formState: { errors },
+    control,
   } = useForm({ defaultValues: { ...defaultValues, ...formValues } });
   const { addService, editService } = useServices();
   const { setErrorMessage } = useToast();
@@ -77,15 +78,24 @@ const ServiceForm = ({ formValues, id, onSuccess }: ServiceFormProps) => {
       </Grid>
 
       <Grid item xs={12} md={6}>
-        <ControlSelect
-          id="duration"
-          label="Duration(hours:minutes)"
-          defaultValue={durationValues[0].value}
-          {...register("duration", {
+        <Controller
+          control={control}
+          name="duration"
+          rules={{
             validate: checkIfEmpty,
-          })}
-          error={errors.duration}
-          options={durationValues.map(({ value }) => ({ label: value, value }))}
+          }}
+          render={({ field }) => (
+            <ControlSelect
+              {...field}
+              id="duration"
+              label="Duration(hours:minutes)"
+              error={errors.duration}
+              options={durationValues.map(({ value }) => ({
+                label: value,
+                value,
+              }))}
+            />
+          )}
         />
       </Grid>
 
