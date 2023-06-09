@@ -2,6 +2,7 @@ import { TableCell, TableRow, Typography } from "@mui/material";
 import { dashedDateTimeFormat } from "common/utils/dateTimeUtils";
 import { format } from "date-fns";
 import { Visit } from "modules/visits/types";
+import ActionsCell from "./ActionsCell";
 
 type VisitsTableRowProps = {
   visit: Visit;
@@ -23,7 +24,7 @@ const VisitsTableRow = ({ visit }: VisitsTableRowProps) => {
       <TableCell>
         {customer.firstName} {customer.lastName}
       </TableCell>
-      <TableCell></TableCell>
+      <ActionsCell visit={visit} />
     </TableRow>
   );
 };

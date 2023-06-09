@@ -8,6 +8,7 @@ import {
   where,
   getDocs,
   getDoc,
+  deleteDoc,
 } from "@firebase/firestore";
 
 import { db } from "firebase-config";
@@ -38,6 +39,11 @@ export const addVisit = async (
 
 export const editVisit = async (id: string, formValues: VisitFormValues) => {
   await updateDoc(doc(db, "visits", id), transformFormValues(formValues));
+};
+
+export const deleteVisit = async (id: string) => {
+  const visitDoc = doc(db, "visits", id);
+  await deleteDoc(visitDoc);
 };
 
 export const getCompanyVisits = async (companyId: string): Promise<Visit[]> => {
