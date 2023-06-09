@@ -66,7 +66,9 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
   const submitHandler = async (formValues: VisitFormValues) => {
     setIsLoading(true);
     try {
-      isEditMode ? await editVisit(id, formValues) : await addVisit(formValues);
+      isEditMode
+        ? await editVisit(id, formValues)
+        : await addVisit(user?.id || "", formValues);
       onSuccess();
     } catch (err: any) {
       setErrorMessage(
