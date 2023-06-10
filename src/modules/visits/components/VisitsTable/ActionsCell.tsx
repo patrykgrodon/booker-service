@@ -6,16 +6,19 @@ import { useModal } from "common/hooks";
 import { Visit } from "modules/visits/types";
 import { ConfirmationDialog } from "common/components";
 import { useToast } from "common/providers/ToastProvider";
-import useCompanyVisits from "modules/visits/hooks/useCompanyVisits";
 import VisitFormDialog from "../VisitFormDialog";
 import { deleteVisit } from "modules/visits/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "modules/auth/contexts";
 
 type ActionsCellProps = {
   visit: Visit;
 };
 
 const ActionsCell = ({ visit }: ActionsCellProps) => {
-  const { refetch } = useCompanyVisits(visit.companyId, false);
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
   const { setErrorMessage } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,16 +33,19 @@ const ActionsCell = ({ visit }: ActionsCellProps) => {
     openModal: openDelete,
   } = useModal();
 
+  const refetchVisits = () =>
+    queryClient.invalidateQueries(["visits", user?.id]);
+
   const onSuccess = () => {
     closeEdit();
-    refetch();
+    refetchVisits();
   };
 
   const handleDelete = async () => {
     setIsLoading(true);
     try {
       await deleteVisit(visit.id);
-      refetch();
+      refetchVisits();
     } catch (err: any) {
       setErrorMessage("Error while deleteting visit. Try again!");
     }

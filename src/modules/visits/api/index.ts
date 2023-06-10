@@ -1,19 +1,20 @@
 import {
+  Timestamp,
   addDoc,
   collection,
-  doc,
-  updateDoc,
-  Timestamp,
-  query,
-  where,
-  getDocs,
-  getDoc,
   deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  updateDoc,
+  where,
 } from "@firebase/firestore";
 
+import { parseGetDoc, parseGetDocs } from "common/utils/firebaseHelpers";
 import { db } from "firebase-config";
 import { Visit, VisitDoc, VisitFormValues } from "../types";
-import { parseGetDoc, parseGetDocs } from "common/utils/firebaseHelpers";
 
 const visitsCollectionRef = collection(db, "visits");
 
@@ -46,20 +47,15 @@ export const deleteVisit = async (id: string) => {
   await deleteDoc(visitDoc);
 };
 
-export const getCompanyVisits = async (companyId: string): Promise<Visit[]> => {
-  const q = query(visitsCollectionRef, where("companyId", "==", companyId));
-  const data = await getDocs(q);
-
-  const parsedFlat = parseGetDocs<VisitDoc[]>(data);
-
+const convertVisitsDocRef = async (visitsDoc: VisitDoc[]) => {
   const visits = await Promise.all(
-    parsedFlat.map(
+    visitsDoc.map(
       async ({
-        companyId,
-        customer: customerRef,
-        date,
-        employee: employeeRef,
         id,
+        companyId,
+        date,
+        customer: customerRef,
+        employee: employeeRef,
         service: serviceRef,
       }) => {
         const [customerDoc, serviceDoc, employeeDoc] = await Promise.all([
@@ -79,6 +75,22 @@ export const getCompanyVisits = async (companyId: string): Promise<Visit[]> => {
       }
     )
   );
-
   return visits;
+};
+
+export const getCompanyVisits = async (
+  companyId: string,
+  finished: boolean
+): Promise<Visit[]> => {
+  const q = query(
+    visitsCollectionRef,
+    where("companyId", "==", companyId),
+    where("date", finished ? "<" : ">", new Date()),
+    orderBy("date", finished ? "desc" : "asc")
+  );
+  const data = await getDocs(q);
+
+  const visitsDoc = parseGetDocs<VisitDoc[]>(data);
+
+  return await convertVisitsDocRef(visitsDoc);
 };

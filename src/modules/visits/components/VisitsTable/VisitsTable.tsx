@@ -8,16 +8,26 @@ import {
   TableCell,
   Typography,
 } from "@mui/material";
+
 import VisitsTableRow from "./VisitsTableRow";
 import { useAuth } from "modules/auth/contexts";
 import { Spinner } from "common/components";
 import useCompanyVisits from "modules/visits/hooks/useCompanyVisits";
+import { VisitsTableTabs } from "modules/visits/pages/Visits";
 
 const headers = ["Date", "Employee", "Service", "Customer", "Actions"];
 
-const VisitsTable = () => {
+type VisitsTableProps = {
+  activeTab: VisitsTableTabs;
+};
+
+const VisitsTable = ({ activeTab }: VisitsTableProps) => {
   const { user } = useAuth();
-  const { visits, isLoading, isError } = useCompanyVisits(user?.id || "");
+
+  const { visits, isLoading, isError } = useCompanyVisits(
+    user?.id || "",
+    !!activeTab
+  );
 
   if (isLoading) return <Spinner size="medium" />;
   if (isError)
