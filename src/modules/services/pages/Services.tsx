@@ -3,7 +3,7 @@ import { PageContainer } from "common/components";
 
 const Services = () => {
   return (
-    <PageContainer title="My services" button={<AddServiceBtn />}>
+    <PageContainer title="Services" button={<AddServiceBtn />}>
       <ServicesTable />
     </PageContainer>
   );

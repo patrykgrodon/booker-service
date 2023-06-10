@@ -1,4 +1,4 @@
-import { Tabs, Tab, Paper } from "@mui/material";
+import { Paper, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 
 import { PageContainer } from "common/components";
@@ -14,7 +14,7 @@ const Visits = () => {
     VisitsTableTabs.Incoming
   );
   return (
-    <PageContainer title="My visits" button={<AddVisitBtn />}>
+    <PageContainer title="Visits" button={<AddVisitBtn />}>
       <Paper>
         <Tabs
           value={activeTab}

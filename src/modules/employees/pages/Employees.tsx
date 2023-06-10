@@ -3,7 +3,7 @@ import { AddEmployeeBtn, EmployeesTable } from "../components";
 
 const Employees = () => {
   return (
-    <PageContainer title="My employees" button={<AddEmployeeBtn />}>
+    <PageContainer title="Employees" button={<AddEmployeeBtn />}>
       <EmployeesTable />
     </PageContainer>
   );
