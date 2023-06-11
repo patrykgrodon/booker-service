@@ -20,9 +20,10 @@ const PageContainer = ({ children, title, button }: PageContainerProps) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          mb: 4,
         }}
       >
-        <Typography variant="h3" component="h1" sx={{ lineHeight: 1, mb: 4 }}>
+        <Typography variant="h3" component="h1" sx={{ lineHeight: 1 }}>
           {title}
         </Typography>
         {button}
