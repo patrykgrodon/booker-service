@@ -6,6 +6,8 @@ const CalendarViewContainer = ({ children }: { children: React.ReactNode }) => {
     <Box
       sx={{
         height: "100%",
+        maxHeight: "100%",
+        overflow: "auto",
         "& .rbc-off-range-bg": {
           backgroundColor: (theme) => theme.palette.action.disabledBackground,
         },
