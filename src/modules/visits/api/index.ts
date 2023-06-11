@@ -126,3 +126,22 @@ export const getCompanyVisits = async (
     }
   });
 };
+
+export const getCalendarVisits = async (
+  companyId: string,
+  dateRange: [Date, Date]
+) => {
+  const [startAt, endAt] = dateRange;
+  const q = query(
+    visitsCollectionRef,
+    where("companyId", "==", companyId),
+    where("startAt", ">", startAt),
+    where("startAt", "<", endAt)
+  );
+
+  const data = await getDocs(q);
+
+  const visitsDoc = parseGetDocs<VisitDoc[]>(data);
+
+  return await convertVisitsDocRef(visitsDoc);
+};

@@ -6,8 +6,13 @@ import {
   getStartOfTheMonth,
 } from "../utils/calendarViewUtils";
 import { CalendarSSUi } from "../types";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "modules/auth/contexts";
+import { getCalendarVisits } from "modules/visits/api";
 
 const useCalendarView = () => {
+  const { user } = useAuth();
+
   const ssItemName = "calendar-ui";
   const calendarSSUi = getSSItem(ssItemName) as CalendarSSUi | undefined;
   const [view, setView] = useState<View>(calendarSSUi?.view || "month");
@@ -28,6 +33,12 @@ const useCalendarView = () => {
     } as CalendarSSUi);
   }, [dateRange, view]);
 
+  const { data: calendarVisits } = useQuery(
+    ["calendar-visits", user?.id, dateRange],
+    () => getCalendarVisits(user?.id || "", dateRange),
+    { enabled: !!user }
+  );
+
   const changeView = (view: View) => {
     setView(view);
   };
@@ -36,7 +47,7 @@ const useCalendarView = () => {
     setDateRange(dateRange);
   };
 
-  return { changeView, changeDateRange, view };
+  return { changeView, changeDateRange, view, calendarVisits };
 };
 
 export default useCalendarView;
