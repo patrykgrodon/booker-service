@@ -15,7 +15,8 @@ export type Visit = {
   customer: Customer;
   employee: Employee;
   service: Service;
-  date: Date;
+  startAt: Date;
+  endAt: Date;
   companyId: string;
 };
 
@@ -25,5 +26,6 @@ export type VisitDoc = {
   customer: DocumentReference;
   employee: DocumentReference;
   service: DocumentReference;
-  date: Timestamp;
+  startAt: Timestamp;
+  endAt: Timestamp;
 };

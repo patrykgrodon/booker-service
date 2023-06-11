@@ -9,12 +9,12 @@ type VisitsTableRowProps = {
 };
 
 const VisitsTableRow = ({ visit }: VisitsTableRowProps) => {
-  const { customer, date, employee, service } = visit;
+  const { customer, startAt, employee, service } = visit;
   return (
     <TableRow>
       <TableCell>
         <Typography sx={{ maxWidth: "125px", lineHeight: 1.2 }}>
-          {format(date, dashedDateTimeFormat)}
+          {format(startAt, dashedDateTimeFormat)}
         </Typography>
       </TableCell>
       <TableCell>

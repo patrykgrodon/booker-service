@@ -15,7 +15,7 @@ import { Spinner } from "common/components";
 import useCompanyVisits from "modules/visits/hooks/useCompanyVisits";
 import { VisitsTableTabs } from "modules/visits/pages/Visits";
 
-const headers = ["Date", "Employee", "Service", "Customer", "Actions"];
+const headers = ["Start date", "Employee", "Service", "Customer", "Actions"];
 
 type VisitsTableProps = {
   activeTab: VisitsTableTabs;

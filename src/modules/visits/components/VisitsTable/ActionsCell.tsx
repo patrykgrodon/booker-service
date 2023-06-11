@@ -67,7 +67,7 @@ const ActionsCell = ({ visit }: ActionsCellProps) => {
         onSuccess={onSuccess}
         formValues={{
           customer: visit.customer.id,
-          date: visit.date,
+          date: visit.startAt,
           employee: visit.employee.id,
           service: visit.service.id,
         }}

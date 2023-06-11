@@ -15,31 +15,55 @@ import {
 import { parseGetDoc, parseGetDocs } from "common/utils/firebaseHelpers";
 import { db } from "firebase-config";
 import { Visit, VisitDoc, VisitFormValues } from "../types";
+import { addHours, addMinutes } from "date-fns";
 
 const visitsCollectionRef = collection(db, "visits");
 
-const transformFormValues = (formValues: VisitFormValues) => {
+const transformFormValues = (
+  formValues: VisitFormValues,
+  serviceDuration: string
+) => {
   const { customer, date, employee, service } = formValues;
-  return {
-    date: Timestamp.fromDate(date),
+
+  const [serviceDurationHours, serviceDurationMinutes] =
+    serviceDuration.split(":");
+
+  const endAtDate = addHours(
+    addMinutes(new Date(date), +serviceDurationMinutes),
+    +serviceDurationHours
+  );
+
+  const visitDocValues: Omit<VisitDoc, "id" | "companyId"> = {
+    startAt: Timestamp.fromDate(date),
+    endAt: Timestamp.fromDate(endAtDate),
     customer: doc(db, "customers", customer),
     employee: doc(db, "employees", employee),
     service: doc(db, "services", service),
   };
+
+  return visitDocValues;
 };
 
 export const addVisit = async (
   companyId: string,
-  formValues: VisitFormValues
+  formValues: VisitFormValues,
+  serviceDuration: string
 ) => {
   await addDoc(collection(db, "visits"), {
     companyId,
-    ...transformFormValues(formValues),
+    ...transformFormValues(formValues, serviceDuration),
   });
 };
 
-export const editVisit = async (id: string, formValues: VisitFormValues) => {
-  await updateDoc(doc(db, "visits", id), transformFormValues(formValues));
+export const editVisit = async (
+  id: string,
+  formValues: VisitFormValues,
+  serviceDuration: string
+) => {
+  await updateDoc(
+    doc(db, "visits", id),
+    transformFormValues(formValues, serviceDuration)
+  );
 };
 
 export const deleteVisit = async (id: string) => {
@@ -53,7 +77,8 @@ const convertVisitsDocRef = async (visitsDoc: VisitDoc[]) => {
       async ({
         id,
         companyId,
-        date,
+        startAt,
+        endAt,
         customer: customerRef,
         employee: employeeRef,
         service: serviceRef,
@@ -65,12 +90,13 @@ const convertVisitsDocRef = async (visitsDoc: VisitDoc[]) => {
         ]);
 
         return {
+          id,
+          companyId,
           customer: parseGetDoc(customerDoc),
           service: parseGetDoc(serviceDoc),
           employee: parseGetDoc(employeeDoc),
-          date: new Date(date.seconds * 1000),
-          id,
-          companyId,
+          startAt: new Date(startAt.seconds * 1000),
+          endAt: new Date(endAt.seconds * 1000),
         } as Visit;
       }
     )
@@ -85,12 +111,18 @@ export const getCompanyVisits = async (
   const q = query(
     visitsCollectionRef,
     where("companyId", "==", companyId),
-    where("date", finished ? "<" : ">", new Date()),
-    orderBy("date", finished ? "desc" : "asc")
+    where("endAt", finished ? "<" : ">", new Date()),
+    orderBy("endAt", finished ? "desc" : "asc")
   );
   const data = await getDocs(q);
 
   const visitsDoc = parseGetDocs<VisitDoc[]>(data);
 
-  return await convertVisitsDocRef(visitsDoc);
+  return (await convertVisitsDocRef(visitsDoc)).sort((a, b) => {
+    if (finished) {
+      return b.startAt.getTime() - a.startAt.getTime();
+    } else {
+      return a.startAt.getTime() - b.startAt.getTime();
+    }
+  });
 };

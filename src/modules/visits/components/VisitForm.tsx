@@ -64,10 +64,12 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
 
   const submitHandler = async (formValues: VisitFormValues) => {
     setIsLoading(true);
+    const serviceDuration =
+      services?.find(({ id }) => id === formValues.service)?.duration || "";
     try {
       isEditMode
-        ? await editVisit(id, formValues)
-        : await addVisit(user?.id || "", formValues);
+        ? await editVisit(id, formValues, serviceDuration)
+        : await addVisit(user?.id || "", formValues, serviceDuration);
       onSuccess();
     } catch (err: any) {
       setErrorMessage(
