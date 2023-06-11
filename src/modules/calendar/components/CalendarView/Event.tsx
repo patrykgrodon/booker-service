@@ -8,7 +8,7 @@ type EventProps = {
 const Event = ({ event }: EventProps) => {
   const { customer } = event;
   return (
-    <Typography variant="subtitle2" sx={{ lineHeight: 1.3 }}>
+    <Typography variant="subtitle2" sx={{ lineHeight: 1.3, display: "block" }}>
       {customer.firstName} {customer.lastName}
     </Typography>
   );

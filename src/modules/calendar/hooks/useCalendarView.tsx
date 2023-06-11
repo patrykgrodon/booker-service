@@ -47,7 +47,7 @@ const useCalendarView = () => {
     setDateRange(dateRange);
   };
 
-  return { changeView, changeDateRange, view, calendarVisits };
+  return { changeView, dateRange, changeDateRange, view, calendarVisits };
 };
 
 export default useCalendarView;

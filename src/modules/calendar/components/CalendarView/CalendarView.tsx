@@ -7,11 +7,13 @@ import CalendarViewContainer from "./CalendarViewContainer";
 import useCalendarView from "modules/calendar/hooks/useCalendarView";
 import {
   getEndOfTheDay,
+  getRangeDependOnView,
   getStartOfTheDay,
 } from "modules/calendar/utils/calendarViewUtils";
 import { Visit } from "modules/visits/types";
 import { CalendarEvent } from "modules/calendar/types";
 import Event from "./Event";
+import { isEqual } from "date-fns";
 
 const convertVisitsToCalendarEvents = (visits: Visit[]): CalendarEvent[] => {
   if (visits === undefined) return [];
@@ -19,7 +21,7 @@ const convertVisitsToCalendarEvents = (visits: Visit[]): CalendarEvent[] => {
 };
 
 const CalendarView = () => {
-  const { view, changeView, changeDateRange, calendarVisits } =
+  const { view, changeView, dateRange, changeDateRange, calendarVisits } =
     useCalendarView();
 
   const events = useMemo(
@@ -56,6 +58,16 @@ const CalendarView = () => {
     }
   };
 
+  const handleNavigate = (newDate: Date) => {
+    const newDateRange = getRangeDependOnView(newDate, view);
+    if (
+      isEqual(dateRange[0], newDateRange[0]) &&
+      isEqual(dateRange[1], newDateRange[1])
+    )
+      return;
+    changeDateRange(newDateRange);
+  };
+
   return (
     <CalendarViewContainer>
       <Calendar
@@ -64,14 +76,17 @@ const CalendarView = () => {
         startAccessor="startAt"
         endAccessor="endAt"
         culture="enGB"
+        popup={false}
+        doShowMoreDrillDown={false}
         length={1}
-        selectable
         view={view}
         onView={changeView}
         onRangeChange={handleRangeChange}
+        onNavigate={(newDate) => handleNavigate(newDate)}
         components={{
           event: Event,
         }}
+        formats={calendarSettings.formats}
       />
     </CalendarViewContainer>
   );

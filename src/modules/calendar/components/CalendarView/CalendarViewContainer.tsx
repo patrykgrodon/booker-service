@@ -12,6 +12,35 @@ const CalendarViewContainer = ({ children }: { children: React.ReactNode }) => {
         "& .rbc-today": {
           backgroundColor: (theme) => theme.palette.action.disabled,
         },
+        "& .rbc-calendar": {
+          fontFamily: "Lato, Segoe UI, sans-serif",
+        },
+
+        "& .rbc-show-more": {
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginTop: "5px",
+        },
+
+        "& .rbc-continues-after::after": {
+          display: "none",
+        },
+        "& .rbc-continues-after::before": {
+          display: "none",
+        },
+
+        "& .rbc-agenda-event-cell": {
+          width: "auto",
+        },
+        "& .rbc-allday-cell": {
+          display: "none",
+        },
+        "& .rbc-time-content ": {
+          borderTop: "none",
+        },
+        "& .rbc-time-header ": {
+          borderBottom: "none",
+        },
       }}
       children={children}
     />
