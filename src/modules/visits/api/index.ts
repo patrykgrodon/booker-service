@@ -71,35 +71,35 @@ export const deleteVisit = async (id: string) => {
   await deleteDoc(visitDoc);
 };
 
+const convertVisitDocRef = async ({
+  id,
+  companyId,
+  startAt,
+  endAt,
+  customer: customerRef,
+  employee: employeeRef,
+  service: serviceRef,
+}: VisitDoc) => {
+  const [customerDoc, serviceDoc, employeeDoc] = await Promise.all([
+    getDoc(customerRef),
+    getDoc(serviceRef),
+    getDoc(employeeRef),
+  ]);
+
+  return {
+    id,
+    companyId,
+    customer: parseGetDoc(customerDoc),
+    service: parseGetDoc(serviceDoc),
+    employee: parseGetDoc(employeeDoc),
+    startAt: new Date(startAt.seconds * 1000),
+    endAt: new Date(endAt.seconds * 1000),
+  } as Visit;
+};
+
 const convertVisitsDocRef = async (visitsDoc: VisitDoc[]) => {
   const visits = await Promise.all(
-    visitsDoc.map(
-      async ({
-        id,
-        companyId,
-        startAt,
-        endAt,
-        customer: customerRef,
-        employee: employeeRef,
-        service: serviceRef,
-      }) => {
-        const [customerDoc, serviceDoc, employeeDoc] = await Promise.all([
-          getDoc(customerRef),
-          getDoc(serviceRef),
-          getDoc(employeeRef),
-        ]);
-
-        return {
-          id,
-          companyId,
-          customer: parseGetDoc(customerDoc),
-          service: parseGetDoc(serviceDoc),
-          employee: parseGetDoc(employeeDoc),
-          startAt: new Date(startAt.seconds * 1000),
-          endAt: new Date(endAt.seconds * 1000),
-        } as Visit;
-      }
-    )
+    visitsDoc.map((visitDoc) => convertVisitDocRef(visitDoc))
   );
   return visits;
 };
@@ -144,4 +144,12 @@ export const getCalendarVisits = async (
   const visitsDoc = parseGetDocs<VisitDoc[]>(data);
 
   return await convertVisitsDocRef(visitsDoc);
+};
+
+export const getVisit = async (visitId: string) => {
+  const data = await getDoc(doc(db, "visits", visitId));
+
+  const visitDoc = parseGetDoc<VisitDoc>(data);
+
+  return await convertVisitDocRef(visitDoc);
 };

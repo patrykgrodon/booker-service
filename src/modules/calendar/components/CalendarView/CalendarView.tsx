@@ -1,6 +1,6 @@
 import { Calendar, View } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import calendarSettings from "./calendarSettings";
 import CalendarViewContainer from "./CalendarViewContainer";
@@ -16,6 +16,7 @@ import Event from "./Event";
 import { isEqual } from "date-fns";
 import useSettings from "modules/settings/hooks/useSettings";
 import { getMinMaxCalendarTime } from "modules/calendar/utils/getMinMaxCalendarTime";
+import { VisitsDetailsDialog } from "modules/visits/components";
 
 const convertVisitsToCalendarEvents = (visits: Visit[]): CalendarEvent[] => {
   if (visits === undefined) return [];
@@ -26,6 +27,8 @@ const CalendarView = () => {
   const { view, changeView, dateRange, changeDateRange, calendarVisits } =
     useCalendarView();
   const { settings } = useSettings();
+
+  const [previewVisitUuid, setPreviewVisitUuid] = useState<string | null>(null);
 
   const events = useMemo(
     () => convertVisitsToCalendarEvents(calendarVisits || []),
@@ -88,6 +91,7 @@ const CalendarView = () => {
         onView={changeView}
         onRangeChange={handleRangeChange}
         onNavigate={(newDate) => handleNavigate(newDate)}
+        onSelectEvent={(event) => setPreviewVisitUuid(event.id)}
         components={{
           event: Event,
         }}
@@ -100,6 +104,13 @@ const CalendarView = () => {
         })}
         formats={calendarSettings.formats}
       />
+      {!!previewVisitUuid && (
+        <VisitsDetailsDialog
+          handleClose={() => setPreviewVisitUuid(null)}
+          isOpen
+          id={previewVisitUuid}
+        />
+      )}
     </CalendarViewContainer>
   );
 };
