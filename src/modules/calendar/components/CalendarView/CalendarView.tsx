@@ -14,6 +14,8 @@ import { Visit } from "modules/visits/types";
 import { CalendarEvent } from "modules/calendar/types";
 import Event from "./Event";
 import { isEqual } from "date-fns";
+import useSettings from "modules/settings/hooks/useSettings";
+import { getMinMaxCalendarTime } from "modules/calendar/utils/getMinMaxCalendarTime";
 
 const convertVisitsToCalendarEvents = (visits: Visit[]): CalendarEvent[] => {
   if (visits === undefined) return [];
@@ -23,6 +25,7 @@ const convertVisitsToCalendarEvents = (visits: Visit[]): CalendarEvent[] => {
 const CalendarView = () => {
   const { view, changeView, dateRange, changeDateRange, calendarVisits } =
     useCalendarView();
+  const { settings } = useSettings();
 
   const events = useMemo(
     () => convertVisitsToCalendarEvents(calendarVisits || []),
@@ -68,6 +71,8 @@ const CalendarView = () => {
     changeDateRange(newDateRange);
   };
 
+  const { maxTime, minTime } = getMinMaxCalendarTime(settings?.openingHours);
+
   return (
     <CalendarViewContainer>
       <Calendar
@@ -86,6 +91,13 @@ const CalendarView = () => {
         components={{
           event: Event,
         }}
+        min={minTime}
+        max={maxTime}
+        eventPropGetter={() => ({
+          style: {
+            fontSize: ".85rem",
+          },
+        })}
         formats={calendarSettings.formats}
       />
     </CalendarViewContainer>

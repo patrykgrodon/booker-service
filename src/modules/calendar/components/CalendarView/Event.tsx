@@ -8,7 +8,10 @@ type EventProps = {
 const Event = ({ event }: EventProps) => {
   const { customer } = event;
   return (
-    <Typography variant="subtitle2" sx={{ lineHeight: 1.3, display: "block" }}>
+    <Typography
+      variant="inherit"
+      sx={{ lineHeight: 1.3, cursor: "pointer", width: "max-content" }}
+    >
       {customer.firstName} {customer.lastName}
     </Typography>
   );
