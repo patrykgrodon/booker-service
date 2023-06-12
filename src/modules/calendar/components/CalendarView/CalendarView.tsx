@@ -77,7 +77,7 @@ const CalendarView = () => {
   const { maxTime, minTime } = getMinMaxCalendarTime(settings?.openingHours);
 
   return (
-    <CalendarViewContainer>
+    <CalendarViewContainer view={view}>
       <Calendar
         localizer={calendarSettings.localizer}
         events={events}

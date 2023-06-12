@@ -1,7 +1,14 @@
 import { Box } from "@mui/material";
 import React from "react";
+import { View } from "react-big-calendar";
 
-const CalendarViewContainer = ({ children }: { children: React.ReactNode }) => {
+const CalendarViewContainer = ({
+  children,
+  view,
+}: {
+  children: React.ReactNode;
+  view: View;
+}) => {
   return (
     <Box
       sx={{
@@ -12,7 +19,8 @@ const CalendarViewContainer = ({ children }: { children: React.ReactNode }) => {
           backgroundColor: (theme) => theme.palette.action.disabledBackground,
         },
         "& .rbc-today": {
-          backgroundColor: (theme) => theme.palette.action.disabled,
+          backgroundColor: (theme) =>
+            view === "day" ? "transparent" : theme.palette.action.disabled,
         },
         "& .rbc-calendar": {
           fontFamily: "Lato, Segoe UI, sans-serif",
