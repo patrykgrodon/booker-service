@@ -24,15 +24,21 @@ const convertVisitsToCalendarEvents = (visits: Visit[]): CalendarEvent[] => {
 };
 
 const CalendarView = () => {
-  const { view, changeView, dateRange, changeDateRange, calendarVisits } =
-    useCalendarView();
+  const {
+    view,
+    changeView,
+    dateRange,
+    changeDateRange,
+    visits,
+    refetchVisits,
+  } = useCalendarView();
   const { settings } = useSettings();
 
   const [previewVisitUuid, setPreviewVisitUuid] = useState<string | null>(null);
 
   const events = useMemo(
-    () => convertVisitsToCalendarEvents(calendarVisits || []),
-    [calendarVisits]
+    () => convertVisitsToCalendarEvents(visits || []),
+    [visits]
   );
 
   const handleRangeChange = (
@@ -106,6 +112,11 @@ const CalendarView = () => {
       />
       {!!previewVisitUuid && (
         <VisitsDetailsDialog
+          onEditSuccess={refetchVisits}
+          onDeleteSuccess={() => {
+            refetchVisits();
+            setPreviewVisitUuid(null);
+          }}
           handleClose={() => setPreviewVisitUuid(null)}
           isOpen
           id={previewVisitUuid}

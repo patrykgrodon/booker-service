@@ -33,7 +33,7 @@ const useCalendarView = () => {
     } as CalendarSSUi);
   }, [dateRange, view]);
 
-  const { data: calendarVisits } = useQuery(
+  const { data: visits, refetch: refetchVisits } = useQuery(
     ["calendar-visits", user?.id, dateRange],
     () => getCalendarVisits(user?.id || "", dateRange),
     { enabled: !!user }
@@ -47,7 +47,14 @@ const useCalendarView = () => {
     setDateRange(dateRange);
   };
 
-  return { changeView, dateRange, changeDateRange, view, calendarVisits };
+  return {
+    changeView,
+    dateRange,
+    changeDateRange,
+    view,
+    visits,
+    refetchVisits,
+  };
 };
 
 export default useCalendarView;

@@ -1,15 +1,12 @@
 import { DeleteForeverOutlined, EditOutlined } from "@mui/icons-material";
 import { TableCell, IconButton } from "@mui/material";
-import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { useModal } from "common/hooks";
 import { Visit } from "modules/visits/types";
-import { ConfirmationDialog } from "common/components";
-import { useToast } from "common/providers/ToastProvider";
 import VisitFormDialog from "../VisitFormDialog";
-import { deleteVisit } from "modules/visits/api";
-import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "modules/auth/contexts";
+import { DeleteVisitConfirmationDialog } from "..";
 
 type ActionsCellProps = {
   visit: Visit;
@@ -18,9 +15,6 @@ type ActionsCellProps = {
 const ActionsCell = ({ visit }: ActionsCellProps) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
-
-  const { setErrorMessage } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
 
   const {
     isOpen: isEditOpen,
@@ -41,16 +35,6 @@ const ActionsCell = ({ visit }: ActionsCellProps) => {
     refetchVisits();
   };
 
-  const handleDelete = async () => {
-    setIsLoading(true);
-    try {
-      await deleteVisit(visit.id);
-      refetchVisits();
-    } catch (err: any) {
-      setErrorMessage("Error while deleteting visit. Try again!");
-    }
-    setIsLoading(false);
-  };
   return (
     <>
       <TableCell sx={{ width: "100px", minWidth: "100px" }}>
@@ -73,15 +57,11 @@ const ActionsCell = ({ visit }: ActionsCellProps) => {
         }}
         id={visit.id}
       />
-      <ConfirmationDialog
-        title="Delete visit"
-        text="Are you sure that you want to delete the visit?"
-        mainButtonText="Delete"
-        type="error"
-        open={isDeleteOpen}
-        isLoading={isLoading}
-        handleClick={handleDelete}
+      <DeleteVisitConfirmationDialog
         handleClose={closeDelete}
+        isOpen={isDeleteOpen}
+        onDeleteSuccess={refetchVisits}
+        visitId={visit.id}
       />
     </>
   );

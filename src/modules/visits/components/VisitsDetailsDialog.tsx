@@ -1,29 +1,49 @@
+import { DeleteForeverOutlined, EditOutlined } from "@mui/icons-material";
 import {
   Box,
   Dialog,
   DialogContent,
   DialogTitle,
   Grid,
+  IconButton,
   Modal,
   Typography,
 } from "@mui/material";
-import { CloseButton, Spinner } from "common/components";
-import useVisitDetails from "../hooks/useVisitDetails";
 import { format } from "date-fns";
+
+import { CloseButton, Spinner } from "common/components";
 import { dashedDateTimeFormat } from "common/utils/dateTimeUtils";
+import { useModal } from "common/hooks";
+import useVisitDetails from "../hooks/useVisitDetails";
+import VisitFormDialog from "./VisitFormDialog";
+import { DeleteVisitConfirmationDialog } from ".";
 
 type VisitsDetailsDialogProps = {
   isOpen: boolean;
   handleClose: () => void;
   id: string;
+  onEditSuccess: () => void;
+  onDeleteSuccess: () => void;
 };
 
 const VisitsDetailsDialog = ({
   handleClose,
   isOpen,
   id,
+  onEditSuccess,
+  onDeleteSuccess,
 }: VisitsDetailsDialogProps) => {
-  const { visit, isLoading } = useVisitDetails(id);
+  const { visit, isLoading, refetch } = useVisitDetails(id);
+  const {
+    closeModal: closeEditView,
+    isOpen: isEditViewOpen,
+    openModal: openEditView,
+  } = useModal();
+  const {
+    closeModal: closeDeleteView,
+    isOpen: isDeleteViewOpen,
+    openModal: openDeleteView,
+  } = useModal();
 
   if (isLoading)
     return (
@@ -34,7 +54,38 @@ const VisitsDetailsDialog = ({
       </Modal>
     );
   if (!visit) return null;
+
   const { employee, service, customer, startAt, endAt } = visit;
+
+  if (isEditViewOpen)
+    return (
+      <VisitFormDialog
+        isOpen
+        onSuccess={() => {
+          closeEditView();
+          refetch();
+          onEditSuccess();
+        }}
+        formValues={{
+          customer: customer.id,
+          date: startAt,
+          employee: employee.id,
+          service: service.id,
+        }}
+        id={visit.id}
+        handleClose={closeEditView}
+      />
+    );
+
+  if (isDeleteViewOpen)
+    return (
+      <DeleteVisitConfirmationDialog
+        handleClose={closeDeleteView}
+        isOpen={isDeleteViewOpen}
+        onDeleteSuccess={onDeleteSuccess}
+        visitId={visit.id}
+      />
+    );
 
   const generalInfo = [
     {
@@ -72,7 +123,17 @@ const VisitsDetailsDialog = ({
 
   return (
     <Dialog open={isOpen} onClose={handleClose}>
-      <DialogTitle sx={{ pb: 0 }}>Visit details</DialogTitle>
+      <DialogTitle
+        sx={{ pb: 0, display: "flex", alignItems: "center", columnGap: 1 }}
+      >
+        Visit details
+        <IconButton size="small" onClick={openEditView}>
+          <EditOutlined fontSize="small" />
+        </IconButton>
+        <IconButton size="small" onClick={openDeleteView}>
+          <DeleteForeverOutlined fontSize="small" />
+        </IconButton>
+      </DialogTitle>
       <CloseButton onClick={handleClose} />
       <DialogContent>
         <Grid container spacing={1}>
@@ -108,7 +169,7 @@ const InfoItem = ({ label, value }: { label: string; value: string }) => {
       <Typography variant="caption" color="textSecondary">
         {label}
       </Typography>
-      <Typography variant="subtitle1">{value}</Typography>
+      <Typography variant="subtitle1">{value || "---"}</Typography>
     </Grid>
   );
 };
