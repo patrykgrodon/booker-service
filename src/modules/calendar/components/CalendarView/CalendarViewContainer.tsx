@@ -30,6 +30,7 @@ const CalendarViewContainer = ({
           marginLeft: "auto",
           marginRight: "auto",
           marginTop: "5px",
+          background: "transparent",
         },
 
         "& .rbc-continues-after::after": {

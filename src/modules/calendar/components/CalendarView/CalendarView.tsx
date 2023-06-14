@@ -17,6 +17,9 @@ import { isEqual } from "date-fns";
 import useSettings from "modules/settings/hooks/useSettings";
 import { getMinMaxCalendarTime } from "modules/calendar/utils/getMinMaxCalendarTime";
 import { VisitsDetailsDialog } from "modules/visits/components";
+import { Box } from "@mui/material";
+import { useMenu } from "common/hooks";
+import MoreEventsMenu from "./MoreEventsMenu";
 
 const convertVisitsToCalendarEvents = (visits: Visit[]): CalendarEvent[] => {
   if (visits === undefined) return [];
@@ -34,6 +37,16 @@ const CalendarView = () => {
   } = useCalendarView();
   const { settings } = useSettings();
 
+  const {
+    openMenu: openMoreEvents,
+    closeMenu: closeMoreEvents,
+    menuEl: moreEventsMenuEl,
+  } = useMenu();
+
+  const [moreEventsData, setMoreEventsData] = useState<{
+    events: CalendarEvent[];
+    date: Date;
+  } | null>(null);
   const [previewVisitUuid, setPreviewVisitUuid] = useState<string | null>(null);
 
   const events = useMemo(
@@ -82,6 +95,15 @@ const CalendarView = () => {
 
   const { maxTime, minTime } = getMinMaxCalendarTime(settings?.openingHours);
 
+  const showMore = (count: number) => (
+    <Box
+      sx={{ textAlign: "center", width: "100%" }}
+      onClick={(e: any) => openMoreEvents(e.currentTarget)}
+    >
+      Show more +{count}
+    </Box>
+  );
+
   return (
     <CalendarViewContainer view={view}>
       <Calendar
@@ -100,6 +122,13 @@ const CalendarView = () => {
         onSelectEvent={(event) => setPreviewVisitUuid(event.id)}
         components={{
           event: Event,
+        }}
+        messages={{
+          // @ts-ignore
+          showMore,
+        }}
+        onShowMore={(events, date) => {
+          setMoreEventsData({ events, date });
         }}
         min={minTime}
         max={maxTime}
@@ -120,6 +149,13 @@ const CalendarView = () => {
           handleClose={() => setPreviewVisitUuid(null)}
           isOpen
           id={previewVisitUuid}
+        />
+      )}
+      {!!moreEventsData && (
+        <MoreEventsMenu
+          closeMenu={closeMoreEvents}
+          menuEl={moreEventsMenuEl}
+          moreEventsData={moreEventsData}
         />
       )}
     </CalendarViewContainer>
