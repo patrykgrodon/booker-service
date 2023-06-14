@@ -1,11 +1,10 @@
-import { DeleteForeverOutlined, EditOutlined } from "@mui/icons-material";
 import {
   Box,
+  Button,
   Dialog,
   DialogContent,
   DialogTitle,
   Grid,
-  IconButton,
   Modal,
   Typography,
 } from "@mui/material";
@@ -123,17 +122,7 @@ const VisitsDetailsDialog = ({
 
   return (
     <Dialog open={isOpen} onClose={handleClose}>
-      <DialogTitle
-        sx={{ pb: 0, display: "flex", alignItems: "center", columnGap: 1 }}
-      >
-        Visit details
-        <IconButton size="small" onClick={openEditView}>
-          <EditOutlined fontSize="small" />
-        </IconButton>
-        <IconButton size="small" onClick={openDeleteView}>
-          <DeleteForeverOutlined fontSize="small" />
-        </IconButton>
-      </DialogTitle>
+      <DialogTitle sx={{ pb: 0 }}>Visit details</DialogTitle>
       <CloseButton onClick={handleClose} />
       <DialogContent>
         <Grid container spacing={1}>
@@ -148,6 +137,16 @@ const VisitsDetailsDialog = ({
             <InfoItem key={label} label={label} value={value} />
           ))}
         </Grid>
+        <Box
+          sx={{ mt: 3, display: "flex", flexDirection: "column", rowGap: 1 }}
+        >
+          <Button fullWidth onClick={openEditView}>
+            Edit
+          </Button>
+          <Button fullWidth onClick={openDeleteView} color="error">
+            Delete
+          </Button>
+        </Box>
       </DialogContent>
     </Dialog>
   );
