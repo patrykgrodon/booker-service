@@ -14,7 +14,13 @@ const useSidebar = () => {
       return !prevState;
     });
   };
-  return { isOpen, toggleSidebar };
+
+  const closeSidebar = () => {
+    setIsOpen(false);
+    saveLSItem(sidebarLsName, false);
+  };
+
+  return { isOpen, toggleSidebar, closeSidebar };
 };
 
 export default useSidebar;

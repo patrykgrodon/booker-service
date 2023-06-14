@@ -15,13 +15,25 @@ export type SidebarItem = {
   path: Route;
 };
 
-type SidebarItemProps = SidebarItem & { isOpen: boolean };
+type SidebarItemProps = SidebarItem & {
+  isOpen: boolean;
+  closeSidebar: () => void;
+};
 
-const SidebarItem = ({ label, icon: Icon, isOpen, path }: SidebarItemProps) => {
+const SidebarItem = ({
+  label,
+  icon: Icon,
+  isOpen,
+  path,
+  closeSidebar,
+}: SidebarItemProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleNavigate = () => navigate(path);
+  const handleNavigate = () => {
+    navigate(path);
+    closeSidebar();
+  };
 
   const highlightItem = matchPath(`${path}/*`, location.pathname);
 

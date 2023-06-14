@@ -16,6 +16,7 @@ import { Drawer } from "./styledDrawer";
 
 type SidebarProps = {
   isOpen: boolean;
+  closeSidebar: () => void;
 };
 
 const sidebarItems: SidebarItemType[] = [
@@ -28,7 +29,7 @@ const sidebarItems: SidebarItemType[] = [
   { label: "Settings", icon: SettingsOutlined, path: routes.settings },
 ];
 
-const Sidebar = ({ isOpen }: SidebarProps) => {
+const Sidebar = ({ isOpen, closeSidebar }: SidebarProps) => {
   const isWindowBelowSmSize = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <Drawer
@@ -37,6 +38,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
       sx={{
         position: isWindowBelowSmSize ? "absolute" : "static",
         display: !isOpen && isWindowBelowSmSize ? "none" : "block",
+        zIndex: 1000,
         ...(isWindowBelowSmSize ? { width: "100vw !important" } : {}),
       }}
       PaperProps={{
@@ -54,6 +56,9 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             label={label}
             isOpen={isOpen}
             icon={icon}
+            closeSidebar={() => {
+              if (isWindowBelowSmSize) closeSidebar();
+            }}
           />
         ))}
       </List>

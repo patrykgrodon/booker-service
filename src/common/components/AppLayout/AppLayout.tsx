@@ -9,7 +9,7 @@ type AppLayoutProps = {
 };
 
 const AppLayout = ({ children }: AppLayoutProps) => {
-  const { isOpen, toggleSidebar } = useSidebar();
+  const { isOpen, toggleSidebar, closeSidebar } = useSidebar();
   return (
     <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <Header toggleSidebar={toggleSidebar} />
@@ -21,7 +21,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           overflow: "hidden",
         }}
       >
-        <Sidebar isOpen={isOpen} />
+        <Sidebar isOpen={isOpen} closeSidebar={closeSidebar} />
         <Box
           component="main"
           sx={{
