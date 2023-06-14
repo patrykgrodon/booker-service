@@ -48,8 +48,16 @@ const CalendarViewContainer = ({
         "& .rbc-time-content ": {
           borderTop: "none",
         },
-        "& .rbc-time-header ": {
+        "& .rbc-time-header": {
           borderBottom: "none",
+        },
+        "& .rbc-btn-group": {
+          "& .rbc-active, .rbc-active:hover, button:hover": {
+            color: (theme) => theme.palette.common.black,
+          },
+          "& button": {
+            color: (theme) => theme.palette.text.primary,
+          },
         },
       }}
       children={children}
