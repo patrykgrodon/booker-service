@@ -19,6 +19,7 @@ let theme = createTheme({
       defaultProps: {
         color: "primary",
         variant: "contained",
+        sx: { textTransform: "none" },
       },
     },
     MuiTextField: {
