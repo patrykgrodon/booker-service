@@ -62,17 +62,13 @@ const CalendarViewContainer = ({
         },
         "& .rbc-toolbar": {
           flexDirection: { xs: "column", md: "row" },
-          columnGap: 5,
+          rowGap: 1,
           "& .rbc-toolbar-label": {
             order: { xs: -1, md: 0 },
           },
           "& .rbc-btn-group": {
             display: { xs: "flex", md: "inline-block" },
             width: { xs: "100%", md: "max-content" },
-
-            "&:first-of-type": {
-              my: { xs: 1, md: 0 },
-            },
 
             "& button": {
               flex: { xs: "1 1 0px" },
