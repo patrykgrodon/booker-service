@@ -9,12 +9,14 @@ import { CalendarSSUi } from "../types";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "modules/auth/contexts";
 import { getCalendarVisits } from "modules/visits/api";
+import { ssNames } from "common/constants/webStorageItems";
 
 const useCalendarView = (checkedUsers: string[]) => {
   const { user } = useAuth();
 
-  const ssItemName = "calendar-ui";
-  const calendarSSUi = getSSItem(ssItemName) as CalendarSSUi | undefined;
+  const calendarSSUi = getSSItem(ssNames.calendar.ui) as
+    | CalendarSSUi
+    | undefined;
   const [view, setView] = useState<View>(calendarSSUi?.view || "month");
 
   const [dateRange, setDateRange] = useState<[Date, Date]>(
@@ -27,7 +29,7 @@ const useCalendarView = (checkedUsers: string[]) => {
   );
 
   useEffect(() => {
-    saveSSItem(ssItemName, {
+    saveSSItem(ssNames.calendar.ui, {
       view,
       dateRange: [dateRange[0].toISOString(), dateRange[1].toISOString()],
     } as CalendarSSUi);
