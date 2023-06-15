@@ -129,14 +129,21 @@ export const getCompanyVisits = async (
 
 export const getCalendarVisits = async (
   companyId: string,
-  dateRange: [Date, Date]
+  dateRange: [Date, Date],
+  checkedUsers: string[]
 ) => {
+  if (checkedUsers.length === 0) return [];
   const [startAt, endAt] = dateRange;
   const q = query(
     visitsCollectionRef,
     where("companyId", "==", companyId),
     where("startAt", ">", startAt),
-    where("startAt", "<", endAt)
+    where("startAt", "<", endAt),
+    where(
+      "employee",
+      "in",
+      checkedUsers.map((userId) => doc(db, "employees", userId))
+    )
   );
 
   const data = await getDocs(q);

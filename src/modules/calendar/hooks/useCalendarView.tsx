@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "modules/auth/contexts";
 import { getCalendarVisits } from "modules/visits/api";
 
-const useCalendarView = () => {
+const useCalendarView = (checkedUsers: string[]) => {
   const { user } = useAuth();
 
   const ssItemName = "calendar-ui";
@@ -34,8 +34,8 @@ const useCalendarView = () => {
   }, [dateRange, view]);
 
   const { data: visits, refetch: refetchVisits } = useQuery(
-    ["calendar-visits", user?.id, dateRange],
-    () => getCalendarVisits(user?.id || "", dateRange),
+    ["calendar-visits", user?.id, dateRange, checkedUsers],
+    () => getCalendarVisits(user?.id || "", dateRange, checkedUsers),
     { enabled: !!user }
   );
 

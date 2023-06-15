@@ -26,7 +26,11 @@ const convertVisitsToCalendarEvents = (visits: Visit[]): CalendarEvent[] => {
   return visits;
 };
 
-const CalendarView = () => {
+type CalendarViewProps = {
+  checkedUsers: string[];
+};
+
+const CalendarView = ({ checkedUsers }: CalendarViewProps) => {
   const {
     view,
     changeView,
@@ -34,7 +38,7 @@ const CalendarView = () => {
     changeDateRange,
     visits,
     refetchVisits,
-  } = useCalendarView();
+  } = useCalendarView(checkedUsers);
   const { settings } = useSettings();
 
   const {

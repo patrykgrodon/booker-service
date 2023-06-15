@@ -16,7 +16,15 @@ import { useMenu } from "common/hooks";
 import { useAuth } from "modules/auth/contexts";
 import useCompanyEmployees from "modules/employees/hooks/useCompanyEmployees";
 
-const CalendarFilters = () => {
+type CalendarFiltersProps = {
+  checkedUsers: string[];
+  changeCheckedUsers: (newCheckedUsers: string[]) => void;
+};
+
+const CalendarFilters = ({
+  changeCheckedUsers,
+  checkedUsers,
+}: CalendarFiltersProps) => {
   const { closeMenu, menuEl, openMenu } = useMenu();
 
   const { user } = useAuth();
@@ -45,7 +53,18 @@ const CalendarFilters = () => {
               {employees?.map(({ firstName, lastName, id }) => (
                 <ListItem key={id} disablePadding>
                   <FormControlLabel
-                    control={<Checkbox size="small" defaultChecked />}
+                    control={
+                      <Checkbox
+                        size="small"
+                        checked={checkedUsers.includes(id)}
+                        onChange={(_, checked) => {
+                          const newCheckedUsers = checked
+                            ? [id, ...checkedUsers]
+                            : checkedUsers.filter((userId) => userId !== id);
+                          changeCheckedUsers(newCheckedUsers);
+                        }}
+                      />
+                    }
                     label={`${firstName} ${lastName}`}
                   />
                 </ListItem>
