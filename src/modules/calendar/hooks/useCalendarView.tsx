@@ -1,44 +1,43 @@
-import { getSSItem, saveSSItem } from "common/utils/webStorage";
+import { getLSItem, saveLSItem } from "common/utils/webStorage";
 import { useEffect, useState } from "react";
 import { View } from "react-big-calendar";
+import { useQuery } from "@tanstack/react-query";
+
 import {
   getEndOfTheMonth,
   getStartOfTheMonth,
 } from "../utils/calendarViewUtils";
-import { CalendarSSUi } from "../types";
-import { useQuery } from "@tanstack/react-query";
+import { CalendarLSUi } from "../types";
 import { useAuth } from "modules/auth/contexts";
 import { getCalendarVisits } from "modules/visits/api";
-import { ssNames } from "common/constants/webStorageItems";
+import { lsNames } from "common/constants/webStorageItems";
 
-const useCalendarView = (checkedUsers: string[]) => {
+const useCalendarView = (checkedEmployees: string[]) => {
   const { user } = useAuth();
 
-  const calendarSSUi = getSSItem(ssNames.calendar.ui) as
-    | CalendarSSUi
-    | undefined;
-  const [view, setView] = useState<View>(calendarSSUi?.view || "month");
+  const calendarLSUi = getLSItem<CalendarLSUi>(lsNames.calendar.ui);
+  const [view, setView] = useState<View>(calendarLSUi?.view || "month");
 
   const [dateRange, setDateRange] = useState<[Date, Date]>(
-    calendarSSUi?.dateRange
+    calendarLSUi?.dateRange
       ? [
-          new Date(calendarSSUi.dateRange[0]),
-          new Date(calendarSSUi.dateRange[1]),
+          new Date(calendarLSUi.dateRange[0]),
+          new Date(calendarLSUi.dateRange[1]),
         ]
       : [getStartOfTheMonth(), getEndOfTheMonth()]
   );
 
   useEffect(() => {
-    saveSSItem(ssNames.calendar.ui, {
+    saveLSItem(lsNames.calendar.ui, {
       view,
       dateRange: [dateRange[0].toISOString(), dateRange[1].toISOString()],
-    } as CalendarSSUi);
+    } as CalendarLSUi);
   }, [dateRange, view]);
 
   const { data: visits, refetch: refetchVisits } = useQuery(
-    ["calendar-visits", user?.id, dateRange, checkedUsers],
-    () => getCalendarVisits(user?.id || "", dateRange, checkedUsers),
-    { enabled: !!user }
+    ["calendar-visits", user?.id, dateRange, checkedEmployees],
+    () => getCalendarVisits(user?.id || "", dateRange, checkedEmployees),
+    { enabled: !!user, keepPreviousData: true }
   );
 
   const changeView = (view: View) => {

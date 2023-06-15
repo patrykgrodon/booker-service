@@ -1,29 +1,36 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 import { PageContainer } from "common/components";
 import { CalendarView } from "../components";
 import CalendarFilters from "../components/CalendarView/CalendarFilters";
-
-export const lsCheckedUsers = "";
+import { getLSItem, saveLSItem } from "common/utils/webStorage";
+import { lsNames } from "common/constants/webStorageItems";
 
 const Calendar = () => {
-  const [checkedUsers, setCheckedUsers] = useState<string[]>([]);
+  const lsCheckedEmployees = getLSItem<string[] | undefined>(
+    lsNames.calendar.checkedEmployees
+  );
 
-  const changeCheckedUsers = (newCheckedUsers: string[]) => {
-    setCheckedUsers(newCheckedUsers);
-  };
+  const [checkedEmployees, setCheckedEmployees] = useState<string[]>(
+    lsCheckedEmployees || []
+  );
+
+  const changeCheckedEmployees = useCallback((newCheckedUsers: string[]) => {
+    setCheckedEmployees(newCheckedUsers);
+    saveLSItem(lsNames.calendar.checkedEmployees, newCheckedUsers);
+  }, []);
 
   return (
     <PageContainer
       title="Calendar"
       button={
         <CalendarFilters
-          checkedUsers={checkedUsers}
-          changeCheckedUsers={changeCheckedUsers}
+          checkedEmployees={checkedEmployees}
+          changeCheckedEmployees={changeCheckedEmployees}
         />
       }
     >
-      <CalendarView checkedUsers={checkedUsers} />
+      <CalendarView checkedEmployees={checkedEmployees} />
     </PageContainer>
   );
 };

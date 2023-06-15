@@ -3,7 +3,7 @@ import { View } from "react-big-calendar";
 
 export type CalendarEvent = Visit;
 
-export type CalendarSSUi = {
+export type CalendarLSUi = {
   view?: View;
   dateRange?: [string, string];
 };

@@ -1,6 +1,8 @@
 import { Calendar, View } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useMemo, useState } from "react";
+import { Box } from "@mui/material";
+import { isEqual } from "date-fns";
 
 import calendarSettings from "./calendarSettings";
 import CalendarViewContainer from "./CalendarViewContainer";
@@ -13,11 +15,9 @@ import {
 import { Visit } from "modules/visits/types";
 import { CalendarEvent } from "modules/calendar/types";
 import Event from "./Event";
-import { isEqual } from "date-fns";
 import useSettings from "modules/settings/hooks/useSettings";
 import { getMinMaxCalendarTime } from "modules/calendar/utils/getMinMaxCalendarTime";
 import { VisitsDetailsDialog } from "modules/visits/components";
-import { Box } from "@mui/material";
 import { useMenu } from "common/hooks";
 import MoreEventsMenu from "./MoreEventsMenu";
 
@@ -27,10 +27,10 @@ const convertVisitsToCalendarEvents = (visits: Visit[]): CalendarEvent[] => {
 };
 
 type CalendarViewProps = {
-  checkedUsers: string[];
+  checkedEmployees: string[];
 };
 
-const CalendarView = ({ checkedUsers }: CalendarViewProps) => {
+const CalendarView = ({ checkedEmployees }: CalendarViewProps) => {
   const {
     view,
     changeView,
@@ -38,7 +38,7 @@ const CalendarView = ({ checkedUsers }: CalendarViewProps) => {
     changeDateRange,
     visits,
     refetchVisits,
-  } = useCalendarView(checkedUsers);
+  } = useCalendarView(checkedEmployees);
   const { settings } = useSettings();
 
   const {

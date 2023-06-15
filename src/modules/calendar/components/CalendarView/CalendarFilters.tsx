@@ -12,24 +12,57 @@ import {
   Popper,
   Typography,
 } from "@mui/material";
+import { useEffect } from "react";
+
+import { lsNames } from "common/constants/webStorageItems";
 import { useMenu } from "common/hooks";
+import { getLSItem } from "common/utils/webStorage";
 import { useAuth } from "modules/auth/contexts";
 import useCompanyEmployees from "modules/employees/hooks/useCompanyEmployees";
 
 type CalendarFiltersProps = {
-  checkedUsers: string[];
-  changeCheckedUsers: (newCheckedUsers: string[]) => void;
+  checkedEmployees: string[];
+  changeCheckedEmployees: (newCheckedUsers: string[]) => void;
 };
 
 const CalendarFilters = ({
-  changeCheckedUsers,
-  checkedUsers,
+  changeCheckedEmployees,
+  checkedEmployees,
 }: CalendarFiltersProps) => {
   const { closeMenu, menuEl, openMenu } = useMenu();
 
   const { user } = useAuth();
 
   const { employees } = useCompanyEmployees(user?.id);
+
+  const handleChangeCheckedEmployees = (id: string, checked: boolean) => {
+    // Remove non exist users
+    const existsEmployees = checkedEmployees.filter(
+      (employeeId) =>
+        !!employees?.find((employee) => employee.id === employeeId)
+    );
+    const newCheckedEmployees = checked
+      ? [id, ...existsEmployees]
+      : existsEmployees.filter((userId) => userId !== id);
+    changeCheckedEmployees(newCheckedEmployees);
+  };
+
+  // This useEffect set all users as checked when no saved state in local storage(probably, first calendar load), also check if all users exists
+  useEffect(() => {
+    if (!employees) return;
+    const lsCheckedEmployees = getLSItem<string[]>(
+      lsNames.calendar.checkedEmployees
+    );
+    if (lsCheckedEmployees) {
+      const withoutRemovedEmployees = lsCheckedEmployees.filter(
+        (employeeId) => !!employees.find(({ id }) => id === employeeId)
+      );
+      if (withoutRemovedEmployees.length === lsCheckedEmployees.length) return;
+      changeCheckedEmployees(withoutRemovedEmployees);
+    } else {
+      changeCheckedEmployees(employees.map(({ id }) => id));
+    }
+  }, [employees, changeCheckedEmployees]);
 
   return (
     <>
@@ -56,12 +89,9 @@ const CalendarFilters = ({
                     control={
                       <Checkbox
                         size="small"
-                        checked={checkedUsers.includes(id)}
+                        checked={checkedEmployees.includes(id)}
                         onChange={(_, checked) => {
-                          const newCheckedUsers = checked
-                            ? [id, ...checkedUsers]
-                            : checkedUsers.filter((userId) => userId !== id);
-                          changeCheckedUsers(newCheckedUsers);
+                          handleChangeCheckedEmployees(id, checked);
                         }}
                       />
                     }
