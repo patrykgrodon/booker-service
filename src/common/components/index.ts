@@ -1,5 +1,5 @@
 import AppLayout from "./AppLayout/AppLayout";
-import CloseButton from "./CloseButton";
+import CloseButton from "./CloseButton/CloseButton";
 import ConfirmationDialog from "./ConfirmationDialog";
 import ControlSelect from "./ControlSelect";
 import Logo from "./Logo";
