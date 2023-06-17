@@ -136,9 +136,10 @@ const CalendarView = ({ checkedEmployees }: CalendarViewProps) => {
         }}
         min={minTime}
         max={maxTime}
-        eventPropGetter={() => ({
+        eventPropGetter={(visit) => ({
           style: {
             fontSize: ".85rem",
+            backgroundColor: visit.employee.calendarColor,
           },
         })}
         formats={calendarSettings.formats}

@@ -19,6 +19,7 @@ import { useMenu } from "common/hooks";
 import { getLSItem } from "common/utils/webStorage";
 import { useAuth } from "modules/auth/contexts";
 import useCompanyEmployees from "modules/employees/hooks/useCompanyEmployees";
+import { CalendarColorDot } from "..";
 
 type CalendarFiltersProps = {
   checkedEmployees: string[];
@@ -83,7 +84,7 @@ const CalendarFilters = ({
             </Box>
             <Divider />
             <List sx={{ px: 2, py: 1 }}>
-              {employees?.map(({ firstName, lastName, id }) => (
+              {employees?.map(({ firstName, lastName, id, calendarColor }) => (
                 <ListItem key={id} disablePadding>
                   <FormControlLabel
                     control={
@@ -97,6 +98,7 @@ const CalendarFilters = ({
                     }
                     label={`${firstName} ${lastName}`}
                   />
+                  <CalendarColorDot color={calendarColor} sx={{ ml: "auto" }} />
                 </ListItem>
               ))}
             </List>
