@@ -80,6 +80,7 @@ const ConfirmationDialog = ({
         onClick={handleClose}
         variant="outlined"
         color="primary"
+        aria-label="secondary button"
       >
         {closeButtonText}
       </Button>
