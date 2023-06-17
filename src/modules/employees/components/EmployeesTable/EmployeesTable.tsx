@@ -1,7 +1,4 @@
 import {
-  TableContainer,
-  Paper,
-  Table,
   TableHead,
   TableBody,
   TableRow,
@@ -11,7 +8,7 @@ import {
 import EmployeesTableRow from "./EmployeesTableRow";
 import { useAuth } from "modules/auth/contexts";
 import useCompanyEmployees from "modules/employees/hooks/useCompanyEmployees";
-import { Spinner } from "common/components";
+import { Spinner, StickyHeaderTable } from "common/components";
 
 const headers = [
   "Full name",
@@ -34,29 +31,47 @@ const EmployeesTable = () => {
     );
 
   return (
-    <TableContainer
-      sx={{
-        flex: 1,
-        overflow: "auto",
-      }}
-    >
-      <Paper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {headers.map((header) => (
-                <TableCell key={header}>{header}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {employees?.map((employee) => (
-              <EmployeesTableRow key={employee.id} employee={employee} />
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
-    </TableContainer>
+    <StickyHeaderTable>
+      <TableHead>
+        <TableRow>
+          {headers.map((header) => (
+            <TableCell key={header}>{header}</TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {employees?.map((employee) => (
+          <EmployeesTableRow key={employee.id} employee={employee} />
+        ))}
+        {employees?.map((employee) => (
+          <EmployeesTableRow key={employee.id} employee={employee} />
+        ))}
+        {employees?.map((employee) => (
+          <EmployeesTableRow key={employee.id} employee={employee} />
+        ))}
+        {employees?.map((employee) => (
+          <EmployeesTableRow key={employee.id} employee={employee} />
+        ))}
+        {employees?.map((employee) => (
+          <EmployeesTableRow key={employee.id} employee={employee} />
+        ))}
+        {employees?.map((employee) => (
+          <EmployeesTableRow key={employee.id} employee={employee} />
+        ))}
+        {employees?.map((employee) => (
+          <EmployeesTableRow key={employee.id} employee={employee} />
+        ))}
+        {employees?.map((employee) => (
+          <EmployeesTableRow key={employee.id} employee={employee} />
+        ))}
+        {employees?.map((employee) => (
+          <EmployeesTableRow key={employee.id} employee={employee} />
+        ))}
+        {employees?.map((employee) => (
+          <EmployeesTableRow key={employee.id} employee={employee} />
+        ))}
+      </TableBody>
+    </StickyHeaderTable>
   );
 };
 

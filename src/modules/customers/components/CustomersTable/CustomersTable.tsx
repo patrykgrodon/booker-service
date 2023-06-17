@@ -1,7 +1,4 @@
 import {
-  TableContainer,
-  Paper,
-  Table,
   TableHead,
   TableBody,
   TableRow,
@@ -11,7 +8,7 @@ import {
 import CustomersTableRow from "./CustomersTableRow";
 import { useAuth } from "modules/auth/contexts";
 import useCompanyCustomers from "modules/customers/hooks/useCompanyCustomers";
-import { Spinner } from "common/components";
+import { Spinner, StickyHeaderTable } from "common/components";
 
 const headers = ["Full name", "Phone number", "E-mail", "Actions"];
 
@@ -28,29 +25,20 @@ const CustomersTable = () => {
     );
 
   return (
-    <TableContainer
-      sx={{
-        flex: 1,
-        overflow: "auto",
-      }}
-    >
-      <Paper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {headers.map((header) => (
-                <TableCell key={header}>{header}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {customers?.map((customer) => (
-              <CustomersTableRow key={customer.id} customer={customer} />
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
-    </TableContainer>
+    <StickyHeaderTable>
+      <TableHead>
+        <TableRow>
+          {headers.map((header) => (
+            <TableCell key={header}>{header}</TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {customers?.map((customer) => (
+          <CustomersTableRow key={customer.id} customer={customer} />
+        ))}
+      </TableBody>
+    </StickyHeaderTable>
   );
 };
 

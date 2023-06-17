@@ -7,6 +7,7 @@ import PageContainer from "./PageContainer";
 import PasswordField from "./PasswordField";
 import RequestButton from "./RequestButton";
 import Spinner from "./Spinner";
+import StickyHeaderTable from "./StickyHeaderTable";
 import SubmitErrorMessage from "./SubmitErrorMessage";
 
 export {
@@ -19,5 +20,6 @@ export {
   PasswordField,
   RequestButton,
   Spinner,
+  StickyHeaderTable,
   SubmitErrorMessage,
 };

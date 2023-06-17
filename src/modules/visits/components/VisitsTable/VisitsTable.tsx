@@ -1,7 +1,4 @@
 import {
-  TableContainer,
-  Paper,
-  Table,
   TableHead,
   TableBody,
   TableRow,
@@ -11,7 +8,7 @@ import {
 
 import VisitsTableRow from "./VisitsTableRow";
 import { useAuth } from "modules/auth/contexts";
-import { Spinner } from "common/components";
+import { Spinner, StickyHeaderTable } from "common/components";
 import useCompanyVisits from "modules/visits/hooks/useCompanyVisits";
 import { VisitsTableTabs } from "modules/visits/pages/Visits";
 
@@ -38,29 +35,20 @@ const VisitsTable = ({ activeTab }: VisitsTableProps) => {
     );
 
   return (
-    <TableContainer
-      sx={{
-        flex: 1,
-        overflow: "auto",
-      }}
-    >
-      <Paper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {headers.map((header) => (
-                <TableCell key={header}>{header}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {visits?.map((visit) => (
-              <VisitsTableRow key={visit.id} visit={visit} />
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
-    </TableContainer>
+    <StickyHeaderTable>
+      <TableHead>
+        <TableRow>
+          {headers.map((header) => (
+            <TableCell key={header}>{header}</TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {visits?.map((visit) => (
+          <VisitsTableRow key={visit.id} visit={visit} />
+        ))}
+      </TableBody>
+    </StickyHeaderTable>
   );
 };
 

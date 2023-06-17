@@ -1,9 +1,6 @@
 import {
-  Paper,
-  Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   Typography,
@@ -12,7 +9,7 @@ import {
 import { useAuth } from "modules/auth/contexts";
 import ServicesTableRow from "./ServicesTableRow";
 
-import { Spinner } from "common/components";
+import { Spinner, StickyHeaderTable } from "common/components";
 import useCompanyServices from "modules/services/hooks/useCompanyServices";
 
 const headers = ["Name", "Duration", "Cost", "Actions"];
@@ -30,29 +27,20 @@ const ServicesTable = () => {
     );
 
   return (
-    <TableContainer
-      sx={{
-        flex: 1,
-        overflow: "auto",
-      }}
-    >
-      <Paper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {headers.map((header) => (
-                <TableCell key={header}>{header}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {services?.map((service) => (
-              <ServicesTableRow key={service.name} service={service} />
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
-    </TableContainer>
+    <StickyHeaderTable>
+      <TableHead>
+        <TableRow>
+          {headers.map((header) => (
+            <TableCell key={header}>{header}</TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {services?.map((service) => (
+          <ServicesTableRow key={service.name} service={service} />
+        ))}
+      </TableBody>
+    </StickyHeaderTable>
   );
 };
 
