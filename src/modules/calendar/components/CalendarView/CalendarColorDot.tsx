@@ -1,10 +1,11 @@
-import { Box } from "@mui/material";
+import { Box, SxProps } from "@mui/material";
 
 type CalendarColorDotProps = {
   color: string;
+  sx?: SxProps;
 };
 
-const CalendarColorDot = ({ color }: CalendarColorDotProps) => {
+const CalendarColorDot = ({ color, sx }: CalendarColorDotProps) => {
   return (
     <Box
       sx={{
@@ -12,6 +13,7 @@ const CalendarColorDot = ({ color }: CalendarColorDotProps) => {
         aspectRatio: "1 / 1",
         backgroundColor: color,
         borderRadius: "50%",
+        ...sx,
       }}
     ></Box>
   );
