@@ -13,7 +13,13 @@ import { useAuth } from "modules/auth/contexts";
 import useCompanyEmployees from "modules/employees/hooks/useCompanyEmployees";
 import { Spinner } from "common/components";
 
-const headers = ["Full name", "Phone number", "E-mail", "Actions"];
+const headers = [
+  "Full name",
+  "Phone number",
+  "E-mail",
+  "Calendar color",
+  "Actions",
+];
 
 const EmployeesTable = () => {
   const { user } = useAuth();
