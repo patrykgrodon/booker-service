@@ -21,6 +21,7 @@
 
     "baseUrl": "src"
   },
-  "include": ["src"],
+  "types": ["vitest/globals"],
+  "include": ["src", "src/tests"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
