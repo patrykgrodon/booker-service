@@ -20,7 +20,7 @@ const getDefaultCalendarColor = () => {
 
 type EmployeeFormProps = {
   onSuccess: () => void;
-  formValues?: EmployeeFormValues;
+  formValues?: Partial<EmployeeFormValues>;
   id?: string;
 };
 

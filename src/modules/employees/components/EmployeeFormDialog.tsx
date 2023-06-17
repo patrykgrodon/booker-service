@@ -8,7 +8,7 @@ type EmployeeFormDialogProps = {
   isOpen: boolean;
   handleClose: () => void;
   onSuccess: () => void;
-  formValues?: EmployeeFormValues;
+  formValues?: Partial<EmployeeFormValues>;
   id?: string;
 };
 
