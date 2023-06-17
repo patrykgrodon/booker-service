@@ -11,12 +11,11 @@ import { RequestButton } from "common/components";
 import { useToast } from "common/providers/ToastProvider";
 import { EmployeeFormValues } from "../types";
 import useEmployees from "../hooks/useEmployees";
+import { calendarColors } from "common/constants/calendarColors";
+import { drawNumber } from "common/utils/drawNumber";
 
-const defaultValues: EmployeeFormValues = {
-  firstName: "",
-  lastName: "",
-  phoneNumber: "",
-  email: "",
+const getDefaultCalendarColor = () => {
+  return calendarColors[drawNumber(0, calendarColors.length - 1)];
 };
 
 type EmployeeFormProps = {
@@ -26,6 +25,13 @@ type EmployeeFormProps = {
 };
 
 const EmployeeForm = ({ formValues, id, onSuccess }: EmployeeFormProps) => {
+  const defaultValues: EmployeeFormValues = {
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+    calendarColor: getDefaultCalendarColor(),
+  };
   const {
     handleSubmit,
     register,
@@ -109,6 +115,14 @@ const EmployeeForm = ({ formValues, id, onSuccess }: EmployeeFormProps) => {
           type="email"
           error={!!errors.email}
           helperText={errors.email?.message}
+          fullWidth
+        />
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <TextField
+          {...register("calendarColor")}
+          type="color"
+          label="Calendar color"
           fullWidth
         />
       </Grid>

@@ -5,6 +5,7 @@ export type Employee = {
   phoneNumber: string;
   email: string;
   companyId: string;
+  calendarColor: string;
 };
 
 export type EmployeeFormValues = Omit<Employee, "id" | "companyId">;
