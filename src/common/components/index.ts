@@ -3,7 +3,7 @@ import CloseButton from "./CloseButton/CloseButton";
 import ConfirmationDialog from "./ConfirmationDialog/ConfirmationDialog";
 import ControlSelect from "./ControlSelect/ControlSelect";
 import Logo from "./Logo";
-import PageContainer from "./PageContainer";
+import PageContainer from "./PageContainer/PageContainer";
 import PasswordField from "./PasswordField";
 import RequestButton from "./RequestButton";
 import Spinner from "./Spinner";
