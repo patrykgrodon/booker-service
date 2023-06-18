@@ -53,7 +53,7 @@ const ControlSelect = forwardRef(
           error={Boolean(error)}
         >
           {options.map(({ value, label }) => (
-            <MenuItem key={value} value={value}>
+            <MenuItem key={value} value={value} aria-label={label}>
               {label}
             </MenuItem>
           ))}
