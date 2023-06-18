@@ -3,19 +3,19 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
-import { routes } from "routes";
 import {
   PasswordField,
   RequestButton,
   SubmitErrorMessage,
 } from "common/components";
-import { LoginFormValues } from "modules/auth/types";
 import {
   emailValidator,
   validationMessages,
 } from "common/utils/validationPatterns";
-import FormContainer from "./FormContainer";
-import { useAuth } from "../contexts/authContext";
+import { LoginFormValues } from "modules/auth/types";
+import { routes } from "routes";
+import { useAuth } from "../../contexts/authContext";
+import FormContainer from "../FormContainer";
 
 const defaultValues: LoginFormValues = {
   email: "",
@@ -71,7 +71,7 @@ const LoginForm = () => {
         helperText={errors.password?.message}
       />
       {error ? <SubmitErrorMessage error={error} /> : null}
-      <RequestButton type="submit" isLoading={isLoading}>
+      <RequestButton type="submit" isLoading={isLoading} aria-label="Sign in">
         Sign in
       </RequestButton>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>

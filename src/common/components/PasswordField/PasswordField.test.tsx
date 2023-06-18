@@ -1,7 +1,7 @@
 import { render, screen, userEvent } from "tests/test-utils";
 import PasswordField from "./PasswordField";
 
-describe.only("<PasswordField />", () => {
+describe("<PasswordField />", () => {
   const props = {
     label: "Password",
     name: "password",
