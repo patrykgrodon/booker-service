@@ -5,7 +5,7 @@ import ControlSelect from "./ControlSelect/ControlSelect";
 import Logo from "./Logo";
 import PageContainer from "./PageContainer/PageContainer";
 import PasswordField from "./PasswordField/PasswordField";
-import RequestButton from "./RequestButton";
+import RequestButton from "./RequestButton/RequestButton";
 import Spinner from "./Spinner";
 import StickyHeaderTable from "./StickyHeaderTable";
 import SubmitErrorMessage from "./SubmitErrorMessage";

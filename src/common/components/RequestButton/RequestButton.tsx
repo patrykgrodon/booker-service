@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from "@mui/material";
-import { Spinner } from ".";
+import { Spinner } from "..";
 
 type Props = ButtonProps & {
   isLoading?: boolean;
