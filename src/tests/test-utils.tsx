@@ -1,10 +1,15 @@
 import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MuiThemeProviders } from "common/providers";
+import { AppProviders } from "common/providers";
+import { BrowserRouter } from "react-router-dom";
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
-  return <MuiThemeProviders>{children}</MuiThemeProviders>;
+  return (
+    <AppProviders>
+      <BrowserRouter>{children}</BrowserRouter>
+    </AppProviders>
+  );
 };
 
 const customRender = (
