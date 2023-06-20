@@ -9,7 +9,9 @@ vi.mock("firebase/auth", async () => {
 
   return {
     ...actual,
-    signInWithEmailAndPassword: vi.fn().mockResolvedValue({ user: {} }),
+    signInWithEmailAndPassword: vi
+      .fn()
+      .mockResolvedValue(Promise.resolve({ user: {} })),
   };
 });
 
@@ -25,7 +27,7 @@ describe("<LoginForm />", () => {
     render(<LoginForm />);
   });
 
-  it("should render form with labeled inputs", () => {
+  it("should render form with all inputs", () => {
     Object.values(fieldLabels).forEach((label) => {
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
@@ -41,7 +43,7 @@ describe("<LoginForm />", () => {
     expect(signInWithEmailAndPassword).not.toHaveBeenCalled();
   });
 
-  it("should call API login on success submit", async () => {
+  it("should call API on success submit", async () => {
     const submitButton = screen.getByRole("button", { name: submitText });
     const emailField = screen.getByLabelText(fieldLabels.email);
     const passwordField = screen.getByLabelText(fieldLabels.password);

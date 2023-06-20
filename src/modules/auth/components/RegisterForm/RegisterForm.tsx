@@ -18,8 +18,8 @@ import {
   passwordValidator,
   validationMessages,
 } from "common/utils/validationPatterns";
-import FormContainer from "./FormContainer";
-import ReturnToLoginLink from "./ReturnToLoginLink";
+import FormContainer from "../FormContainer";
+import ReturnToLoginLink from "../ReturnToLoginLink";
 
 const defaultValues: RegisterFormValues = {
   email: "",
@@ -159,7 +159,7 @@ const RegisterForm = () => {
       </Box>
       {error ? <SubmitErrorMessage error={error} /> : null}
       <RequestButton type="submit" isLoading={isLoading}>
-        Register
+        Sign up
       </RequestButton>
       <ReturnToLoginLink />
     </FormContainer>
