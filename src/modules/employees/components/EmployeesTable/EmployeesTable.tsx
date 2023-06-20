@@ -43,33 +43,6 @@ const EmployeesTable = () => {
         {employees?.map((employee) => (
           <EmployeesTableRow key={employee.id} employee={employee} />
         ))}
-        {employees?.map((employee) => (
-          <EmployeesTableRow key={employee.id} employee={employee} />
-        ))}
-        {employees?.map((employee) => (
-          <EmployeesTableRow key={employee.id} employee={employee} />
-        ))}
-        {employees?.map((employee) => (
-          <EmployeesTableRow key={employee.id} employee={employee} />
-        ))}
-        {employees?.map((employee) => (
-          <EmployeesTableRow key={employee.id} employee={employee} />
-        ))}
-        {employees?.map((employee) => (
-          <EmployeesTableRow key={employee.id} employee={employee} />
-        ))}
-        {employees?.map((employee) => (
-          <EmployeesTableRow key={employee.id} employee={employee} />
-        ))}
-        {employees?.map((employee) => (
-          <EmployeesTableRow key={employee.id} employee={employee} />
-        ))}
-        {employees?.map((employee) => (
-          <EmployeesTableRow key={employee.id} employee={employee} />
-        ))}
-        {employees?.map((employee) => (
-          <EmployeesTableRow key={employee.id} employee={employee} />
-        ))}
       </TableBody>
     </StickyHeaderTable>
   );
