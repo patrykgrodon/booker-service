@@ -13,7 +13,7 @@ import UserAvatar from "./UserAvatar";
 
 const UserMenu = () => {
   const { menuEl, openMenu, closeMenu } = useMenu();
-  const { user, logout } = useAuth();
+  const { user, logout, hasUserCompleteRegister } = useAuth();
 
   const handleOpenMenu: React.MouseEventHandler<HTMLButtonElement> = (e) =>
     openMenu(e.currentTarget);
@@ -30,29 +30,34 @@ const UserMenu = () => {
     },
   ] as const;
 
-  if (!user) return null;
-
   return (
     <>
       <IconButton onClick={handleOpenMenu}>
-        <UserAvatar userInitials={user?.companyName.slice(0, 2) || "Co"} />
+        <UserAvatar
+          userInitials={
+            hasUserCompleteRegister ? user?.companyName.slice(0, 2) || "" : ""
+          }
+        />
       </IconButton>
       <Menu open={!!menuEl} anchorEl={menuEl} onClose={closeMenu}>
-        <ListItem
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-          }}
-        >
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: 700, lineHeight: 1 }}
+        {hasUserCompleteRegister && (
+          <ListItem
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+            }}
           >
-            {user.companyName}
-          </Typography>
-          <Typography variant="caption"> {user.email}</Typography>
-        </ListItem>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: 700, lineHeight: 1 }}
+            >
+              {user?.companyName}
+            </Typography>
+            <Typography variant="caption"> {user?.email}</Typography>
+          </ListItem>
+        )}
+
         <Divider />
         {listItemActions.map(({ text, onClick, Icon }) => (
           <ListItemButton key={text} onClick={onClick}>

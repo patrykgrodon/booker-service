@@ -1,4 +1,4 @@
-import { Box, Link as MuiLink, TextField } from "@mui/material";
+import { Box, Button, Link as MuiLink, TextField } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ import { LoginFormValues } from "modules/auth/types";
 import { routes } from "routes";
 import { useAuth } from "../../contexts/authContext";
 import FormContainer from "../FormContainer";
+import { Google } from "@mui/icons-material";
 
 const defaultValues: LoginFormValues = {
   email: "",
@@ -31,7 +32,7 @@ const LoginForm = () => {
     defaultValues,
   });
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -74,6 +75,9 @@ const LoginForm = () => {
       <RequestButton type="submit" isLoading={isLoading} aria-label="Sign in">
         Sign in
       </RequestButton>
+      <Button variant="outlined" onClick={loginWithGoogle}>
+        <Google sx={{ mr: 0.5 }} /> Sign in with google
+      </Button>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <MuiLink component={Link} to={routes.register}>
           Sign up

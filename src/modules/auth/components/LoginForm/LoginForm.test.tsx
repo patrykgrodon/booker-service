@@ -1,5 +1,5 @@
 import { validationMessages } from "common/utils/validationPatterns";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { render, screen, userEvent } from "tests/test-utils";
 import { vi } from "vitest";
 import LoginForm from "./LoginForm";
@@ -12,11 +12,12 @@ vi.mock("firebase/auth", async () => {
     signInWithEmailAndPassword: vi
       .fn()
       .mockResolvedValue(Promise.resolve({ user: {} })),
+    signInWithPopup: vi.fn(),
   };
 });
 
 describe("<LoginForm />", () => {
-  const submitText = /Sign in/;
+  const submitText = "Sign in";
   const requiredMessage = validationMessages.required;
   const fieldLabels = {
     email: "E-mail",
@@ -62,5 +63,14 @@ describe("<LoginForm />", () => {
       userEmail,
       userPassword
     );
+  });
+  it("should call signInWithPopup function when click on sign in with google button", async () => {
+    const googleBtn = screen.getByRole("button", {
+      name: "Sign in with google",
+    });
+
+    await userEvent.click(googleBtn);
+
+    expect(signInWithPopup).toBeCalled();
   });
 });

@@ -16,3 +16,8 @@ export type RegisterFormValues = Omit<User, "id"> & {
 
 export type Login = (formValues: LoginFormValues) => Promise<void>;
 export type Register = (formValues: RegisterFormValues) => Promise<void>;
+
+export type UserDocValues = Omit<
+  RegisterFormValues,
+  "password" | "confirmPassword"
+>;

@@ -1,25 +1,40 @@
-import { createContext, useContext } from "react";
+import {
+  doc,
+  setDoc,
+  DocumentReference,
+  DocumentData,
+} from "@firebase/firestore";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  GoogleAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { doc, setDoc } from "@firebase/firestore";
+import { createContext, useContext } from "react";
 
-import { auth, db } from "firebase-config";
 import { Spinner } from "common/components";
-import { Login, Register } from "../types";
 import { User } from "common/types";
+import { queryKeys } from "common/utils/queryKeys";
+import { auth, db } from "firebase-config";
 import useFirebaseAuthState from "modules/auth/hooks/useFirebaseAuthState";
 import { getUserData } from "../api";
-import { queryKeys } from "common/utils/queryKeys";
+import NoUserData from "../components/NoUserData/NoUserData";
+import { Login, Register, UserDocValues } from "../types";
 
 type AuthContextState = {
   login: Login;
   register: Register;
   logout: () => Promise<void>;
   user: User | undefined;
+  loginWithGoogle: () => Promise<void>;
+  hasUserCompleteRegister: boolean;
+  refetchUser: () => Promise<void>;
+  saveUserDoc: (
+    userDocRef: DocumentReference<DocumentData>,
+    userDocValues: UserDocValues
+  ) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextState | null>(null);
@@ -36,7 +51,11 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const setUserData = (user: User | undefined) =>
     queryClient.setQueryData(queryKeys.user(user?.id || ""), () => user);
 
-  const { data: user, isInitialLoading: isLoadingUserData } = useQuery(
+  const {
+    data: user,
+    isInitialLoading: isLoadingUserData,
+    refetch,
+  } = useQuery(
     queryKeys.user(userInfo?.uid || ""),
     () => (userInfo ? getUserData(userInfo.uid) : undefined),
     { enabled: !!userInfo }
@@ -45,6 +64,11 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const login: Login = async (formValues) => {
     const { email, password } = formValues;
     await signInWithEmailAndPassword(auth, email, password);
+  };
+
+  const loginWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
   };
 
   const logout = async () => {
@@ -61,22 +85,48 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       formValues.password
     );
     const userDocRef = doc(db, "users", uid);
-    const userInfo: Omit<User, "id"> = {
+    await saveUserDoc(userDocRef, {
       city: formValues.city,
       companyName: formValues.companyName,
       email: formValues.email,
       phoneNumber: formValues.phoneNumber,
       street: formValues.phoneNumber,
       streetNumber: formValues.streetNumber,
-    };
-    await setDoc(userDocRef, userInfo);
+    });
   };
+
+  const saveUserDoc = async (
+    userDocRef: DocumentReference<DocumentData>,
+    userDocValues: UserDocValues
+  ) => {
+    await setDoc(userDocRef, userDocValues);
+  };
+
+  const refetchUser = async () => {
+    await refetch();
+  };
+
+  const hasUserCompleteRegister = user ? "companyName" in user : false;
 
   if (isCheckingAuth || isLoadingUserData)
     return <Spinner fullPage size="large" />;
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        register,
+        loginWithGoogle,
+        hasUserCompleteRegister,
+        refetchUser,
+        saveUserDoc,
+      }}
+    >
+      {userInfo && !hasUserCompleteRegister && (
+        <NoUserData email={userInfo.email || ""} userId={userInfo.uid || ""} />
+      )}
       {children}
     </AuthContext.Provider>
   );
