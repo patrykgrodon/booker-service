@@ -10,9 +10,10 @@ import {
 import { RequestButton } from "common/components";
 import { useToast } from "common/providers/ToastProvider";
 import { EmployeeFormValues } from "../types";
-import useEmployees from "../hooks/useEmployees";
 import { calendarColors } from "common/constants/calendarColors";
 import { drawNumber } from "common/utils/drawNumber";
+import { addEmployee, editEmployee } from "../api";
+import { useAuth } from "modules/auth/contexts";
 
 const getDefaultCalendarColor = () => {
   return calendarColors[drawNumber(0, calendarColors.length - 1)];
@@ -25,6 +26,8 @@ type EmployeeFormProps = {
 };
 
 const EmployeeForm = ({ formValues, id, onSuccess }: EmployeeFormProps) => {
+  const { user } = useAuth();
+
   const defaultValues: EmployeeFormValues = {
     firstName: "",
     lastName: "",
@@ -38,19 +41,18 @@ const EmployeeForm = ({ formValues, id, onSuccess }: EmployeeFormProps) => {
     formState: { errors },
   } = useForm({ defaultValues: { ...defaultValues, ...formValues } });
 
-  const { addEmployee, editEmployee } = useEmployees();
-
   const { setErrorMessage } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   const isEditMode = !!id;
 
   const submitHandler = async (formValues: EmployeeFormValues) => {
+    if (!user) return;
     setIsLoading(true);
     try {
       isEditMode
         ? await editEmployee(id, formValues)
-        : await addEmployee(formValues);
+        : await addEmployee(user.id, formValues);
       onSuccess();
     } catch (err: any) {
       setErrorMessage(

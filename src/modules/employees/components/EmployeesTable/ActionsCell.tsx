@@ -7,8 +7,8 @@ import { Employee } from "modules/employees/types";
 import { EmployeeFormDialog } from "..";
 import useCompanyEmployee from "modules/employees/hooks/useCompanyEmployees";
 import { ConfirmationDialog } from "common/components";
-import useEmployees from "modules/employees/hooks/useEmployees";
 import { useToast } from "common/providers/ToastProvider";
+import { deleteEmployee } from "modules/employees/api";
 
 type ActionsCellProps = {
   employee: Employee;
@@ -16,7 +16,6 @@ type ActionsCellProps = {
 
 const ActionsCell = ({ employee }: ActionsCellProps) => {
   const { refetch } = useCompanyEmployee(employee.companyId, false);
-  const { deleteEmployee } = useEmployees();
   const { setErrorMessage } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
