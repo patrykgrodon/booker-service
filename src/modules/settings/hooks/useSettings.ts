@@ -3,11 +3,12 @@ import { getSettings } from "../api";
 import { useAuth } from "modules/auth/contexts";
 import { Settings } from "../types";
 import defaultOpeningHours from "../constants/defaultOpeningHours";
+import { queryKeys } from "common/utils/queryKeys";
 
 const useSettings = () => {
   const { user } = useAuth();
   const { data, ...queryResult } = useQuery(
-    ["settings", user?.id],
+    queryKeys.userSettings(user?.id || ""),
     async () => {
       const fetchedSettings = await getSettings(user?.id || "");
 

@@ -11,6 +11,7 @@ import { CalendarLSUi } from "../types";
 import { useAuth } from "modules/auth/contexts";
 import { getCalendarVisits } from "modules/visits/api";
 import { lsNames } from "common/constants/webStorageItems";
+import { queryKeys } from "common/utils/queryKeys";
 
 const useCalendarView = (checkedEmployees: string[]) => {
   const { user } = useAuth();
@@ -35,7 +36,7 @@ const useCalendarView = (checkedEmployees: string[]) => {
   }, [dateRange, view]);
 
   const { data: visits, refetch: refetchVisits } = useQuery(
-    ["calendar-visits", user?.id, dateRange, checkedEmployees],
+    queryKeys.calendarVisits(user?.id || "", dateRange, checkedEmployees),
     () => getCalendarVisits(user?.id || "", dateRange, checkedEmployees),
     { enabled: !!user, keepPreviousData: true }
   );

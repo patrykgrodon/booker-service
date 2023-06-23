@@ -7,6 +7,7 @@ import { Visit } from "modules/visits/types";
 import VisitFormDialog from "../VisitFormDialog";
 import { useAuth } from "modules/auth/contexts";
 import { DeleteVisitConfirmationDialog } from "..";
+import { queryKeys } from "common/utils/queryKeys";
 
 type ActionsCellProps = {
   visit: Visit;
@@ -28,7 +29,7 @@ const ActionsCell = ({ visit }: ActionsCellProps) => {
   } = useModal();
 
   const refetchVisits = () =>
-    queryClient.invalidateQueries(["visits", user?.id]);
+    queryClient.invalidateQueries(queryKeys.companyVisits(user?.id || ""));
 
   const onSuccess = () => {
     closeEdit();

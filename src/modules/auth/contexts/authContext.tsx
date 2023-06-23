@@ -13,6 +13,7 @@ import { Login, Register } from "../types";
 import { User } from "common/types";
 import useFirebaseAuthState from "modules/auth/hooks/useFirebaseAuthState";
 import { getUserData } from "../api";
+import { queryKeys } from "common/utils/queryKeys";
 
 type AuthContextState = {
   login: Login;
@@ -33,10 +34,10 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const queryClient = useQueryClient();
 
   const setUserData = (user: User | undefined) =>
-    queryClient.setQueryData(["user", userInfo?.uid], () => user);
+    queryClient.setQueryData(queryKeys.user(user?.id || ""), () => user);
 
   const { data: user, isInitialLoading: isLoadingUserData } = useQuery(
-    ["user", userInfo?.uid],
+    queryKeys.user(userInfo?.uid || ""),
     () => (userInfo ? getUserData(userInfo.uid) : undefined),
     { enabled: !!userInfo }
   );

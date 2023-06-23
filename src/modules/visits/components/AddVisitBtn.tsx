@@ -4,6 +4,7 @@ import { useModal } from "common/hooks";
 import VisitFormDialog from "./VisitFormDialog";
 import { useAuth } from "modules/auth/contexts";
 import { useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "common/utils/queryKeys";
 
 const AddVisitBtn = () => {
   const { user } = useAuth();
@@ -13,7 +14,7 @@ const AddVisitBtn = () => {
   const { openModal, isOpen, closeModal } = useModal();
 
   const onSuccess = () => {
-    queryClient.invalidateQueries(["visits", user?.id]);
+    queryClient.invalidateQueries(queryKeys.companyVisits(user?.id || ""));
     closeModal();
   };
 

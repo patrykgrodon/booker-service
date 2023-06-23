@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCompanyVisits } from "../api";
+import { queryKeys } from "common/utils/queryKeys";
 
 const useCompanyVisits = (
   companyId: string | undefined,
@@ -7,7 +8,7 @@ const useCompanyVisits = (
   initFetch = true
 ) => {
   const { data, ...queryResult } = useQuery(
-    ["visits", companyId, finished],
+    queryKeys.companyVisits(companyId || "", finished),
     () => getCompanyVisits(companyId || "", finished),
     { enabled: initFetch && !!companyId }
   );

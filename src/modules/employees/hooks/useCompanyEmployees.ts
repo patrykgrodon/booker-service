@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCompanyEmployees } from "../api";
+import { queryKeys } from "common/utils/queryKeys";
 
 const useCompanyEmployees = (
   companyId: string | undefined,
   initFetch = true
 ) => {
   const { data, ...queryResult } = useQuery(
-    ["employees", companyId],
+    queryKeys.companyEmployees(companyId || ""),
     () => getCompanyEmployees(companyId || ""),
     { enabled: initFetch && !!companyId }
   );
