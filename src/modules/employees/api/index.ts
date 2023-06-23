@@ -1,7 +1,7 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 
-import { db } from "firebase-config";
 import { parseGetDocs } from "common/utils/firebaseHelpers";
+import { db } from "firebase-config";
 import { Employee } from "../types";
 
 const employeesCollectionRef = collection(db, "employees");
