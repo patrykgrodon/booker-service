@@ -14,6 +14,7 @@ import useCompanyServices from "modules/services/hooks/useCompanyServices";
 import useSettings from "modules/settings/hooks/useSettings";
 import { addVisit, editVisit } from "../api";
 import { VisitFormValues } from "../types";
+import { getClosedDays, getDaySettings } from "../utils";
 
 const getDefaultDateTimeFrom = (minutesStep = 15) => {
   const now = new Date();
@@ -79,40 +80,11 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
     setIsLoading(false);
   };
 
-  const getClosedDays = () => {
-    if (!settings) return [];
-    const { openingHours } = settings;
-    const closedDays: string[] = [];
-
-    const allDays = Object.keys(openingHours) as (keyof typeof openingHours)[];
-
-    allDays.forEach((day) => {
-      if (!openingHours[day].open) {
-        const capitalizedDay = `${day.slice(0, 1).toUpperCase()}${day.slice(
-          1
-        )}`;
-        closedDays.push(capitalizedDay);
-      }
-    });
-
-    return closedDays;
-  };
-  const closedDays = getClosedDays();
+  const closedDays = getClosedDays(settings);
 
   const dateValue = watch("date");
 
-  const getCurrentDaySettings = () => {
-    if (!settings) return undefined;
-    const { openingHours } = settings;
-    const weekDay = format(
-      dateValue,
-      "EEEE"
-    ).toLowerCase() as keyof typeof openingHours;
-
-    return openingHours[weekDay];
-  };
-
-  const currentDaySettings = getCurrentDaySettings();
+  const currentDaySettings = getDaySettings(settings, dateValue);
 
   const getMinTime = () => {
     if (!currentDaySettings) return undefined;
