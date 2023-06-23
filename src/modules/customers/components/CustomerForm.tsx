@@ -10,7 +10,8 @@ import {
 import { RequestButton } from "common/components";
 import { useToast } from "common/providers/ToastProvider";
 import { CustomerFormValues } from "../types";
-import useCustomers from "../hooks/useCustomers";
+import { addCustomer, editCustomer } from "../api";
+import { useAuth } from "modules/auth/contexts";
 
 const defaultValues: CustomerFormValues = {
   firstName: "",
@@ -26,13 +27,12 @@ type CustomerFormProps = {
 };
 
 const CustomerForm = ({ formValues, id, onSuccess }: CustomerFormProps) => {
+  const { user } = useAuth();
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm({ defaultValues: { ...defaultValues, ...formValues } });
-
-  const { addCustomer, editCustomer } = useCustomers();
 
   const { setErrorMessage } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -40,11 +40,12 @@ const CustomerForm = ({ formValues, id, onSuccess }: CustomerFormProps) => {
   const isEditMode = !!id;
 
   const submitHandler = async (formValues: CustomerFormValues) => {
+    if (!user) return;
     setIsLoading(true);
     try {
       isEditMode
         ? await editCustomer(id, formValues)
-        : await addCustomer(formValues);
+        : await addCustomer(user.id, formValues);
       onSuccess();
     } catch (err: any) {
       setErrorMessage(

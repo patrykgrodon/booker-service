@@ -7,8 +7,8 @@ import { Customer } from "modules/customers/types";
 import { CustomerFormDialog } from "..";
 import useCompanyCustomer from "modules/customers/hooks/useCompanyCustomers";
 import { ConfirmationDialog } from "common/components";
-import useCustomers from "modules/customers/hooks/useCustomers";
 import { useToast } from "common/providers/ToastProvider";
+import { deleteCustomer } from "modules/customers/api";
 
 type ActionsCellProps = {
   customer: Customer;
@@ -16,7 +16,6 @@ type ActionsCellProps = {
 
 const ActionsCell = ({ customer }: ActionsCellProps) => {
   const { refetch } = useCompanyCustomer(customer.companyId, false);
-  const { deleteCustomer } = useCustomers();
   const { setErrorMessage } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
