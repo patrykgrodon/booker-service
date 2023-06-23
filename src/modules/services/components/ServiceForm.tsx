@@ -12,7 +12,8 @@ import { ControlSelect, RequestButton } from "common/components";
 import { useToast } from "common/providers/ToastProvider";
 import { ServiceFormValues } from "modules/services/types";
 import { durationValues } from "../constants";
-import useServices from "../hooks/useServices";
+import { addService, editService } from "../api";
+import { useAuth } from "modules/auth/contexts";
 
 const defaultValues: ServiceFormValues = {
   name: "",
@@ -27,19 +28,21 @@ type ServiceFormProps = {
 };
 
 const ServiceForm = ({ formValues, id, onSuccess }: ServiceFormProps) => {
+  const { user } = useAuth();
   const {
     handleSubmit,
     register,
     formState: { errors },
     control,
   } = useForm({ defaultValues: { ...defaultValues, ...formValues } });
-  const { addService, editService } = useServices();
+
   const { setErrorMessage } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   const isEditMode = !!id;
 
   const submitHandler = async (formValues: ServiceFormValues) => {
+    if (!user) return;
     setIsLoading(true);
     try {
       const correctFormValues = {
@@ -48,7 +51,7 @@ const ServiceForm = ({ formValues, id, onSuccess }: ServiceFormProps) => {
       };
       isEditMode
         ? await editService(id, correctFormValues)
-        : await addService(correctFormValues);
+        : await addService(user.id, correctFormValues);
       onSuccess();
     } catch (err: any) {
       setErrorMessage(

@@ -5,9 +5,9 @@ import { Service } from "modules/services/types";
 import { ServiceFormDialog } from "..";
 import useCompanyServices from "modules/services/hooks/useCompanyServices";
 import { ConfirmationDialog } from "common/components";
-import useServices from "modules/services/hooks/useServices";
 import { useState } from "react";
 import { useToast } from "common/providers/ToastProvider";
+import { deleteService } from "modules/services/api";
 
 type ActionsCellProps = {
   service: Service;
@@ -15,7 +15,6 @@ type ActionsCellProps = {
 
 const ActionsCell = ({ service }: ActionsCellProps) => {
   const { refetch } = useCompanyServices(service.companyId, false);
-  const { deleteService } = useServices();
   const { setErrorMessage } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 

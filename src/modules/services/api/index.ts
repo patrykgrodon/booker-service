@@ -1,8 +1,17 @@
-import { collection, query, getDocs, where } from "firebase/firestore";
+import {
+  collection,
+  query,
+  getDocs,
+  where,
+  addDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 
 import { db } from "firebase-config";
 import { parseGetDocs } from "common/utils/firebaseHelpers";
-import { Service } from "modules/services/types";
+import { Service, ServiceFormValues } from "modules/services/types";
 
 const servicesCollectionRef = collection(db, "services");
 
@@ -11,4 +20,28 @@ export const getCompanyServices = async (companyId: string) => {
   const data = await getDocs(q);
 
   return parseGetDocs<Service[]>(data);
+};
+
+export const addService = async (
+  userId: string,
+  formValues: ServiceFormValues
+) => {
+  const newService: Omit<Service, "id"> = {
+    companyId: userId,
+    ...formValues,
+  };
+  await addDoc(servicesCollectionRef, newService);
+};
+
+export const editService = async (
+  serviceId: string,
+  formValues: ServiceFormValues
+) => {
+  const serviceDoc = doc(db, "services", serviceId);
+  await updateDoc(serviceDoc, formValues);
+};
+
+export const deleteService = async (serviceId: string) => {
+  const serviceDoc = doc(db, "services", serviceId);
+  await deleteDoc(serviceDoc);
 };
