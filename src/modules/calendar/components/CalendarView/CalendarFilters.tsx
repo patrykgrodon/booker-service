@@ -1,7 +1,6 @@
 import { FilterListOutlined } from "@mui/icons-material";
 import {
   Badge,
-  Box,
   Checkbox,
   ClickAwayListener,
   Divider,
@@ -82,9 +81,9 @@ const CalendarFilters = ({
       >
         <ClickAwayListener onClickAway={closeMenu}>
           <Paper elevation={5}>
-            <Box sx={{ p: 1 }}>
-              <Typography variant="h5">Filters</Typography>
-            </Box>
+            <Typography variant="h5" sx={{ px: 2, pt: 1, pb: 0.5 }}>
+              Employees
+            </Typography>
             <Divider />
             <List sx={{ px: 2, py: 1 }}>
               {employees?.map(({ firstName, lastName, id, calendarColor }) => (
