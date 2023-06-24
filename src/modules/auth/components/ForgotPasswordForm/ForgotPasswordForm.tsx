@@ -10,8 +10,8 @@ import { auth } from "firebase-config";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { ForgotPasswordFormValues } from "modules/auth/types";
 import { useState } from "react";
-import FormContainer from "./FormContainer";
-import ReturnToLoginLink from "./ReturnToLoginLink";
+import FormContainer from "../FormContainer";
+import ReturnToLoginLink from "../ReturnToLoginLink";
 
 const defaultValues: ForgotPasswordFormValues = {
   email: "",
