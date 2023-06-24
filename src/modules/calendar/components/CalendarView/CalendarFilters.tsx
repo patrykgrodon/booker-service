@@ -1,5 +1,6 @@
 import { FilterListOutlined } from "@mui/icons-material";
 import {
+  Badge,
   Box,
   Checkbox,
   ClickAwayListener,
@@ -68,7 +69,9 @@ const CalendarFilters = ({
   return (
     <>
       <IconButton onClick={(e) => openMenu(e.currentTarget)}>
-        <FilterListOutlined />
+        <Badge badgeContent={checkedEmployees.length} color="primary">
+          <FilterListOutlined />
+        </Badge>
       </IconButton>
       <Popper
         open={!!menuEl}

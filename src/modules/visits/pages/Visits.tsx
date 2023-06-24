@@ -3,6 +3,8 @@ import { useState } from "react";
 
 import { PageContainer } from "common/components";
 import { AddVisitBtn, VisitsTable } from "../components";
+import VisitsTableFilters from "../components/VisitsTableFilters";
+import useVisitsFilters from "../hooks/useVisitsFilters";
 
 export enum VisitsTableTabs {
   Incoming,
@@ -13,9 +15,16 @@ const Visits = () => {
   const [activeTab, setActiveTab] = useState<VisitsTableTabs>(
     VisitsTableTabs.Incoming
   );
+  const { changeFilters, visitsFilters } = useVisitsFilters();
   return (
     <PageContainer title="Visits" button={<AddVisitBtn />}>
-      <Paper>
+      <Paper
+        sx={{
+          position: "relative",
+          borderBottomRightRadius: 0,
+          borderBottomLeftRadius: 0,
+        }}
+      >
         <Tabs
           value={activeTab}
           onChange={(_, val) => setActiveTab(val)}
@@ -24,6 +33,10 @@ const Visits = () => {
           <Tab label="Incoming" />
           <Tab label="Finished" />
         </Tabs>
+        <VisitsTableFilters
+          filters={visitsFilters}
+          changeFilters={changeFilters}
+        />
       </Paper>
       <VisitsTable activeTab={activeTab} />
     </PageContainer>

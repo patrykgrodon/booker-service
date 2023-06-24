@@ -1,16 +1,16 @@
 import {
-  TableHead,
   TableBody,
-  TableRow,
   TableCell,
+  TableHead,
+  TableRow,
   Typography,
 } from "@mui/material";
 
-import VisitsTableRow from "./VisitsTableRow";
-import { useAuth } from "modules/auth/contexts";
 import { Spinner, StickyHeaderTable } from "common/components";
+import { useAuth } from "modules/auth/contexts";
 import useCompanyVisits from "modules/visits/hooks/useCompanyVisits";
 import { VisitsTableTabs } from "modules/visits/pages/Visits";
+import VisitsTableRow from "./VisitsTableRow";
 
 const headers = ["Start date", "Employee", "Service", "Customer", "Actions"];
 
@@ -35,7 +35,9 @@ const VisitsTable = ({ activeTab }: VisitsTableProps) => {
     );
 
   return (
-    <StickyHeaderTable>
+    <StickyHeaderTable
+      paperProps={{ sx: { borderTopLeftRadius: 0, borderTopRightRadius: 0 } }}
+    >
       <TableHead>
         <TableRow>
           {headers.map((header) => (

@@ -22,12 +22,14 @@ const StickyHeaderTable = ({
 }: StickyHeaderTableProps) => {
   return (
     <TableContainer
+      {...tableContainerProps}
       sx={{
         flex: 1,
+        ...tableContainerProps?.sx,
       }}
-      {...tableContainerProps}
     >
       <Paper
+        {...paperProps}
         sx={{
           maxHeight: "100%",
           overflow: "auto",
@@ -36,8 +38,8 @@ const StickyHeaderTable = ({
             backgroundImage:
               "linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))",
           },
+          ...paperProps?.sx,
         }}
-        {...paperProps}
       >
         <Table stickyHeader {...tableProps}>
           {children}
