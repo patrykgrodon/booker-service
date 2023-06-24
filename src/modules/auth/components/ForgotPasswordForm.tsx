@@ -1,12 +1,15 @@
-import { TextField } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 
-import { RequestButton } from "common/components";
-import { ForgotPasswordFormValues } from "modules/auth/types";
+import { RequestButton, SubmitErrorMessage } from "common/components";
 import {
-  validationMessages,
   emailValidator,
+  validationMessages,
 } from "common/utils/validationPatterns";
+import { auth } from "firebase-config";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { ForgotPasswordFormValues } from "modules/auth/types";
+import { useState } from "react";
 import FormContainer from "./FormContainer";
 import ReturnToLoginLink from "./ReturnToLoginLink";
 
@@ -21,14 +24,41 @@ const ForgotPasswordForm = () => {
     formState: { errors },
   } = useForm<ForgotPasswordFormValues>({ defaultValues });
 
-  const submitRemindPassword = () => {
-    // To do
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [hasSentEmail, setHasSentEmail] = useState(false);
+
+  const submitRemindPassword = async ({ email }: ForgotPasswordFormValues) => {
+    setError("");
+    setIsLoading(true);
+    setHasSentEmail(false);
+    try {
+      await sendPasswordResetEmail(auth, email, {
+        url: `${window.location.origin}`,
+        handleCodeInApp: false,
+      });
+      setHasSentEmail(true);
+    } catch (err: any) {
+      setError(err.message);
+    }
+    setIsLoading(false);
   };
+
+  if (hasSentEmail)
+    return (
+      <Box>
+        <Typography variant="h6" sx={{ maxWidth: "100%" }} align="center">
+          Email has been successfully sent! <br /> Check your email inbox.
+        </Typography>
+
+        <ReturnToLoginLink asButton fullWidth sx={{ mt: 2 }} />
+      </Box>
+    );
 
   return (
     <FormContainer
       onSubmit={handleSubmit(submitRemindPassword)}
-      title={"Remind password"}
+      title="Reset password"
     >
       <TextField
         {...register("email", {
@@ -41,7 +71,10 @@ const ForgotPasswordForm = () => {
         error={!!errors.email}
         helperText={errors.email?.message}
       />
-      <RequestButton type="submit">Send</RequestButton>
+      {error ? <SubmitErrorMessage error={error} /> : null}
+      <RequestButton type="submit" isLoading={isLoading}>
+        Send
+      </RequestButton>
       <ReturnToLoginLink />
     </FormContainer>
   );
