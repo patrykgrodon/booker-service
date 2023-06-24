@@ -1,12 +1,12 @@
 import { Grid } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-
 import { DateTimePicker } from "@mui/x-date-pickers";
+import { format } from "date-fns";
+
 import { ControlSelect, RequestButton } from "common/components";
 import { useToast } from "common/providers/ToastProvider";
 import { checkIfEmpty } from "common/utils/validationPatterns";
-import { format, getMinutes } from "date-fns";
 import { useAuth } from "modules/auth/contexts";
 import useCompanyCustomers from "modules/customers/hooks/useCompanyCustomers";
 import useCompanyEmployees from "modules/employees/hooks/useCompanyEmployees";
@@ -15,18 +15,8 @@ import useSettings from "modules/settings/hooks/useSettings";
 import { addVisit, editVisit } from "../api";
 import { VisitFormValues } from "../types";
 import { getClosedDays, getDaySettings } from "../utils";
-
-const getDefaultDateTimeFrom = (minutesStep = 15) => {
-  const now = new Date();
-  const minutes = getMinutes(now);
-  const minutesLeftToRound = minutes % minutesStep;
-
-  if (minutesLeftToRound > 0) {
-    now.setMinutes(minutes + (minutesStep - minutesLeftToRound));
-  }
-  now.setSeconds(0);
-  return now;
-};
+import { getNearestPossibleVisitDate } from "../utils/getNearestPossibleVisitDate";
+import { getDefaultDateTimeFrom } from "../utils/getDefaultDateTimeFrom";
 
 type VisitFormProps = {
   onSuccess: () => void;
@@ -49,6 +39,7 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
     formState: { errors },
     handleSubmit,
     watch,
+    setValue,
   } = useForm<VisitFormValues>({
     defaultValues: formValues || defaultValues,
   });
@@ -113,6 +104,11 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
 
     return maxTime;
   };
+
+  useEffect(() => {
+    if (!settings || isEditMode) return;
+    setValue("date", getNearestPossibleVisitDate(settings));
+  }, [settings, setValue, isEditMode]);
 
   return (
     <Grid

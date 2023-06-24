@@ -17,7 +17,7 @@ const useSettings = () => {
       };
       return settings;
     },
-    { enabled: !!user }
+    { enabled: !!user, staleTime: Infinity }
   );
   return { ...queryResult, settings: data };
 };
