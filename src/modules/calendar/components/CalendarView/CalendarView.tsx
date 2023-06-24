@@ -141,7 +141,11 @@ const CalendarView = ({ checkedEmployees }: CalendarViewProps) => {
             fontSize: ".85rem",
             ...(view === "agenda"
               ? {}
-              : { backgroundColor: visit.employee.calendarColor }),
+              : {
+                  backgroundColor: visit.employee
+                    ? visit.employee.calendarColor
+                    : "red",
+                }),
           },
         })}
         formats={calendarSettings.formats}

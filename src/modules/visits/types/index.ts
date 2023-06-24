@@ -12,9 +12,9 @@ export type VisitFormValues = {
 
 export type Visit = {
   id: string;
-  customer: Customer;
-  employee: Employee;
-  service: Service;
+  customer: Customer | null;
+  employee: Employee | null;
+  service: Service | null;
   startAt: Date;
   endAt: Date;
   companyId: string;

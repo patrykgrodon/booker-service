@@ -1,4 +1,4 @@
-import { TableCell, TableRow, Typography } from "@mui/material";
+import { TableCell, TableRow } from "@mui/material";
 import { dashedDateTimeFormat } from "common/utils/dateTimeUtils";
 import { format } from "date-fns";
 import { Visit } from "modules/visits/types";
@@ -12,17 +12,15 @@ const VisitsTableRow = ({ visit }: VisitsTableRowProps) => {
   const { customer, startAt, employee, service } = visit;
   return (
     <TableRow>
-      <TableCell>
-        <Typography sx={{ maxWidth: "125px", lineHeight: 1.2 }}>
-          {format(startAt, dashedDateTimeFormat)}
-        </Typography>
+      <TableCell sx={{ maxWidth: "130px", width: "130px" }}>
+        {format(startAt, dashedDateTimeFormat)}
       </TableCell>
       <TableCell>
-        {employee.firstName} {employee.lastName}
+        {employee ? `${employee.firstName} ${employee.lastName}` : "Deleted"}
       </TableCell>
-      <TableCell>{service.name}</TableCell>
+      <TableCell>{service ? service.name : "Deleted"}</TableCell>
       <TableCell>
-        {customer.firstName} {customer.lastName}
+        {customer ? `${customer.firstName} ${customer.lastName}` : "Deleted"}
       </TableCell>
       <ActionsCell visit={visit} />
     </TableRow>

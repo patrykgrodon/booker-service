@@ -89,9 +89,9 @@ const convertVisitDocRef = async ({
   return {
     id,
     companyId,
-    customer: parseGetDoc(customerDoc),
-    service: parseGetDoc(serviceDoc),
-    employee: parseGetDoc(employeeDoc),
+    customer: customerDoc.data() ? parseGetDoc(customerDoc) : null,
+    service: serviceDoc.data() ? parseGetDoc(serviceDoc) : null,
+    employee: employeeDoc.data() ? parseGetDoc(employeeDoc) : null,
     startAt: new Date(startAt.seconds * 1000),
     endAt: new Date(endAt.seconds * 1000),
   } as Visit;

@@ -51,10 +51,10 @@ const ActionsCell = ({ visit }: ActionsCellProps) => {
         isOpen={isEditOpen}
         onSuccess={onSuccess}
         formValues={{
-          customer: visit.customer.id,
+          customer: visit.customer?.id || "",
           date: visit.startAt,
-          employee: visit.employee.id,
-          service: visit.service.id,
+          employee: visit.employee?.id || "",
+          service: visit.service?.id || "",
         }}
         id={visit.id}
       />
