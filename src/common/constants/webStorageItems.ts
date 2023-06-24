@@ -5,4 +5,8 @@ export const lsNames = {
     checkedEmployees: "calendar-checked-employees",
   },
 };
-export const ssNames = {};
+export const ssNames = {
+  visits: {
+    filters: "visits-filters",
+  },
+};
