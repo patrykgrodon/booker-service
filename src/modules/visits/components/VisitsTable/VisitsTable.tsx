@@ -11,18 +11,21 @@ import { useAuth } from "modules/auth/contexts";
 import useCompanyVisits from "modules/visits/hooks/useCompanyVisits";
 import { VisitsTableTabs } from "modules/visits/pages/Visits";
 import VisitsTableRow from "./VisitsTableRow";
+import { VisitsFilters } from "modules/visits/hooks/useVisitsFilters";
 
 const headers = ["Start date", "Employee", "Service", "Customer", "Actions"];
 
 type VisitsTableProps = {
   activeTab: VisitsTableTabs;
+  filters: VisitsFilters;
 };
 
-const VisitsTable = ({ activeTab }: VisitsTableProps) => {
+const VisitsTable = ({ activeTab, filters }: VisitsTableProps) => {
   const { user } = useAuth();
 
   const { visits, isLoading, isError } = useCompanyVisits(
     user?.id || "",
+    filters,
     !!activeTab
   );
 

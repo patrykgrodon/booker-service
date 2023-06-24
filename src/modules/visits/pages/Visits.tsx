@@ -38,7 +38,7 @@ const Visits = () => {
           changeFilters={changeFilters}
         />
       </Paper>
-      <VisitsTable activeTab={activeTab} />
+      <VisitsTable activeTab={activeTab} filters={visitsFilters} />
     </PageContainer>
   );
 };

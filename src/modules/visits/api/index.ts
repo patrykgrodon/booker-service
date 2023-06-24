@@ -10,12 +10,15 @@ import {
   query,
   updateDoc,
   where,
+  Query,
+  DocumentData,
 } from "@firebase/firestore";
 
 import { parseGetDoc, parseGetDocs } from "common/utils/firebaseHelpers";
 import { db } from "firebase-config";
 import { Visit, VisitDoc, VisitFormValues } from "../types";
 import { addHours, addMinutes } from "date-fns";
+import { VisitsFilters } from "../hooks/useVisitsFilters";
 
 const visitsCollectionRef = collection(db, "visits");
 
@@ -104,16 +107,40 @@ const convertVisitsDocRef = async (visitsDoc: VisitDoc[]) => {
   return visits;
 };
 
+const getCheckedEmployees = ({ employees }: VisitsFilters) => {
+  const keys = Object.keys(employees) as (keyof typeof employees)[];
+  return keys.filter((key) => employees[key]);
+};
+
 export const getCompanyVisits = async (
   companyId: string,
+  filters: VisitsFilters,
   finished: boolean
 ): Promise<Visit[]> => {
-  const q = query(
+  const checkedEmployees = getCheckedEmployees(filters);
+
+  let q: Query<DocumentData>;
+  const queryCommonItems = [
     visitsCollectionRef,
     where("companyId", "==", companyId),
     where("endAt", finished ? "<" : ">", new Date()),
-    orderBy("endAt", finished ? "desc" : "asc")
-  );
+    orderBy("endAt", finished ? "desc" : "asc"),
+  ] as const;
+  if (checkedEmployees.length > 0) {
+    q = query(
+      ...queryCommonItems,
+      where(
+        "employee",
+        "in",
+        checkedEmployees.map((userId) =>
+          doc(db, "employees", userId.toString())
+        )
+      )
+    );
+  } else {
+    q = query(...queryCommonItems);
+  }
+
   const data = await getDocs(q);
 
   const visitsDoc = parseGetDocs<VisitDoc[]>(data);
