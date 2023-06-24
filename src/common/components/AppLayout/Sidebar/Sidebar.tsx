@@ -1,7 +1,6 @@
 import {
   AssignmentOutlined,
   CalendarMonthOutlined,
-  CottageOutlined,
   DesignServicesOutlined,
   GroupsOutlined,
   PeopleAltOutlined,
@@ -20,7 +19,6 @@ type SidebarProps = {
 };
 
 const sidebarItems: SidebarItemType[] = [
-  { label: "Dashboard", icon: CottageOutlined, path: routes.base },
   { label: "Calendar", icon: CalendarMonthOutlined, path: routes.calendar },
   { label: "Visits", icon: AssignmentOutlined, path: routes.visits },
   { label: "Customers", icon: PeopleAltOutlined, path: routes.customers },

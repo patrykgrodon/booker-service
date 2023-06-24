@@ -28,7 +28,6 @@ const Router = () => {
           />
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route path={routes.base} element={<>base</>} />
           <Route path={routes.calendar} element={<Calendar />} />
           <Route path={routes.visits} element={<Visits />} />
           <Route path={routes.customers} element={<Customers />} />
