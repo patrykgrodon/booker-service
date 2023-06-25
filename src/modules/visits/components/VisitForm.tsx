@@ -1,22 +1,28 @@
-import { Grid } from "@mui/material";
-import { useState, useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Grid, MenuItem, TextField, Typography } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 import { ControlSelect, RequestButton } from "common/components";
 import { useToast } from "common/providers/ToastProvider";
-import { checkIfEmpty } from "common/utils/validationPatterns";
+import {
+  checkIfEmpty,
+  validationMessages,
+  validationPatterns,
+} from "common/utils/validationPatterns";
 import { useAuth } from "modules/auth/contexts";
 import useCompanyCustomers from "modules/customers/hooks/useCompanyCustomers";
+import { CustomerFormValues } from "modules/customers/types";
 import useCompanyEmployees from "modules/employees/hooks/useCompanyEmployees";
 import useCompanyServices from "modules/services/hooks/useCompanyServices";
 import useSettings from "modules/settings/hooks/useSettings";
 import { addVisit, editVisit } from "../api";
 import { VisitFormValues } from "../types";
 import { getClosedDays, getDaySettings } from "../utils";
-import { getNearestPossibleVisitDate } from "../utils/getNearestPossibleVisitDate";
 import { getDefaultDateTimeFrom } from "../utils/getDefaultDateTimeFrom";
+import { getNearestPossibleVisitDate } from "../utils/getNearestPossibleVisitDate";
+import { addCustomer } from "modules/customers/api";
 
 type VisitFormProps = {
   onSuccess: () => void;
@@ -40,7 +46,8 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
     handleSubmit,
     watch,
     setValue,
-  } = useForm<VisitFormValues>({
+    register,
+  } = useForm<VisitFormValues & CustomerFormValues>({
     defaultValues: formValues || defaultValues,
   });
   const { setErrorMessage } = useToast();
@@ -54,14 +61,33 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
 
   const isEditMode = !!id;
 
-  const submitHandler = async (formValues: VisitFormValues) => {
+  const submitHandler = async (
+    formValues: VisitFormValues & CustomerFormValues
+  ) => {
     setIsLoading(true);
     const serviceDuration =
       services?.find(({ id }) => id === formValues.service)?.duration || "";
+
+    if (formValues.customer === "asNew") {
+      const customerDoc = await addCustomer(user?.id || "", {
+        email: formValues.email,
+        firstName: formValues.firstName,
+        lastName: formValues.lastName,
+        phoneNumber: formValues.phoneNumber,
+      });
+      formValues.customer = customerDoc.id;
+    }
+
+    const visitFormValues: VisitFormValues = {
+      customer: formValues.customer,
+      date: formValues.date,
+      employee: formValues.employee,
+      service: formValues.service,
+    };
     try {
       isEditMode
-        ? await editVisit(id, formValues, serviceDuration)
-        : await addVisit(user?.id || "", formValues, serviceDuration);
+        ? await editVisit(id, visitFormValues, serviceDuration)
+        : await addVisit(user?.id || "", visitFormValues, serviceDuration);
       onSuccess();
     } catch (err: any) {
       setErrorMessage(
@@ -74,6 +100,7 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
   const closedDays = getClosedDays(settings);
 
   const dateValue = watch("date");
+  const customerValue = watch("customer");
 
   const currentDaySettings = getDaySettings(settings, dateValue);
 
@@ -209,10 +236,72 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
                   value: id,
                 })) || []
               }
-            />
+            >
+              <MenuItem value="asNew">New customer</MenuItem>
+            </ControlSelect>
           )}
         />
       </Grid>
+      {customerValue === "asNew" && (
+        <>
+          <Grid item xs={12} sx={{ mt: 1 }}>
+            <Typography variant="h6" sx={{ fontSize: { xs: "1rem" } }}>
+              Customer data
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="First name"
+              {...register("firstName", {
+                validate: checkIfEmpty,
+              })}
+              error={Boolean(errors.firstName)}
+              helperText={errors.firstName?.message}
+              fullWidth
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Last name"
+              {...register("lastName", {
+                validate: checkIfEmpty,
+              })}
+              error={Boolean(errors.lastName)}
+              helperText={errors.lastName?.message}
+              fullWidth
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <TextField
+              {...register("phoneNumber", {
+                validate: checkIfEmpty,
+              })}
+              label="Phone number"
+              error={!!errors.phoneNumber}
+              helperText={errors.phoneNumber?.message}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              {...register("email", {
+                validate: (val) =>
+                  val.length === 0
+                    ? true
+                    : validationPatterns.email.test(val) ||
+                      validationMessages.wrongEmail,
+              })}
+              label="E-mail"
+              type="email"
+              error={!!errors.email}
+              helperText={errors.email?.message}
+              fullWidth
+            />
+          </Grid>
+        </>
+      )}
 
       <Grid
         item

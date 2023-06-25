@@ -30,7 +30,7 @@ export const addCustomer = async (
     companyId: userId,
     ...formValues,
   };
-  await addDoc(customersCollectionRef, newCustomer);
+  return await addDoc(customersCollectionRef, newCustomer);
 };
 
 export const editCustomer = async (

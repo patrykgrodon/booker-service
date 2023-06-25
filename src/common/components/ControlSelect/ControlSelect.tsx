@@ -10,7 +10,7 @@ import {
 import { forwardRef } from "react";
 import { FieldError } from "react-hook-form";
 
-type ControlSelectProps = Omit<SelectProps, "error" | "children"> & {
+type ControlSelectProps = Omit<SelectProps, "error"> & {
   id: string;
   label: string;
   options: { label: string; value: string }[];
@@ -30,6 +30,7 @@ const ControlSelect = forwardRef(
       size,
       containerProps,
       options,
+      children,
       ...props
     }: ControlSelectProps,
     ref
@@ -52,6 +53,7 @@ const ControlSelect = forwardRef(
           label={label}
           error={Boolean(error)}
         >
+          {children}
           {options.map(({ value, label }) => (
             <MenuItem key={value} value={value} aria-label={label}>
               {label}
