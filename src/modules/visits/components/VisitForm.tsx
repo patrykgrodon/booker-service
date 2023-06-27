@@ -19,10 +19,11 @@ import useCompanyServices from "modules/services/hooks/useCompanyServices";
 import useSettings from "modules/settings/hooks/useSettings";
 import { addVisit, editVisit } from "../api";
 import { VisitFormValues } from "../types";
-import { getClosedDays, getDaySettings } from "../utils";
 import { getDefaultDateTimeFrom } from "../utils/getDefaultDateTimeFrom";
 import { getNearestPossibleVisitDate } from "../utils/getNearestPossibleVisitDate";
 import { addCustomer } from "modules/customers/api";
+import { getClosedDays } from "common/utils/getClosedDays";
+import { getDaySettings } from "common/utils/getDaySettings";
 
 type VisitFormProps = {
   onSuccess: () => void;
