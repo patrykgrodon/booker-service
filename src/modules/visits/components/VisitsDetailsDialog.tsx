@@ -66,10 +66,10 @@ const VisitsDetailsDialog = ({
           onEditSuccess();
         }}
         formValues={{
-          customer: customer.id,
+          customer: customer?.id || "",
           date: startAt,
-          employee: employee.id,
-          service: service.id,
+          employee: employee?.id || "",
+          service: service?.id || "",
         }}
         id={visit.id}
         handleClose={closeEditView}
@@ -97,26 +97,30 @@ const VisitsDetailsDialog = ({
     },
     {
       label: "Employee",
-      value: `${employee.firstName} ${employee.lastName}`,
+      value: employee
+        ? `${employee.firstName} ${employee.lastName}`
+        : "Employee deleted",
     },
     {
       label: "Service name",
-      value: service.name,
+      value: service ? service.name : "Service deleted",
     },
   ];
 
   const customerInfo = [
     {
       label: "Name",
-      value: `${customer.firstName} ${customer.lastName}`,
+      value: customer
+        ? `${customer.firstName} ${customer.lastName}`
+        : "Customer deleted",
     },
     {
       label: "Phone number",
-      value: customer.phoneNumber,
+      value: customer?.phoneNumber || "---",
     },
     {
       label: "E-mail",
-      value: customer.email,
+      value: customer?.email || "---",
     },
   ];
 

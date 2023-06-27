@@ -36,6 +36,7 @@ const MoreEventsMenu = ({
 export default MoreEventsMenu;
 
 const MoreEventMenuItem = ({ event }: { event: CalendarEvent }) => {
+  const { customer } = event;
   return (
     <Box
       sx={{
@@ -50,7 +51,9 @@ const MoreEventMenuItem = ({ event }: { event: CalendarEvent }) => {
       }}
     >
       <Typography>
-        {event.customer.firstName} {event.customer.lastName}
+        {customer
+          ? `${customer.firstName} ${customer.lastName}`
+          : "Customer deleted"}
       </Typography>
 
       <Typography textAlign="right">

@@ -12,7 +12,9 @@ const Event = ({ event }: EventProps) => {
       variant="inherit"
       sx={{ lineHeight: 1.3, cursor: "pointer", width: "max-content" }}
     >
-      {customer.firstName} {customer.lastName}
+      {customer
+        ? `${customer.firstName} ${customer.lastName}`
+        : "Customer deleted"}
     </Typography>
   );
 };
