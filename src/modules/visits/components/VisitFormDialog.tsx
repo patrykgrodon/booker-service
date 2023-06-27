@@ -8,7 +8,7 @@ type VisitFormDialogProps = {
   isOpen: boolean;
   handleClose: () => void;
   onSuccess: () => void;
-  formValues?: VisitFormValues;
+  formValues?: Partial<VisitFormValues>;
   id?: string;
 };
 

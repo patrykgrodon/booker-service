@@ -5,8 +5,11 @@ import { checkIfDateMatchOpeningHours } from "../../../common/utils/checkIfDateM
 import { getOpenToDate } from "common/utils/getOpenToDate";
 import { getWeekDay } from "common/utils/getWeekDay";
 
-export const getNearestPossibleVisitDate = (settings: Settings | undefined) => {
-  let visitDate = getDefaultDateTimeFrom();
+export const getNearestPossibleVisitDate = (
+  settings: Settings | undefined,
+  date?: Date
+) => {
+  let visitDate = getDefaultDateTimeFrom(date);
   if (!settings) return visitDate;
   const { openingHours } = settings;
 

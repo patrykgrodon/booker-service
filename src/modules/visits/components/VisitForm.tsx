@@ -24,11 +24,12 @@ import { getNearestPossibleVisitDate } from "../utils/getNearestPossibleVisitDat
 import { addCustomer } from "modules/customers/api";
 import { getClosedDays } from "common/utils/getClosedDays";
 import { getDaySettings } from "common/utils/getDaySettings";
+import { checkIfDateMatchOpeningHours } from "common/utils/checkIfDateMatchOpeningHours";
 
 type VisitFormProps = {
   onSuccess: () => void;
   id?: string;
-  formValues?: VisitFormValues;
+  formValues?: Partial<VisitFormValues>;
 };
 
 const defaultValues: VisitFormValues = {
@@ -49,7 +50,7 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
     setValue,
     register,
   } = useForm<VisitFormValues & CustomerFormValues>({
-    defaultValues: formValues || defaultValues,
+    defaultValues: { ...defaultValues, ...formValues },
   });
   const { setErrorMessage } = useToast();
 
@@ -65,7 +66,9 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
   const submitHandler = async (
     formValues: VisitFormValues & CustomerFormValues
   ) => {
-    setIsLoading(true);
+    if (!settings) return;
+    if (checkIfDateMatchOpeningHours(formValues.date, settings.openingHours))
+      setIsLoading(true);
     const serviceDuration =
       services?.find(({ id }) => id === formValues.service)?.duration || "";
 
@@ -134,9 +137,9 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
   };
 
   useEffect(() => {
-    if (!settings || isEditMode) return;
+    if (!settings || isEditMode || formValues?.date) return;
     setValue("date", getNearestPossibleVisitDate(settings));
-  }, [settings, setValue, isEditMode]);
+  }, [settings, setValue, isEditMode, formValues?.date]);
 
   return (
     <Grid

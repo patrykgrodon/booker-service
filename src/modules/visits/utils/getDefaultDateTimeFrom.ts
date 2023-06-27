@@ -1,6 +1,6 @@
 import { getMinutes } from "date-fns";
 
-export const getDefaultDateTimeFrom = (minutesStep = 15, date = new Date()) => {
+export const getDefaultDateTimeFrom = (date = new Date(), minutesStep = 15) => {
   const minutes = getMinutes(date);
   const minutesLeftToRound = minutes % minutesStep;
 

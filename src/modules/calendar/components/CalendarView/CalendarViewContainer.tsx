@@ -16,7 +16,17 @@ const CalendarViewContainer = ({
         maxHeight: "100%",
         overflow: "auto",
         "& .rbc-off-range-bg": {
-          backgroundColor: (theme) => theme.palette.action.disabledBackground,
+          backgroundColor: (theme) =>
+            `${theme.palette.action.disabledBackground} !important`,
+        },
+        "& .rbc-selected-cell": {
+          backgroundColor: "unset",
+        },
+        "& .rbc-slot-selection": {
+          display: "none",
+        },
+        "& .rbc-slot-selecting": {
+          cursor: "default",
         },
         "& .rbc-today": {
           backgroundColor: (theme) =>
