@@ -6,25 +6,33 @@ import { Controller, useForm } from "react-hook-form";
 
 import { ControlSelect, RequestButton } from "common/components";
 import { useToast } from "common/providers/ToastProvider";
+import { checkIfDateMatchOpeningHours } from "common/utils/checkIfDateMatchOpeningHours";
+import { getClosedDays } from "common/utils/getClosedDays";
+import { getDaySettings } from "common/utils/getDaySettings";
 import {
   checkIfEmpty,
   validationMessages,
   validationPatterns,
 } from "common/utils/validationPatterns";
 import { useAuth } from "modules/auth/contexts";
+import { addCustomer } from "modules/customers/api";
 import useCompanyCustomers from "modules/customers/hooks/useCompanyCustomers";
 import { CustomerFormValues } from "modules/customers/types";
 import useCompanyEmployees from "modules/employees/hooks/useCompanyEmployees";
+import useEmployeeAvailability from "modules/employees/hooks/useEmployeeAvailability";
 import useCompanyServices from "modules/services/hooks/useCompanyServices";
+import { Service } from "modules/services/types";
 import useSettings from "modules/settings/hooks/useSettings";
 import { addVisit, editVisit } from "../api";
 import { VisitFormValues } from "../types";
 import { getDefaultDateTimeFrom } from "../utils/getDefaultDateTimeFrom";
 import { getNearestPossibleVisitDate } from "../utils/getNearestPossibleVisitDate";
-import { addCustomer } from "modules/customers/api";
-import { getClosedDays } from "common/utils/getClosedDays";
-import { getDaySettings } from "common/utils/getDaySettings";
-import { checkIfDateMatchOpeningHours } from "common/utils/checkIfDateMatchOpeningHours";
+
+import UserAvailableIcon from "./UserAvailableIcon";
+
+export const getServiceDuration = (serviceId: string, services: Service[]) => {
+  return services.find(({ id }) => id === serviceId)?.duration || "";
+};
 
 type VisitFormProps = {
   onSuccess: () => void;
@@ -59,6 +67,18 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
   const { customers } = useCompanyCustomers(user?.id);
   const { employees } = useCompanyEmployees(user?.id);
 
+  const employeeFieldValue = watch("employee");
+  const customerFieldValue = watch("customer");
+  const dateFieldValue = watch("date");
+  const serviceFieldValue = watch("service");
+
+  const employeeAvailabilityQuery = useEmployeeAvailability(
+    employeeFieldValue,
+    dateFieldValue,
+    serviceFieldValue,
+    services
+  );
+
   const [isLoading, setIsLoading] = useState(false);
 
   const isEditMode = !!id;
@@ -69,8 +89,7 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
     if (!settings) return;
     if (checkIfDateMatchOpeningHours(formValues.date, settings.openingHours))
       setIsLoading(true);
-    const serviceDuration =
-      services?.find(({ id }) => id === formValues.service)?.duration || "";
+    const serviceDuration = getServiceDuration(formValues.service, services);
 
     if (formValues.customer === "asNew") {
       const customerDoc = await addCustomer(user?.id || "", {
@@ -103,14 +122,11 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
 
   const closedDays = getClosedDays(settings);
 
-  const dateValue = watch("date");
-  const customerValue = watch("customer");
-
-  const currentDaySettings = getDaySettings(settings, dateValue);
+  const currentDaySettings = getDaySettings(settings, dateFieldValue);
 
   const getMinTime = () => {
     if (!currentDaySettings) return undefined;
-    const minTime = new Date(dateValue);
+    const minTime = new Date(dateFieldValue);
 
     minTime.setHours(
       +currentDaySettings.from.hour,
@@ -124,7 +140,7 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
 
   const getMaxTime = () => {
     if (!currentDaySettings) return undefined;
-    const maxTime = new Date(dateValue);
+    const maxTime = new Date(dateFieldValue);
 
     maxTime.setHours(
       +currentDaySettings.to.hour,
@@ -159,6 +175,12 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
               id="employee"
               label="Employee"
               fullWidth
+              startAdornment={
+                <UserAvailableIcon
+                  available={employeeAvailabilityQuery.data}
+                  isFetching={employeeAvailabilityQuery.isFetching}
+                />
+              }
               error={errors.employee}
               options={
                 employees?.map(({ firstName, lastName, id }) => ({
@@ -211,7 +233,7 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
               fullWidth
               error={errors.service}
               options={
-                services?.map(({ id, name }) => ({
+                services.map(({ id, name }) => ({
                   label: name,
                   value: id,
                 })) || []
@@ -246,7 +268,7 @@ const VisitForm = ({ onSuccess, formValues, id }: VisitFormProps) => {
           )}
         />
       </Grid>
-      {customerValue === "asNew" && (
+      {customerFieldValue === "asNew" && (
         <>
           <Grid item xs={12} sx={{ mt: 1 }}>
             <Typography variant="h6" sx={{ fontSize: { xs: "1rem" } }}>

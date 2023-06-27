@@ -17,8 +17,8 @@ import {
 import { parseGetDoc, parseGetDocs } from "common/utils/firebaseHelpers";
 import { db } from "firebase-config";
 import { Visit, VisitDoc, VisitFormValues } from "../types";
-import { addHours, addMinutes } from "date-fns";
 import { VisitsFilters } from "../hooks/useVisitsFilters";
+import { addServiceDurationToStartDate } from "../utils/addServiceDurationToStartDate";
 
 const visitsCollectionRef = collection(db, "visits");
 
@@ -28,13 +28,7 @@ const transformFormValues = (
 ) => {
   const { customer, date, employee, service } = formValues;
 
-  const [serviceDurationHours, serviceDurationMinutes] =
-    serviceDuration.split(":");
-
-  const endAtDate = addHours(
-    addMinutes(new Date(date), +serviceDurationMinutes),
-    +serviceDurationHours
-  );
+  const endAtDate = addServiceDurationToStartDate(date, serviceDuration);
 
   const visitDocValues: Omit<VisitDoc, "id" | "companyId"> = {
     startAt: Timestamp.fromDate(date),

@@ -20,4 +20,9 @@ export const queryKeys = {
       : ["company-visits", companyId],
   visit: (visitId: string) => ["visit", visitId],
   userSettings: (userId: string) => ["user-settings", userId],
+  employeeAvailability: (employeeId: string, dateRange: [Date, Date]) => [
+    "employee-availability",
+    employeeId,
+    dateRange,
+  ],
 };

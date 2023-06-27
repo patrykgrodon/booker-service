@@ -11,7 +11,9 @@ import {
 
 import { parseGetDocs } from "common/utils/firebaseHelpers";
 import { db } from "firebase-config";
+import { VisitDoc } from "modules/visits/types";
 import { Employee, EmployeeFormValues } from "../types";
+import { addMinutes, sub } from "date-fns";
 
 const employeesCollectionRef = collection(db, "employees");
 
@@ -43,4 +45,23 @@ export const editEmployee = async (
 export const deleteEmployee = async (employeeId: string) => {
   const employeeDoc = doc(db, "employees", employeeId);
   await deleteDoc(employeeDoc);
+};
+
+export const checkIfEmployeeIsAvailable = async (
+  employeeId: string,
+  dateRange: [Date, Date]
+) => {
+  const [startAt, endAt] = dateRange;
+
+  const q = query(
+    collection(db, "visits"),
+    where("startAt", ">", sub(startAt, { minutes: 1 })),
+    where("startAt", "<", addMinutes(endAt, 1)),
+    where("employee", "==", doc(db, "employees", employeeId))
+  );
+
+  const data = await getDocs(q);
+
+  const visitsDoc = parseGetDocs<VisitDoc[]>(data);
+  return visitsDoc.length === 0;
 };

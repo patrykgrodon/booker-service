@@ -9,7 +9,7 @@ const useCompanyServices = (
   const { data, ...queryResult } = useQuery(
     queryKeys.companyServices(companyId || ""),
     () => getCompanyServices(companyId || ""),
-    { enabled: initFetch && !!companyId }
+    { enabled: initFetch && !!companyId, initialData: [] }
   );
   return { ...queryResult, services: data };
 };
