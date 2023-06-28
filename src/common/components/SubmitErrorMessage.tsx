@@ -4,7 +4,7 @@ type SubmitErrorMessageProps = TypographyProps & { error: string };
 
 const SubmitErrorMessage = ({ error, ...props }: SubmitErrorMessageProps) => {
   return (
-    <Typography variant="caption" color="error" {...props}>
+    <Typography variant="body1" color="error" align="center" {...props}>
       {error}
     </Typography>
   );

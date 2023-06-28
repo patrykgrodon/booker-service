@@ -20,6 +20,7 @@ import {
 } from "common/utils/validationPatterns";
 import FormContainer from "../FormContainer";
 import ReturnToLoginLink from "../ReturnToLoginLink";
+import { getAuthErrorMsg } from "modules/auth/utils/getAuthErrorMsg";
 
 const defaultValues: RegisterFormValues = {
   email: "",
@@ -49,7 +50,7 @@ const RegisterForm = () => {
     try {
       await register(formValues);
     } catch (err: any) {
-      setError(err.message);
+      setError(getAuthErrorMsg(err.message));
     }
     setIsLoading(false);
   };

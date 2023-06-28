@@ -17,6 +17,7 @@ import { routes } from "routes";
 import { useAuth } from "../../contexts/authContext";
 import FormContainer from "../FormContainer";
 import { Google } from "@mui/icons-material";
+import { getAuthErrorMsg } from "modules/auth/utils/getAuthErrorMsg";
 
 const defaultValues: LoginFormValues = {
   email: "",
@@ -44,9 +45,17 @@ const LoginForm = () => {
       await login(formValues);
       navigate(routes.base);
     } catch (err: any) {
-      setError(err.message);
+      setError(getAuthErrorMsg(err.message));
     }
     setIsLoading(false);
+  };
+
+  const handleLoginWithGoogle = async () => {
+    try {
+      await loginWithGoogle();
+    } catch (err: any) {
+      setError(getAuthErrorMsg(err.message));
+    }
   };
 
   return (
@@ -75,7 +84,7 @@ const LoginForm = () => {
       <RequestButton type="submit" isLoading={isLoading} aria-label="Sign in">
         Sign in
       </RequestButton>
-      <Button variant="outlined" onClick={loginWithGoogle}>
+      <Button variant="outlined" onClick={handleLoginWithGoogle}>
         <Google sx={{ mr: 0.5 }} /> Sign in with google
       </Button>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
