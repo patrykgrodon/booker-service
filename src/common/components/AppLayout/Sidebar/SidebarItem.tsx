@@ -1,12 +1,14 @@
 import {
+  Box,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Tooltip,
 } from "@mui/material";
+import { forwardRef } from "react";
+import { NavLink } from "react-router-dom";
 
-import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import { Route } from "routes/routes";
 
 export type SidebarItem = {
@@ -14,6 +16,20 @@ export type SidebarItem = {
   icon: React.ElementType;
   path: Route;
 };
+
+const MyNavLink = forwardRef<any, any>((props, ref) => (
+  <NavLink
+    ref={ref}
+    to={props.to}
+    className={({ isActive }) =>
+      isActive ? props.className + " sidebar-item-active" : props.className
+    }
+    onClick={props.onClick}
+    onKeyDown={props.onKeyDown}
+  >
+    {props.children}
+  </NavLink>
+));
 
 type SidebarItemProps = SidebarItem & {
   isOpen: boolean;
@@ -27,52 +43,54 @@ const SidebarItem = ({
   path,
   closeSidebar,
 }: SidebarItemProps) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const handleNavigate = () => {
-    navigate(path);
-    closeSidebar();
-  };
-
-  const highlightItem = matchPath(`${path}/*`, location.pathname);
-
   return (
-    <ListItem
-      onClick={handleNavigate}
-      onKeyDown={(e: any) => e.keyCode === 13 && handleNavigate()}
-      disablePadding
+    <Box
       sx={{
-        display: "block",
-        backgroundColor: (theme) =>
-          highlightItem ? theme.palette.action.hover : undefined,
+        "& .sidebar-item": {
+          color: (theme) => theme.palette.text.primary,
+        },
+        "& .sidebar-item-active": {
+          display: "block",
+          backgroundColor: (theme) => theme.palette.action.hover,
+        },
       }}
     >
-      <Tooltip title={isOpen ? undefined : label}>
-        <ListItemButton
-          sx={{
-            minHeight: 48,
-            justifyContent: isOpen ? "initial" : "center",
-            px: 2.5,
-          }}
-        >
-          <ListItemIcon
+      <ListItem
+        // @ts-ignore
+        component={MyNavLink}
+        // @ts-ignore
+        to={path}
+        onClick={closeSidebar}
+        onKeyDown={(e: any) => e.keyCode === 13 && closeSidebar()}
+        className="sidebar-item"
+        disablePadding
+      >
+        <Tooltip title={isOpen ? undefined : label}>
+          <ListItemButton
             sx={{
-              minWidth: 0,
-              mr: isOpen ? 3 : "auto",
-              justifyContent: "center",
+              minHeight: 48,
+              justifyContent: isOpen ? "initial" : "center",
+              px: 2.5,
             }}
           >
-            <Icon />
-          </ListItemIcon>
-          <ListItemText
-            primary={label}
-            primaryTypographyProps={{ variant: "subtitle1" }}
-            sx={{ opacity: isOpen ? 1 : 0, fontWeight: 700 }}
-          />
-        </ListItemButton>
-      </Tooltip>
-    </ListItem>
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: isOpen ? 3 : "auto",
+                justifyContent: "center",
+              }}
+            >
+              <Icon />
+            </ListItemIcon>
+            <ListItemText
+              primary={label}
+              primaryTypographyProps={{ variant: "subtitle1" }}
+              sx={{ opacity: isOpen ? 1 : 0, fontWeight: 700 }}
+            />
+          </ListItemButton>
+        </Tooltip>
+      </ListItem>{" "}
+    </Box>
   );
 };
 

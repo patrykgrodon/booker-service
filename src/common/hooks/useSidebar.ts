@@ -5,7 +5,7 @@ import { lsNames } from "common/constants/webStorageItems";
 const useSidebar = () => {
   const sidebarLsValue = getLSItem<boolean>(lsNames.sidebar);
   const [isOpen, setIsOpen] = useState(
-    sidebarLsValue === undefined ? true : sidebarLsValue
+    sidebarLsValue === undefined ? false : sidebarLsValue
   );
 
   const toggleSidebar = () => {
