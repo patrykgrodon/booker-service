@@ -1,5 +1,5 @@
 import { validationMessages } from "common/utils/validationPatterns";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithRedirect } from "firebase/auth";
 import { render, screen, userEvent } from "tests/test-utils";
 import { vi } from "vitest";
 import LoginForm from "./LoginForm";
@@ -12,7 +12,7 @@ vi.mock("firebase/auth", async () => {
     signInWithEmailAndPassword: vi
       .fn()
       .mockResolvedValue(Promise.resolve({ user: {} })),
-    signInWithPopup: vi.fn(),
+    signInWithRedirect: vi.fn(),
   };
 });
 
@@ -71,6 +71,6 @@ describe("<LoginForm />", () => {
 
     await userEvent.click(googleBtn);
 
-    expect(signInWithPopup).toBeCalled();
+    expect(signInWithRedirect).toBeCalled();
   });
 });

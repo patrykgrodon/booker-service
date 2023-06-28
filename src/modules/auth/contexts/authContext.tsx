@@ -1,15 +1,15 @@
 import {
+  DocumentData,
+  DocumentReference,
   doc,
   setDoc,
-  DocumentReference,
-  DocumentData,
 } from "@firebase/firestore";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signInWithPopup,
+  signInWithRedirect,
   signOut,
 } from "firebase/auth";
 import { createContext, useContext } from "react";
@@ -68,7 +68,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const loginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
+    await signInWithRedirect(auth, provider);
   };
 
   const logout = async () => {

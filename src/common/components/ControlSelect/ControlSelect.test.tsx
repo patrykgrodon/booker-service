@@ -23,8 +23,6 @@ describe("<ControlSelect />", () => {
     const label = screen.getByLabelText(selectProps.label);
     const inputBox = screen.getByTestId("select");
 
-    screen.debug();
-
     expect(label).toBeInTheDocument();
     expect(inputBox).toBeInTheDocument();
   });
