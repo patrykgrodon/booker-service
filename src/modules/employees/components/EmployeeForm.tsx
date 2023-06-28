@@ -10,14 +10,9 @@ import {
 import { RequestButton } from "common/components";
 import { useToast } from "common/providers/ToastProvider";
 import { EmployeeFormValues } from "../types";
-import { calendarColors } from "common/constants/calendarColors";
-import { drawNumber } from "common/utils/drawNumber";
 import { addEmployee, editEmployee } from "../api";
 import { useAuth } from "modules/auth/contexts";
-
-const getDefaultCalendarColor = () => {
-  return calendarColors[drawNumber(0, calendarColors.length - 1)];
-};
+import { getDefaultCalendarColor } from "../utils/getDefaultCalendarColor";
 
 type EmployeeFormProps = {
   onSuccess: () => void;

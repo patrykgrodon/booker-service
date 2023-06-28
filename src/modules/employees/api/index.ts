@@ -25,14 +25,14 @@ export const getCompanyEmployees = async (companyId: string) => {
 };
 
 export const addEmployee = async (
-  userId: string,
+  companyId: string,
   formValues: EmployeeFormValues
 ) => {
   const newEmployee: Omit<Employee, "id"> = {
-    companyId: userId,
+    companyId,
     ...formValues,
   };
-  await addDoc(employeesCollectionRef, newEmployee);
+  return await addDoc(employeesCollectionRef, newEmployee);
 };
 
 export const editEmployee = async (

@@ -22,6 +22,7 @@ import useFirebaseAuthState from "modules/auth/hooks/useFirebaseAuthState";
 import { getUserData } from "../api";
 import NoUserData from "../components/NoUserData/NoUserData";
 import { Login, Register, UserDocValues } from "../types";
+import { addInitialData } from "common/utils/addInitialData";
 
 type AuthContextState = {
   login: Login;
@@ -94,12 +95,12 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       streetNumber: formValues.streetNumber,
     });
   };
-
   const saveUserDoc = async (
     userDocRef: DocumentReference<DocumentData>,
     userDocValues: UserDocValues
   ) => {
     await setDoc(userDocRef, userDocValues);
+    await addInitialData(userDocRef.id);
   };
 
   const refetchUser = async () => {
@@ -124,10 +125,11 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         saveUserDoc,
       }}
     >
-      {userInfo && !hasUserCompleteRegister && (
+      {userInfo && !hasUserCompleteRegister ? (
         <NoUserData email={userInfo.email || ""} userId={userInfo.uid || ""} />
+      ) : (
+        children
       )}
-      {children}
     </AuthContext.Provider>
   );
 };

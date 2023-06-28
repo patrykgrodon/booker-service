@@ -23,14 +23,14 @@ export const getCompanyServices = async (companyId: string) => {
 };
 
 export const addService = async (
-  userId: string,
+  companyId: string,
   formValues: ServiceFormValues
 ) => {
   const newService: Omit<Service, "id"> = {
-    companyId: userId,
+    companyId,
     ...formValues,
   };
-  await addDoc(servicesCollectionRef, newService);
+  return await addDoc(servicesCollectionRef, newService);
 };
 
 export const editService = async (

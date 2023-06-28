@@ -23,11 +23,11 @@ export const getCompanyCustomers = async (companyId: string) => {
 };
 
 export const addCustomer = async (
-  userId: string,
+  companyId: string,
   formValues: CustomerFormValues
 ) => {
   const newCustomer: Omit<Customer, "id"> = {
-    companyId: userId,
+    companyId,
     ...formValues,
   };
   return await addDoc(customersCollectionRef, newCustomer);
